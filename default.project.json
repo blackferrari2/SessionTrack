@@ -1,0 +1,15 @@
+{
+	"name": "SessionTrack-test",
+	
+	"tree": {
+		"$className": "DataModel",
+
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+
+			"SessionTrack": {
+				"$path": "plugin.project.json"
+			}
+		}
+	}
+}

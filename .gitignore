@@ -1,0 +1,10 @@
+# Project place file
+/chilly.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+
+# Luau LSP
+sourcemap.json
+testez.d.lua
