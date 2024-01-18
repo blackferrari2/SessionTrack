@@ -2,8 +2,13 @@ local ServerStorage = game:GetService("ServerStorage")
 
 local baseModules = script.Modules
 
+local Messages = require(baseModules.Messages)
+local Checkpoints = require(baseModules.Checkpoints)
+local Info = require(baseModules.Info)
+local Webhook = require(baseModules.Webhook)
+
 local Settings = {
-    Version = 1,
+    Version = 2,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",
@@ -11,8 +16,18 @@ local Settings = {
 
 ---------------
 
-local WARN_NO_SETTINGS = "[SessionTrack]: couldnt find a settings folder. so one was created for you"
-local WARN_OUTDATED_SETTINGS = "[SessionTrack]: your settings are outdated. please migrate your stuff over to the new copy. the old copy was renamed and you can still view it - its in ServerStorage"
+type self = {
+    Messages: Messages.Messages,
+    Checkpoints: Checkpoints.Checkpoints,
+    Info: Info.Info,
+    Webhook: Webhook.Webhook,
+}
+
+export type Settings = typeof(setmetatable({} :: self, Settings))
+
+---------------
+
+local WARN_OUTDATED_SETTINGS = "[SessionTrack]: your settings are outdated. please migrate your stuff over to a new copy. the old copy was renamed and you can still view it - its in ServerStorage"
 
 ---------------
 
@@ -40,8 +55,6 @@ function Settings.get(): Folder?
 
         return modules
     end
-
-    warn(WARN_NO_SETTINGS)
 
     return nil
 end

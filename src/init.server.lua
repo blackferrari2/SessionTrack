@@ -1,53 +1,31 @@
 --[[
     blackferrari2's Session Tracker
 
-    Version 0.00
-    16th January 2024
-
-        TBA:
-            - better way to handle settings
-            - safety checks for the settings
-            - video tutorial for the plugin idk
+    Version 1.00
+    17th January 2024
 
     SOURCE:
     https://github.com/blackferrari2/session-tracker
 ]]
 
-assert(plugin, "sessiontrack must run as a plugin")
+assert(plugin, "SessionTrack must run as a plugin NOW")
 
 if game:GetService("RunService"):IsRunning() then
     return
 end
 
-local Settings = require(script.Settings)
 local Session = require(script.Session)
+local SessionStatus = require(script.Session.SessionStatus)
+local Logger = require(script.Session.Logger)
+local Autosave = require(script.Session.Autosave)
+local Settings = require(script.Settings)
 
-local currentSettings = Settings.get() or Settings.new()
-local Messages = require(currentSettings.Messages)
-local Checkpoints = require(currentSettings.Checkpoints)
-local Logger = require(currentSettings.Logger)
-local Info = require(currentSettings.Info)
+local pluginSettingsRoot = Settings.get()
+local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
 
 ---------------
 
 local toolbar = plugin:CreateToolbar("SessionTrack")
-
-local settingsButtonHeight = 40
-local settingsWidget do
-    local widgetSize = settingsButtonHeight * #currentSettings:GetChildren()
-
-    local widgetInfo = DockWidgetPluginGuiInfo.new(
-        Enum.InitialDockState.Float,
-        false,
-        false,
-        widgetSize,
-        widgetSize,
-        widgetSize,
-        widgetSize
-    )
-
-    settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", widgetInfo)
-end
 
 local icons = {
     power = {
@@ -61,6 +39,7 @@ local icons = {
     },
 
     settings = "http://www.roblox.com/asset/?id=16008920257",
+    initialize = "http://www.roblox.com/asset/?id=16008985266"
 }
 
 local powerButton = toolbar:CreateButton(
@@ -81,6 +60,64 @@ local settingsButton = toolbar:CreateButton(
     icons.settings
 )
 
+local initializeButton = toolbar:CreateButton(
+    "initialize",
+    "create new settings",
+    icons.initialize
+)
+
+--
+
+local settingsButtonHeight = 40
+local settingsWidget do
+    local widgetInfo = DockWidgetPluginGuiInfo.new(
+        Enum.InitialDockState.Float,
+        false,
+        true,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5
+    )
+
+    settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", widgetInfo)
+    settingsWidget.Title = "select what you wanna edit"
+end
+
+local scroll = Instance.new("ScrollingFrame")
+
+scroll.Size = UDim2.fromScale(1, 1)
+scroll.Position = UDim2.fromScale(0, 0)
+scroll.BackgroundColor3 = Color3.new(0, 0, 0)
+scroll.Parent = settingsWidget
+
+local UIListLayout = Instance.new("UIListLayout")
+
+UIListLayout.Parent = scroll
+
+local function updateSettingsWidget(modules)
+    for _, module in pairs(modules) do
+        -- replace old button
+        local oldButton = scroll:FindFirstChild(module.Name)
+        
+        if oldButton then
+            oldButton:Destroy()
+        end
+
+        local openScriptButton = Instance.new("TextButton")
+
+        openScriptButton.Text = module.Name
+        openScriptButton.Name = module.Name
+        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsButtonHeight))
+        openScriptButton.Font = Enum.Font.Arcade
+        openScriptButton.TextSize = settingsButtonHeight - 15
+        openScriptButton.TextStrokeTransparency = 0
+        openScriptButton.TextColor3 = Color3.new(1, 1, 1)
+        openScriptButton.BackgroundColor3 = Color3.new(0, 0, 0)
+        openScriptButton.Parent = scroll
+    end
+end
+
 --
 
 -- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
@@ -94,73 +131,48 @@ end
 
 ---------------
 
-settingsWidget.Title = "select what you wanna edit"
-
-local scroll = Instance.new("ScrollingFrame")
-
-scroll.Size = UDim2.fromScale(1, 1)
-scroll.Position = UDim2.fromScale(0, 0)
-scroll.BackgroundColor3 = Color3.new(0, 0, 0)
-scroll.Parent = settingsWidget
-
-local UIListLayout = Instance.new("UIListLayout")
-
-UIListLayout.Parent = scroll
-
-for _, module in pairs(currentSettings:GetChildren()) do
-    local openScriptButton = Instance.new("TextButton")
-
-    openScriptButton.Text = module.Name
-    openScriptButton.Name = module.Name
-    openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsButtonHeight))
-    openScriptButton.Font = Enum.Font.Arcade
-    openScriptButton.TextSize = settingsButtonHeight - 15
-    openScriptButton.TextStrokeTransparency = 0
-    openScriptButton.TextColor3 = Color3.new(1, 1, 1)
-    openScriptButton.BackgroundColor3 = Color3.new(0, 0, 0)
-    openScriptButton.Parent = scroll
-end
-
 pauseButton.Enabled = false
+
+if not pluginSettingsRoot then
+    settingsButton.Enabled = false
+    powerButton.Enabled = false
+else
+    initializeButton.Enabled = false
+end
 
 ---------------
 
 local currentSession
-
--- this stuff is for when studio abruplty closes. when you open studio again, itll recover the session time.
-local activeSessionKey = "SESSIONTRACKER_SESSIONTIME_" .. Info.ProjectName
-local autosaveIntervalSeconds = 1
-local autosaveThread
+local autosave
 
 powerButton.Click:Connect(function()
-    if currentSession then
-        Info.addToTotalProjectTime(currentSession:getTimeElapsed())
-        
-        currentSession:close()
-        currentSession = nil
-
-        task.cancel(autosaveThread)
-        plugin:SetSetting(activeSessionKey, nil)
-
+    if currentSession then        
         changeIconSafely(powerButton, icons.power.on)
         changeIconSafely(pauseButton, icons.pause.unpaused)
         pauseButton.Enabled = false
+        settingsButton.Enabled = true
+
+        Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
+
+        autosave:destroy()
+        currentSession:close()
+        currentSession = nil
 
         return
     end
-    
-    local recoveredSessionStartTime = plugin:GetSetting(activeSessionKey)
-    local ourAwesomeLogger = Logger.new(Messages, Checkpoints)
-
-    currentSession = Session.begin(ourAwesomeLogger, recoveredSessionStartTime)
-    autosaveThread = task.spawn(function()
-        while task.wait(autosaveIntervalSeconds) do
-            plugin:SetSetting(activeSessionKey, currentSession.timeStarted)
-        end
-    end)
 
     pauseButton.Enabled = true
+    settingsButton.Enabled = false
     changeIconSafely(powerButton, icons.power.off)
+
+    currentSession = Session.new()
+    autosave = Autosave.new(plugin, Info.ProjectName)
+
+    local logger = Logger.new(pluginSettingsRoot, currentSession.status)
+    local recoveredSessionStatus = autosave:recover()
+
+    currentSession:begin(logger, recoveredSessionStatus)
+    autosave:loop(currentSession.status)
 end)
 
 --
@@ -170,7 +182,7 @@ pauseButton.Click:Connect(function()
         return
     end
 
-    if currentSession.status == Session.Statuses.Paused then
+    if currentSession.status.state == SessionStatus.States.Paused then
         currentSession:resume()
         changeIconSafely(pauseButton, icons.pause.unpaused)
         return
@@ -182,14 +194,35 @@ end)
 
 --
 
+local function setupSettingsButtonEvents(modules)
+    for _, module in pairs(modules) do
+        local openScriptButton = scroll:FindFirstChild(module.Name)
+    
+        openScriptButton.Activated:Connect(function()
+            plugin:OpenScript(module)
+        end)
+    end
+end
+
 settingsButton.Click:Connect(function()
+    local modules = pluginSettingsRoot:GetChildren()
+
+    updateSettingsWidget(modules)
+    setupSettingsButtonEvents(modules)
+
     settingsWidget.Enabled = not settingsWidget.Enabled
 end)
 
-for _, module in pairs(currentSettings:GetChildren()) do
-    local openScriptButton = scroll:FindFirstChild(module.Name)
+--
 
-    openScriptButton.Activated:Connect(function()
-        plugin:OpenScript(module)
-    end)
-end
+initializeButton.Click:Connect(function()
+    if pluginSettingsRoot then
+        return
+    end
+
+    settingsButton.Enabled = true
+    initializeButton.Enabled = false
+
+    pluginSettingsRoot = Settings.new()
+    plugin:OpenScript(pluginSettingsRoot.Webhook)
+end)

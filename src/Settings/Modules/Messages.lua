@@ -1,9 +1,18 @@
 --[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
     These are the special messages sent upon starting / ending / pausing a session.
 
     scroll down
     ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 ]]
+
+local Assets = require(script.Parent.Assets)
+local Info = require(script.Parent.Info)
 
 local Messages = {
     Start = {},
@@ -14,19 +23,10 @@ local Messages = {
     LineSeparators = {},
 }
 
-Messages.__index = Messages
-
 ---------------
 
-type self = {
-    Start: MessageList,
-    Close: MessageList,
-    Pause: MessageList,
-    Resume: MessageList,
-}
-
 export type MessageList = {string}
-export type Messages = typeof(setmetatable({} :: self, Messages))
+export type Messages = typeof(Messages)
 
 ---------------
 
@@ -61,14 +61,32 @@ end
         to add a message to the session start
 ]]
 
-Messages.add(Messages.Start, "Session Started!")
-Messages.add(Messages.Start, "Session Started... yay")
+--[[
+    SPECIAL TAGS
+    spice up your messages with them
 
-Messages.add(Messages.SessionRecovered, "Session Recovered!")
-Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! Session recovered")
+    ...
 
-Messages.add(Messages.Close, "Session Closed!")
-Messages.add(Messages.Close, "Session Closed unfortunately")
+    TAG_SESSION_TIME
+        time spent on the current session
+
+    TAG_TOTAL_TIME
+        total time spent on the project
+
+    TAG_TODAYS_DATE
+        day, hour, minute, second at the moment of starting the session
+
+    ...
+]]
+
+Messages.add(Messages.Start, "Session Started! TAG_TODAYS_DATE " .. Assets.Emojis.Rat)
+Messages.add(Messages.Start, Info.ProjectName .. " Session Started... TAG_TODAYS_DATE yay" .. Assets.Emojis.Angry)
+
+Messages.add(Messages.SessionRecovered, "Session Recovered! time rn: TAG_SESSION_TIME")
+Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! Session recovered. TAG_SESSION_TIME")
+
+Messages.add(Messages.Close, "Session Closed! total time ever: TAG_TOTAL_TIME")
+Messages.add(Messages.Close, "Session Closed unfortunately. total time ever: TAG_TOTAL_TIME")
 
 Messages.add(Messages.Pause, "paused.")
 Messages.add(Messages.Pause, "pausedddddd")
@@ -77,7 +95,6 @@ Messages.add(Messages.Resume, "resumed")
 Messages.add(Messages.Resume, "resumeddddddddddd12313213")
 
 Messages.add(Messages.LineSeparators, "----------------")
-Messages.add(Messages.LineSeparators, "////////////////")
 
 ---------------
 

@@ -1,18 +1,26 @@
 --[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
     Checkpoints are random messages that are sent during a session.
 
     scroll down
     ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 ]]
 
-local Checkpoints = {}
-Checkpoints.__index = Checkpoints
+local Assets = require(script.Parent.Assets)
+
+local Checkpoints = {
+    -- dont set this number too low or you may be rate limited by discord
+    IntervalSeconds = 600,
+}
 
 ---------------
 
-type self = {}
-
-export type Checkpoints = typeof(setmetatable({} :: self, Checkpoints))
+export type Checkpoints = typeof(Checkpoints)
 
 ---------------
 
@@ -53,8 +61,26 @@ end
         Checkpoints.add("TestAuthor", "hey")
 ]]
 
-Checkpoints.add("TestAuthor", "hey")
-Checkpoints.add("TestAuthor2", "helolo")
+--[[
+    SPECIAL TAGS
+    spice up your checkpoints with them
+
+    ...
+
+    TAG_SESSION_TIME
+        time spent on the current session
+
+    TAG_TOTAL_TIME
+        total time spent on the project
+
+    TAG_TODAYS_DATE
+        day, hour, minute, second at the moment of starting the session
+
+    ...
+]]
+
+Checkpoints.add("TestAuthor", "hey" .. Assets.Emojis.Smiley)
+Checkpoints.add("TestAuthor2", "helolo TAG_SESSION_TIME")
 
 ---------------
 
