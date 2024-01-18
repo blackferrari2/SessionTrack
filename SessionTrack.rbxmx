@@ -1,0 +1,1153 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Folder" referent="RBX53B30770426742B0B5A1E6D06E300274">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+			<bool name="DefinesCapabilities">false</bool>
+			<string name="Name">SessionTrack</string>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+		</Properties>
+		<Item class="Script" referent="RBXB8ADDAC44AB64EF6A45ACEB0B699F032">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="Disabled">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Plugin</string>
+				<token name="RunContext">0</token>
+				<string name="ScriptGuid">{552C64AF-1986-41A0-BF06-4F894866F713}</string>
+				<ProtectedString name="Source"><![CDATA[--[[
+    blackferrari2's Session Tracker
+
+    Version 1.00
+    17th January 2024
+
+    SOURCE:
+    https://github.com/blackferrari2/session-tracker
+]]
+
+assert(plugin, "SessionTrack must run as a plugin NOW")
+
+if game:GetService("RunService"):IsRunning() then
+    return
+end
+
+local Session = require(script.Session)
+local SessionStatus = require(script.Session.SessionStatus)
+local Logger = require(script.Session.Logger)
+local Autosave = require(script.Session.Autosave)
+local Settings = require(script.Settings)
+
+local pluginSettingsRoot = Settings.get()
+local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
+
+---------------
+
+local toolbar = plugin:CreateToolbar("SessionTrack")
+
+local icons = {
+    power = {
+        on = "http://www.roblox.com/asset/?id=16008923978",
+        off = "http://www.roblox.com/asset/?id=16008923312",
+    },
+
+    pause = {
+        paused = "http://www.roblox.com/asset/?id=16008921548",
+        unpaused = "http://www.roblox.com/asset/?id=16008922394",
+    },
+
+    settings = "http://www.roblox.com/asset/?id=16008920257",
+    initialize = "http://www.roblox.com/asset/?id=16008985266"
+}
+
+local powerButton = toolbar:CreateButton(
+    "power",
+    "turn bot on or off",
+    icons.power.on
+)
+
+local pauseButton = toolbar:CreateButton(
+    "pause",
+    "pause or resume session",
+    icons.pause.unpaused
+)
+
+local settingsButton = toolbar:CreateButton(
+    "settings",
+    "open settings widget",
+    icons.settings
+)
+
+local initializeButton = toolbar:CreateButton(
+    "initialize",
+    "create new settings",
+    icons.initialize
+)
+
+--
+
+local settingsButtonHeight = 40
+local settingsWidget do
+    local widgetInfo = DockWidgetPluginGuiInfo.new(
+        Enum.InitialDockState.Float,
+        false,
+        true,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5
+    )
+
+    settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", widgetInfo)
+    settingsWidget.Title = "select what you wanna edit"
+end
+
+local scroll = Instance.new("ScrollingFrame")
+
+scroll.Size = UDim2.fromScale(1, 1)
+scroll.Position = UDim2.fromScale(0, 0)
+scroll.BackgroundColor3 = Color3.new(0, 0, 0)
+scroll.Parent = settingsWidget
+
+local UIListLayout = Instance.new("UIListLayout")
+
+UIListLayout.Parent = scroll
+
+local function updateSettingsWidget(modules)
+    for _, module in pairs(modules) do
+        -- replace old button
+        local oldButton = scroll:FindFirstChild(module.Name)
+        
+        if oldButton then
+            oldButton:Destroy()
+        end
+
+        local openScriptButton = Instance.new("TextButton")
+
+        openScriptButton.Text = module.Name
+        openScriptButton.Name = module.Name
+        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsButtonHeight))
+        openScriptButton.Font = Enum.Font.Arcade
+        openScriptButton.TextSize = settingsButtonHeight - 15
+        openScriptButton.TextStrokeTransparency = 0
+        openScriptButton.TextColor3 = Color3.new(1, 1, 1)
+        openScriptButton.BackgroundColor3 = Color3.new(0, 0, 0)
+        openScriptButton.Parent = scroll
+    end
+end
+
+--
+
+-- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
+local function changeIconSafely(of, to)
+    if of.Icon == to then
+        return
+    end
+
+    of.Icon = to
+end
+
+---------------
+
+pauseButton.Enabled = false
+
+if not pluginSettingsRoot then
+    settingsButton.Enabled = false
+    powerButton.Enabled = false
+else
+    initializeButton.Enabled = false
+end
+
+---------------
+
+local currentSession
+local autosave
+
+powerButton.Click:Connect(function()
+    if currentSession then        
+        changeIconSafely(powerButton, icons.power.on)
+        changeIconSafely(pauseButton, icons.pause.unpaused)
+        pauseButton.Enabled = false
+        settingsButton.Enabled = true
+
+        Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
+
+        autosave:destroy()
+        currentSession:close()
+        currentSession = nil
+
+        return
+    end
+
+    pauseButton.Enabled = true
+    settingsButton.Enabled = false
+    changeIconSafely(powerButton, icons.power.off)
+
+    currentSession = Session.new()
+    autosave = Autosave.new(plugin, Info.ProjectName)
+
+    local logger = Logger.new(pluginSettingsRoot, currentSession.status)
+    local recoveredSessionStatus = autosave:recover()
+
+    currentSession:begin(logger, recoveredSessionStatus)
+    autosave:loop(currentSession.status)
+end)
+
+--
+
+pauseButton.Click:Connect(function()
+    if not currentSession then
+        return
+    end
+
+    if currentSession.status.state == SessionStatus.States.Paused then
+        currentSession:resume()
+        changeIconSafely(pauseButton, icons.pause.unpaused)
+        return
+    end
+
+    currentSession:pause()
+    changeIconSafely(pauseButton, icons.pause.paused)
+end)
+
+--
+
+local function setupSettingsButtonEvents(modules)
+    for _, module in pairs(modules) do
+        local openScriptButton = scroll:FindFirstChild(module.Name)
+    
+        openScriptButton.Activated:Connect(function()
+            plugin:OpenScript(module)
+        end)
+    end
+end
+
+settingsButton.Click:Connect(function()
+    local modules = pluginSettingsRoot:GetChildren()
+
+    updateSettingsWidget(modules)
+    setupSettingsButtonEvents(modules)
+
+    settingsWidget.Enabled = not settingsWidget.Enabled
+end)
+
+--
+
+initializeButton.Click:Connect(function()
+    if pluginSettingsRoot then
+        return
+    end
+
+    settingsButton.Enabled = true
+    initializeButton.Enabled = false
+
+    pluginSettingsRoot = Settings.new()
+    plugin:OpenScript(pluginSettingsRoot.Webhook)
+end)
+]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+			<Item class="ModuleScript" referent="RBXBF59E66BEE47478C8DBE56A6EFFCD3CA">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Session</string>
+					<string name="ScriptGuid">{C27CAC18-806E-4160-A6CE-4D3DCE179AE0}</string>
+					<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.SessionStatus)
+local Logger = require(script.Logger)
+
+local Session = {}
+Session.__index = Session
+
+---------------
+
+type self = {
+    status: SessionStatus.SessionStatus,
+    logger: Logger.Logger,
+}
+
+export type Session = typeof(setmetatable({} :: self, Session))
+
+-------------
+
+function Session.new(): Session
+    local self = {
+        status = SessionStatus.new(),
+        logger = nil,
+    }
+
+    setmetatable(self, Session)
+
+    return self
+end
+
+function Session.begin(self: Session, logger: Logger.Logger, recoveredSessionStatus: SessionStatus.SessionStatus?)
+    if self.status.state ~= SessionStatus.States.DidntStart then
+        return
+    end
+
+    self.logger = logger
+    self.status:changeState(SessionStatus.States.Ongoing)
+
+    if recoveredSessionStatus then
+        self.status.state = recoveredSessionStatus.state
+        self.status.timePassed = recoveredSessionStatus.timePassed
+        self.status.timeStarted = recoveredSessionStatus.timeStarted
+        logger:onSessionRecovered()
+    else
+        logger:start()
+    end
+
+    if self.status.state ~= SessionStatus.States.Paused then
+        logger:loopCheckpointPosting()
+    end
+end
+
+function Session.pause(self: Session)
+    if self.status.state ~= SessionStatus.States.Ongoing then
+        return
+    end
+
+    self.status:changeState(SessionStatus.States.Paused)
+
+    self.logger:stopLoop()
+    self.logger:pause()
+end
+
+function Session.resume(self: Session)
+    if self.status.state ~= SessionStatus.States.Paused then
+        return
+    end
+
+    self.status:changeState(SessionStatus.States.Ongoing)
+
+    self.logger:resume()
+    self.logger:loopCheckpointPosting()
+end
+
+function Session.close(self: Session)
+    self.status:changeState(SessionStatus.States.Closed)
+
+    self.logger:stopLoop()
+    self.logger:close()
+end
+
+---------------
+
+return Session]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="ModuleScript" referent="RBX1A2F5965123F42C0BF8C904DE3C7AA1B">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">Autosave</string>
+						<string name="ScriptGuid">{B39323A5-DF40-4B63-9940-CF143562603F}</string>
+						<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.Parent.SessionStatus)
+
+local Autosave = {
+    Key = "SessionTrackAutosave%s",
+    IntervalSeconds = 1,
+}
+
+Autosave.__index = Autosave
+
+---------------
+
+type self = {
+    plugin: Plugin,
+    projectName: string,
+    loopThread: thread,
+}
+
+export type Autosave = typeof(setmetatable({} :: self, Autosave))
+
+-------------
+
+local function getKey(projectName)
+    return string.format(Autosave.Key, projectName)
+end
+
+-------------
+
+function Autosave.new(plugin: Plugin, projectName: string): Autosave
+    local self = {
+        plugin = plugin,
+        projectName = projectName,
+        loopThread = nil,
+    }
+
+    setmetatable(self, Autosave)
+
+    return self
+end
+
+function Autosave.update(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
+    self.plugin:SetSetting(getKey(self.projectName), sessionStatus)
+end
+
+function Autosave.erase(self: Autosave)
+    self.plugin:SetSetting(getKey(self.projectName), nil)
+end
+
+function Autosave.recover(self: Autosave): SessionStatus.SessionStatus?
+    return self.plugin:GetSetting(getKey(self.projectName))
+end
+
+function Autosave.loop(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
+    if self.loopThread then
+        return
+    end
+
+    self.loopThread = task.spawn(function()
+        self:update(sessionStatus)
+    end)
+end
+
+function Autosave.stop(self: Autosave)
+    if not self.loopThread then
+        return
+    end
+
+    task.cancel(self.loopThread)
+end
+
+function Autosave.destroy(self: Autosave)
+    self:stop()
+    self:erase()
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
+end
+
+---------------
+
+return Autosave]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="ModuleScript" referent="RBX6215DD676E794A4099F7C3803B723E3F">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">Logger</string>
+						<string name="ScriptGuid">{EC02FF67-B756-41D3-80A8-6D5F6F61E111}</string>
+						<ProtectedString name="Source"><![CDATA[local baseModules = script.Parent.Parent.Settings.Modules
+
+local Messages = require(baseModules.Messages)
+local Checkpoints = require(baseModules.Checkpoints)
+local Webhook = require(baseModules.Webhook)
+local Info = require(baseModules.Info)
+
+local Settings = require(script.Parent.Parent.Settings)
+local SessionStatus = require(script.Parent.SessionStatus)
+
+local Logger = {
+    Tags = {
+        DayToday = "TAG_TODAYS_DATE",
+        SessionTime = "TAG_SESSION_TIME",
+        TotalTime = "TAG_TOTAL_TIME"
+    }
+}
+
+Logger.__index = Logger
+
+---------------
+
+type self = {
+    settingsRoot: Settings.Settings,
+    messages: Messages.Messages,
+    checkpoints: Checkpoints.Checkpoints,
+    webhook: Webhook.Webhook,
+    info: Info.Info,
+    sessionStatus: SessionStatus.SessionStatus,
+    loopThread: thread?,
+}
+
+export type Logger = typeof(setmetatable({} :: self, Logger))
+
+-------------
+
+local function secondsToHMS(time)
+    local seconds = time % 60
+    local minutes = math.floor(time / 60) % 60
+    local hours = math.floor(time / 3600) % 24
+
+    return string.format("%s:%s:%s", hours, minutes, seconds)
+end
+
+local function secondsToDHMS(time)
+    local seconds = time % 60
+    local minutes = math.floor(time / 60) % 60
+    local hours = math.floor(time / 3600) % 24
+    local days = math.floor(time / 86400)
+
+    return string.format("%s:%s:%s:%s", days, hours, minutes, seconds)
+end
+
+-------------
+
+function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatus.SessionStatus): Logger
+    local self = {
+        settingsRoot = settingsRoot,
+        messages = require(settingsRoot.Messages),
+        checkpoints = require(settingsRoot.Checkpoints),
+        webhook = require(settingsRoot.Webhook),
+        info = require(settingsRoot.Info),
+        sessionStatus = sessionStatus,
+        loopThread = nil,
+    }
+
+    setmetatable(self, Logger)
+
+    return self
+end
+
+function Logger.start(self: Logger)
+    local message = self.messages.get(self.messages.Start)
+    local separator = self.messages.get(self.messages.LineSeparators)
+
+    message = self:getTextWithTagsApplied(message)
+    separator = self:getTextWithTagsApplied(separator)
+
+    self.webhook.post(message)
+    self.webhook.post(separator)
+end
+
+function Logger.onSessionRecovered(self: Logger)
+    local message = self.messages.get(self.messages.SessionRecovered)
+    
+    message = self:getTextWithTagsApplied(message)
+
+    self.webhook.post(message)
+end
+
+function Logger.postCheckpoint(self: Logger)
+    local checkpoint = self.checkpoints.get()
+        
+    checkpoint = self:getTextWithTagsApplied(checkpoint)
+
+    self.webhook.post(checkpoint)
+end
+
+function Logger.loopCheckpointPosting(self: Logger)
+    if self.loopThread then
+        return
+    end
+
+    local function loop()
+        local interval = self.checkpoints.IntervalSeconds
+
+        while task.wait(interval) do
+            self:postCheckpoint()
+        end
+    end
+
+    self.loopThread = task.spawn(loop)
+end
+
+function Logger.stopLoop(self: Logger)
+    if self.loopThread then
+        task.cancel(self.loopThread)
+        self.loopThread = nil 
+    end
+end
+
+function Logger.pause(self: Logger)
+    local message = self.messages.get(self.messages.Pause)
+
+    message = self:getTextWithTagsApplied(message)
+
+    self.webhook.post(message)
+end
+
+function Logger.resume(self: Logger)
+    local message = self.messages.get(self.messages.Resume)
+
+    message = self:getTextWithTagsApplied(message)
+
+    self.webhook.post(message)
+end
+
+function Logger.close(self: Logger)
+    local separator = self.messages.get(self.messages.LineSeparators)
+    local message = self.messages.get(self.messages.Close)
+
+    separator = self:getTextWithTagsApplied(separator)
+    message = self:getTextWithTagsApplied(message)
+
+    self.webhook.post(separator)
+    self.webhook.post(message)
+end
+
+--
+
+function Logger.getTextWithTagsApplied(self: Logger, text: string): string
+    local tagApplications = {
+        [Logger.Tags.DayToday] = os.date(),
+        [Logger.Tags.SessionTime] = secondsToHMS(self.sessionStatus:getTimeElapsed()),
+        [Logger.Tags.TotalTime] = secondsToDHMS(self.info.getTotalProjectTime()),
+    }
+    
+    return string.gsub(text, "[%w%p]+", tagApplications)
+end
+
+---------------
+
+return Logger]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="ModuleScript" referent="RBX6CC01AD7065743FEBE699A5257CF782A">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">SessionStatus</string>
+						<string name="ScriptGuid">{97F102AC-0124-4A0F-9862-24636ED4CB50}</string>
+						<ProtectedString name="Source"><![CDATA[local SessionStatus = {
+    States = {
+        DidntStart = "DidntStart",
+        Ongoing = "Ongoing",
+        Paused = "Paused",
+        Closed = "Closed",
+    },
+}
+
+SessionStatus.__index = SessionStatus
+
+---------------
+
+type self = {
+    state: State,
+    timePassed: number,
+    timeStarted: number,
+}
+
+export type State = "DidntStart" | "Ongoing" | "Paused" | "Closed"
+export type SessionStatus = typeof(setmetatable({} :: self, SessionStatus))
+
+-------------
+
+function SessionStatus.new(): SessionStatus
+    local self = {
+        state = SessionStatus.States.DidntStart,
+        timePassed = 0,
+        timeStarted = nil,
+    }
+
+    setmetatable(self, SessionStatus)
+
+    return self
+end
+
+function SessionStatus.changeState(self: SessionStatus, to: State)
+    if to == SessionStatus.States.Ongoing then
+        self.timeStarted = tick()
+    end
+
+    if to == SessionStatus.States.Paused or to == SessionStatus.States.Closed then
+        self.timePassed = self:getTimeElapsed()
+    end
+
+    self.state = to
+end
+
+function SessionStatus.getTimeElapsed(self: SessionStatus)
+    if self.state == SessionStatus.States.Paused or self.state == SessionStatus.States.Closed then
+        return self.timePassed
+    end
+
+    local timeElapsedSoFar = tick() - self.timeStarted
+
+    return self.timePassed + timeElapsedSoFar
+end
+
+---------------
+
+return SessionStatus]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBXDFA7EF18CDF8450FA275AC7684D1B168">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Settings</string>
+					<string name="ScriptGuid">{A883FEEB-D132-4165-AC93-94196C1A979B}</string>
+					<ProtectedString name="Source"><![CDATA[local ServerStorage = game:GetService("ServerStorage")
+
+local baseModules = script.Modules
+
+local Messages = require(baseModules.Messages)
+local Checkpoints = require(baseModules.Checkpoints)
+local Info = require(baseModules.Info)
+local Webhook = require(baseModules.Webhook)
+
+local Settings = {
+    Version = 2,
+    InstanceName = "SessionTrack.PluginSettings",
+    OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
+    VersionAttribute = "Version",
+}
+
+---------------
+
+type self = {
+    Messages: Messages.Messages,
+    Checkpoints: Checkpoints.Checkpoints,
+    Info: Info.Info,
+    Webhook: Webhook.Webhook,
+}
+
+export type Settings = typeof(setmetatable({} :: self, Settings))
+
+---------------
+
+local WARN_OUTDATED_SETTINGS = "[SessionTrack]: your settings are outdated. please migrate your stuff over to a new copy. the old copy was renamed and you can still view it - its in ServerStorage"
+
+---------------
+
+function Settings.new(): Folder
+    local clone = baseModules:Clone()
+
+    clone.Name = Settings.InstanceName
+    clone:SetAttribute(Settings.VersionAttribute, Settings.Version)
+    clone.Parent = ServerStorage
+
+    return clone
+end
+
+function Settings.get(): Folder?
+    local modules = ServerStorage:FindFirstChild(Settings.InstanceName)
+
+    if modules then
+        if modules:GetAttribute(Settings.VersionAttribute) ~= Settings.Version then
+            warn(WARN_OUTDATED_SETTINGS)
+
+            modules.Name = Settings.OutdatedInstanceName
+
+            return nil
+        end
+
+        return modules
+    end
+
+    return nil
+end
+
+---------------
+
+return Settings]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Folder" referent="RBX43F2EB2263E24CE0BDE416389E872876">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">Modules</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX00B31773C25E4AF08AB02A9223C09429">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Assets</string>
+							<string name="ScriptGuid">{300E297A-0BBA-47DA-8B0C-F4C42B5C0839}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    plugin assets
+
+    not used for anything in particular other than to spice up messages and checkpoints. Feel free to do anything with this
+]]
+
+local Assets = {
+    Emojis = {
+        Smiley = "🙂",
+        Angry = "😡",
+        Rat = "🐀",
+    },
+}
+
+---------------
+
+export type Assets = typeof(Assets)
+
+---------------
+
+return Assets]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXE65B18137BC3469D904108FAB007DB3A">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Checkpoints</string>
+							<string name="ScriptGuid">{9052414D-AE56-464E-B5E0-6D10A852DFBE}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    Checkpoints are random messages that are sent during a session.
+
+    scroll down
+    ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+]]
+
+local Assets = require(script.Parent.Assets)
+
+local Checkpoints = {
+    -- dont set this number too low or you may be rate limited by discord
+    IntervalSeconds = 600,
+}
+
+---------------
+
+export type Checkpoints = typeof(Checkpoints)
+
+---------------
+
+local FORMAT = "[%s]: %s"
+
+---------------
+
+function Checkpoints.add(author: string, message: string)
+    local checkpoint = {
+        author = author,
+        message = message
+    }
+
+    table.insert(Checkpoints, checkpoint)
+end
+
+function Checkpoints.get(): string?
+    if #Checkpoints < 1 then
+        return nil
+    end
+
+    local randomCheckpoint = math.random(1, #Checkpoints)
+    local checkpoint = Checkpoints[randomCheckpoint]
+
+    return string.format(FORMAT, checkpoint.author, checkpoint.message)
+end
+
+---------------
+
+--[[
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+    ADD MORE CHECKPOINTS HERE
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+
+    dont add anything to opt out of checkpoints.
+
+    Example:
+        Checkpoints.add("TestAuthor", "hey")
+]]
+
+--[[
+    SPECIAL TAGS
+    spice up your checkpoints with them
+
+    ...
+
+    TAG_SESSION_TIME
+        time spent on the current session
+
+    TAG_TOTAL_TIME
+        total time spent on the project
+
+    TAG_TODAYS_DATE
+        day, hour, minute, second at the moment of starting the session
+
+    ...
+]]
+
+Checkpoints.add("TestAuthor", "hey" .. Assets.Emojis.Smiley)
+Checkpoints.add("TestAuthor2", "helolo TAG_SESSION_TIME")
+
+---------------
+
+return Checkpoints]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXF042D02D55FD4DCE94006BAA9E4CB8CA">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Info</string>
+							<string name="ScriptGuid">{DE339A73-7D5F-439E-9C46-B4C9A284682F}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    info about your project
+
+    all you should need to edit here is the project name, dont worry about the total time stuff!
+]]
+
+local Info = {
+    ProjectName = "REPLACEME",
+    TotalProjectTimeAttribute = "TotalProjectTime",
+}
+
+---------------
+
+export type Info = typeof(Info)
+
+---------------
+
+function Info.addToTotalProjectTime(time: number)
+    local currentAmount = script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
+
+    script:SetAttribute(Info.TotalProjectTimeAttribute, currentAmount + time)
+end
+
+function Info.getTotalProjectTime()
+    return script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
+end
+
+---------------
+
+return Info]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXE0C041E2ECAB40D6903C9897F24F5887">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Messages</string>
+							<string name="ScriptGuid">{E8954853-7CAF-4047-8C0B-41439C5E464F}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    These are the special messages sent upon starting / ending / pausing a session.
+
+    scroll down
+    ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+]]
+
+local Assets = require(script.Parent.Assets)
+local Info = require(script.Parent.Info)
+
+local Messages = {
+    Start = {},
+    SessionRecovered = {},
+    Close = {},
+    Pause = {},
+    Resume = {},
+    LineSeparators = {},
+}
+
+---------------
+
+export type MessageList = {string}
+export type Messages = typeof(Messages)
+
+---------------
+
+function Messages.add(to: MessageList, text: string)
+    table.insert(to, text)
+end
+
+function Messages.get(from: MessageList): string?
+    if #from < 1 then
+        return nil
+    end
+
+    local randomMessage = math.random(1, #from)
+
+    return from[randomMessage]
+end
+
+---------------
+
+--[[
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+    ADD MORE MESSAGES HERE
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+
+    to opt out of the special messages, dont add anything
+        this applies to all the categories of messages here
+            dont want "Close" messages? remove all the `Messages.add(Messages.Close)` lines
+
+    Example:
+        Messages.add(Messages.Start, "hello world!")
+
+        to add a message to the session start
+]]
+
+--[[
+    SPECIAL TAGS
+    spice up your messages with them
+
+    ...
+
+    TAG_SESSION_TIME
+        time spent on the current session
+
+    TAG_TOTAL_TIME
+        total time spent on the project
+
+    TAG_TODAYS_DATE
+        day, hour, minute, second at the moment of starting the session
+
+    ...
+]]
+
+Messages.add(Messages.Start, "Session Started! TAG_TODAYS_DATE " .. Assets.Emojis.Rat)
+Messages.add(Messages.Start, Info.ProjectName .. " Session Started... TAG_TODAYS_DATE yay" .. Assets.Emojis.Angry)
+
+Messages.add(Messages.SessionRecovered, "Session Recovered! time rn: TAG_SESSION_TIME")
+Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! Session recovered. TAG_SESSION_TIME")
+
+Messages.add(Messages.Close, "Session Closed! total time ever: TAG_TOTAL_TIME")
+Messages.add(Messages.Close, "Session Closed unfortunately. total time ever: TAG_TOTAL_TIME")
+
+Messages.add(Messages.Pause, "paused.")
+Messages.add(Messages.Pause, "pausedddddd")
+
+Messages.add(Messages.Resume, "resumed")
+Messages.add(Messages.Resume, "resumeddddddddddd12313213")
+
+Messages.add(Messages.LineSeparators, "----------------")
+
+---------------
+
+return Messages]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXA277962F28C94A999CC7218E27E951F8">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Webhook</string>
+							<string name="ScriptGuid">{7981458A-DA25-4552-8489-114B82BFB6F3}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★
+
+    HELLO! thanks for using my plugin
+
+    FOR IT TO WORK, first replace the `URL` field down there with the url of your discord webhook
+
+    save and restart studio afterwards to apply the changes. Enjoy!
+        (you can close this after youre done)
+
+
+    ...........
+
+    QnA:
+        Reset/Delete settings?
+            > delete/take out the `SessionTrack.PluginSettings` folder from ServerStorage and save and restart studio afterwards like normal.
+
+        settings are GONE?
+            > your settings mightve been outdated (check the output to confirm that and for more instructions). They werent deleted.
+
+
+    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★ 
+]]
+
+--[[
+    webhook is the module used to send the plugin messages over to discord
+    
+    if you want the messages NOT to be sent to the webhook, but to the roblox studio output, change the `UseOutputInstead` field to true.
+]]
+
+local HttpService = game:GetService("HttpService")
+
+local Webhook = {
+    URL = "REPLACEME",
+    UseOutputInstead = false,
+}
+
+---------------
+
+export type Webhook = typeof(Webhook)
+
+---------------
+
+function Webhook.post(text: string?)
+    if not text then
+        return
+    end
+
+    if Webhook.UseOutputInstead then
+        print(text)
+        return
+    end
+
+    task.spawn(function()
+        local data = HttpService:JSONEncode({
+            content = text
+        })
+    
+        HttpService:PostAsync(Webhook.URL, data)
+    end)
+end
+
+---------------
+
+return Webhook]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+				</Item>
+			</Item>
+		</Item>
+	</Item>
+</roblox>
