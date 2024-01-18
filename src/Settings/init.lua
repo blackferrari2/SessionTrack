@@ -8,7 +8,7 @@ local Info = require(baseModules.Info)
 local Webhook = require(baseModules.Webhook)
 
 local Settings = {
-    Version = 2,
+    Version = 3,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",

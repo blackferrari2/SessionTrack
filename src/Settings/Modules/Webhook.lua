@@ -51,13 +51,11 @@ function Webhook.post(text: string?)
         return
     end
 
-    task.spawn(function()
-        local data = HttpService:JSONEncode({
-            content = text
-        })
-    
-        HttpService:PostAsync(Webhook.URL, data)
-    end)
+    local data = HttpService:JSONEncode({
+        content = text
+    })
+
+    HttpService:PostAsync(Webhook.URL, data)
 end
 
 ---------------

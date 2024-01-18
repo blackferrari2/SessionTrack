@@ -1,8 +1,8 @@
 --[[
     blackferrari2's Session Tracker
 
-    Version 1.00
-    17th January 2024
+    Version 2.00
+    18th January 2024
 
     SOURCE:
     https://github.com/blackferrari2/session-tracker
@@ -25,12 +25,17 @@ local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
 
 ---------------
 
+local WARN_LOGGER_ERROR = "[SessionTrack]: session aborted because of an error - %s"
+
+--
+
 local toolbar = plugin:CreateToolbar("SessionTrack")
 
 local icons = {
     power = {
         on = "http://www.roblox.com/asset/?id=16008923978",
         off = "http://www.roblox.com/asset/?id=16008923312",
+        recover = "http://www.roblox.com/asset/?id=16025418149",
     },
 
     pause = {
@@ -145,56 +150,103 @@ end
 local currentSession
 local autosave
 
-powerButton.Click:Connect(function()
-    if currentSession then        
-        changeIconSafely(powerButton, icons.power.on)
-        changeIconSafely(pauseButton, icons.pause.unpaused)
-        pauseButton.Enabled = false
-        settingsButton.Enabled = true
-
-        Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
-
-        autosave:destroy()
-        currentSession:close()
-        currentSession = nil
-
-        return
-    end
-
+function onPowerOnClick()
     pauseButton.Enabled = true
     settingsButton.Enabled = false
-    changeIconSafely(powerButton, icons.power.off)
 
     currentSession = Session.new()
     autosave = Autosave.new(plugin, Info.ProjectName)
 
-    local logger = Logger.new(pluginSettingsRoot, currentSession.status)
+    local currentSessionStatus = currentSession.status
     local recoveredSessionStatus = autosave:recover()
+    local logger = Logger.new(pluginSettingsRoot, currentSessionStatus)
 
-    currentSession:begin(logger, recoveredSessionStatus)
-    autosave:loop(currentSession.status)
+    if recoveredSessionStatus and recoveredSessionStatus.state == SessionStatus.States.Paused then
+        changeIconSafely(pauseButton, icons.pause.paused)
+    end
+
+    currentSessionStatus.stateChanged:Connect(function()
+        autosave:update(currentSessionStatus)
+    end)
+
+    local success, errorMessage = pcall(function()
+        currentSession:begin(logger, recoveredSessionStatus)
+    end)
+
+    if success then
+        autosave:loop(currentSessionStatus)
+        changeIconSafely(powerButton, icons.power.off)
+    else
+        warn(string.format(WARN_LOGGER_ERROR, errorMessage))
+        onPowerOffClick()
+    end
+end
+
+function onPowerOffClick()
+    changeIconSafely(powerButton, icons.power.on)
+    changeIconSafely(pauseButton, icons.pause.unpaused)
+    pauseButton.Enabled = false
+    settingsButton.Enabled = true
+
+    Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
+    autosave:erase()
+
+    pcall(function()
+        currentSession:close()
+    end)
+
+    currentSession = nil
+end
+
+powerButton.Click:Connect(function()
+    powerButton.Enabled = false
+
+    if currentSession then
+        onPowerOffClick()
+        powerButton.Enabled = true
+        return
+    end
+
+    onPowerOnClick()
+    powerButton.Enabled = true
 end)
 
+if pluginSettingsRoot and Autosave.new(plugin, Info.ProjectName):recover() then
+    changeIconSafely(powerButton, icons.power.recover)
+end
+
 --
+
+function onPauseClick()
+    currentSession:pause()
+    changeIconSafely(pauseButton, icons.pause.paused)
+end
+
+function onResumeClick()
+    currentSession:resume()
+    changeIconSafely(pauseButton, icons.pause.unpaused)
+end
 
 pauseButton.Click:Connect(function()
     if not currentSession then
         return
     end
 
+    pauseButton.Enabled = false
+
     if currentSession.status.state == SessionStatus.States.Paused then
-        currentSession:resume()
-        changeIconSafely(pauseButton, icons.pause.unpaused)
+        onResumeClick()
+        pauseButton.Enabled = true
         return
     end
 
-    currentSession:pause()
-    changeIconSafely(pauseButton, icons.pause.paused)
+    onPauseClick()
+    pauseButton.Enabled = true
 end)
 
 --
 
-local function setupSettingsButtonEvents(modules)
+function setupSettingsButtonEvents(modules)
     for _, module in pairs(modules) do
         local openScriptButton = scroll:FindFirstChild(module.Name)
     
@@ -204,25 +256,31 @@ local function setupSettingsButtonEvents(modules)
     end
 end
 
-settingsButton.Click:Connect(function()
+function onSettingsClick()
     local modules = pluginSettingsRoot:GetChildren()
 
     updateSettingsWidget(modules)
     setupSettingsButtonEvents(modules)
 
     settingsWidget.Enabled = not settingsWidget.Enabled
-end)
+end
+
+settingsButton.Click:Connect(onSettingsClick)
 
 --
+
+function onInitializeclick()
+    settingsButton.Enabled = true
+    initializeButton.Enabled = false
+
+    pluginSettingsRoot = Settings.new()
+    plugin:OpenScript(pluginSettingsRoot.Webhook)
+end
 
 initializeButton.Click:Connect(function()
     if pluginSettingsRoot then
         return
     end
 
-    settingsButton.Enabled = true
-    initializeButton.Enabled = false
-
-    pluginSettingsRoot = Settings.new()
-    plugin:OpenScript(pluginSettingsRoot.Webhook)
+    onInitializeclick()
 end)

@@ -67,20 +67,29 @@ end
 
     ...
 
-    TAG_SESSION_TIME
+    SESSIONTIME
         time spent on the current session
 
-    TAG_TOTAL_TIME
+    TOTALTIME
         total time spent on the project
 
-    TAG_TODAYS_DATE
+    TODAYSDATE
         day, hour, minute, second at the moment of starting the session
+
+    RAWSESSIONTIME
+        SESSIONTIME, in pure seconds
+
+    RAWTOTALTIME
+        TOTALTIME, in pure seconds
+
+    SESSIONSTATE
+        state of the session (paused or ongoing)
 
     ...
 ]]
 
 Checkpoints.add("TestAuthor", "hey" .. Assets.Emojis.Smiley)
-Checkpoints.add("TestAuthor2", "helolo TAG_SESSION_TIME")
+Checkpoints.add("TestAuthor2", "helolo SESSIONTIME")
 
 ---------------
 

@@ -1,3 +1,7 @@
+local packages = script.Parent.Parent.Parent.Packages
+
+local Signal = require(packages.Signal)
+
 local SessionStatus = {
     States = {
         DidntStart = "DidntStart",
@@ -13,6 +17,7 @@ SessionStatus.__index = SessionStatus
 
 type self = {
     state: State,
+    stateChanged: Signal.Signal<State>,
     timePassed: number,
     timeStarted: number,
 }
@@ -25,6 +30,7 @@ export type SessionStatus = typeof(setmetatable({} :: self, SessionStatus))
 function SessionStatus.new(): SessionStatus
     local self = {
         state = SessionStatus.States.DidntStart,
+        stateChanged = Signal.new(),
         timePassed = 0,
         timeStarted = nil,
     }
@@ -43,7 +49,12 @@ function SessionStatus.changeState(self: SessionStatus, to: State)
         self.timePassed = self:getTimeElapsed()
     end
 
+    if to == SessionStatus.States.Closed then
+        self.stateChanged:Destroy()
+    end
+
     self.state = to
+    self.stateChanged:Fire(to)
 end
 
 function SessionStatus.getTimeElapsed(self: SessionStatus)

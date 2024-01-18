@@ -54,7 +54,6 @@ function Session.pause(self: Session)
     end
 
     self.status:changeState(SessionStatus.States.Paused)
-
     self.logger:stopLoop()
     self.logger:pause()
 end
@@ -65,15 +64,12 @@ function Session.resume(self: Session)
     end
 
     self.status:changeState(SessionStatus.States.Ongoing)
-
     self.logger:resume()
     self.logger:loopCheckpointPosting()
 end
 
 function Session.close(self: Session)
     self.status:changeState(SessionStatus.States.Closed)
-
-    self.logger:stopLoop()
     self.logger:close()
 end
 

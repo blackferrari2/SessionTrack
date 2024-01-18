@@ -6,6 +6,10 @@
 
 		"Plugin": {
 			"$path": "src"
+		},
+
+		"Packages": {
+			"$path": "Packages"
 		}
 	}
 }

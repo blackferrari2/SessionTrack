@@ -2,7 +2,7 @@ local SessionStatus = require(script.Parent.SessionStatus)
 
 local Autosave = {
     Key = "SessionTrackAutosave%s",
-    IntervalSeconds = 1,
+    IntervalSeconds = 5,
 }
 
 Autosave.__index = Autosave
@@ -38,10 +38,20 @@ function Autosave.new(plugin: Plugin, projectName: string): Autosave
 end
 
 function Autosave.update(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
-    self.plugin:SetSetting(getKey(self.projectName), sessionStatus)
+    -- the .stateChanged signal cant be saved by the plugin. itll throw an error
+    local statusWithoutSignal = SessionStatus.new()
+
+    statusWithoutSignal.state = sessionStatus.state
+    statusWithoutSignal.timeStarted = sessionStatus.timeStarted
+    statusWithoutSignal.timePassed = sessionStatus.timePassed
+    statusWithoutSignal.stateChanged:DisconnectAll()
+    statusWithoutSignal.stateChanged = nil
+
+    self.plugin:SetSetting(getKey(self.projectName), statusWithoutSignal)
 end
 
 function Autosave.erase(self: Autosave)
+    self:stop()
     self.plugin:SetSetting(getKey(self.projectName), nil)
 end
 
@@ -65,14 +75,6 @@ function Autosave.stop(self: Autosave)
     end
 
     task.cancel(self.loopThread)
-end
-
-function Autosave.destroy(self: Autosave)
-    self:stop()
-    self:erase()
-
-    local setmetatable: any = setmetatable
-    setmetatable(self, nil)
 end
 
 ---------------

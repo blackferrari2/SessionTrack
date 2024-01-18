@@ -67,26 +67,35 @@ end
 
     ...
 
-    TAG_SESSION_TIME
+    SESSIONTIME
         time spent on the current session
 
-    TAG_TOTAL_TIME
+    TOTALTIME
         total time spent on the project
 
-    TAG_TODAYS_DATE
+    TODAYSDATE
         day, hour, minute, second at the moment of starting the session
+
+    RAWSESSIONTIME
+        SESSIONTIME, in pure seconds
+
+    RAWTOTALTIME
+        TOTALTIME, in pure seconds
+
+    SESSIONSTATE
+        state of the session (paused or ongoing)
 
     ...
 ]]
 
-Messages.add(Messages.Start, "Session Started! TAG_TODAYS_DATE " .. Assets.Emojis.Rat)
-Messages.add(Messages.Start, Info.ProjectName .. " Session Started... TAG_TODAYS_DATE yay" .. Assets.Emojis.Angry)
+Messages.add(Messages.Start, "Session Started! TODAYSDATE " .. Assets.Emojis.Rat)
+Messages.add(Messages.Start, Info.ProjectName .. " Session Started... TODAYSDATE yay" .. Assets.Emojis.Angry)
 
-Messages.add(Messages.SessionRecovered, "Session Recovered! time rn: TAG_SESSION_TIME")
-Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! Session recovered. TAG_SESSION_TIME")
+Messages.add(Messages.SessionRecovered, "Session Recovered! state: SESSIONSTATE time rn: SESSIONTIME")
+Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! SESSIONSTATE Session recovered. SESSIONTIME")
 
-Messages.add(Messages.Close, "Session Closed! total time ever: TAG_TOTAL_TIME")
-Messages.add(Messages.Close, "Session Closed unfortunately. total time ever: TAG_TOTAL_TIME")
+Messages.add(Messages.Close, "Session Closed! total time ever: TOTALTIME")
+Messages.add(Messages.Close, "Session Closed unfortunately. total time ever: TOTALTIME")
 
 Messages.add(Messages.Pause, "paused.")
 Messages.add(Messages.Pause, "pausedddddd")
