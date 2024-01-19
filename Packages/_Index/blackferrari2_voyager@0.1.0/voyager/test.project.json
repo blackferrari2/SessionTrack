@@ -1,0 +1,15 @@
+{
+	"name": "Voyager-test",
+	
+	"tree": {
+		"$className": "DataModel",
+
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+
+			"Voyager": {
+				"$path": "default.project.json"
+			}
+		}
+	}
+}

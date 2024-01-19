@@ -6,10 +6,9 @@ local assertions = script.Assertions
 local Messages = require(baseModules.Messages)
 local Checkpoints = require(baseModules.Checkpoints)
 local Info = require(baseModules.Info)
-local Webhook = require(baseModules.Webhook)
 
 local Settings = {
-    Version = 4,
+    Version = 1,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",
@@ -21,7 +20,6 @@ export type Settings = Folder & {
     Messages: Messages.Messages,
     Checkpoints: Checkpoints.Checkpoints,
     Info: Info.Info,
-    Webhook: Webhook.Webhook,
 }
 
 ---------------

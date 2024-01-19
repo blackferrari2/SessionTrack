@@ -16,7 +16,7 @@ local checkpointInterface = t.interface({
 })
 
 local moduleInterface = t.interface({
-    IntervalSeconds = t.number,
+    IntervalSeconds = t.numberMin(60),
 })
 
 ---------------

@@ -1,10 +1,11 @@
+local packages = script.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Settings.Modules
 
 local Messages = require(baseModules.Messages)
 local Checkpoints = require(baseModules.Checkpoints)
-local Webhook = require(baseModules.Webhook)
 local Info = require(baseModules.Info)
 
+local Voyager = require(packages.Voyager)
 local Settings = require(script.Parent.Parent.Settings)
 local SessionStatus = require(script.Parent.SessionStatus)
 
@@ -27,8 +28,8 @@ type self = {
     settingsRoot: Settings.Settings,
     messages: Messages.Messages,
     checkpoints: Checkpoints.Checkpoints,
-    webhook: Webhook.Webhook,
     info: Info.Info,
+    webhook: any,
     sessionStatus: SessionStatus.SessionStatus,
     loopThread: thread?,
 }
@@ -61,11 +62,12 @@ function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatu
         settingsRoot = settingsRoot,
         messages = require(settingsRoot.Messages),
         checkpoints = require(settingsRoot.Checkpoints),
-        webhook = require(settingsRoot.Webhook),
         info = require(settingsRoot.Info),
         sessionStatus = sessionStatus,
         loopThread = nil,
     }
+
+    self.webhook = Voyager.fromUrl(self.info.WebhookURL)
 
     setmetatable(self, Logger)
 
@@ -146,7 +148,7 @@ function Logger.post(self: Logger, text: string)
 
     text = self:getTextWithTagsApplied(text)
 
-    self.webhook.post(text)
+    self.webhook:execute(text, nil, true, true)
 end
 
 function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?

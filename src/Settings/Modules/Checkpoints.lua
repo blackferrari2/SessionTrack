@@ -14,7 +14,7 @@
 local Assets = require(script.Parent.Assets)
 
 local Checkpoints = {
-    -- dont set this number too low or you may be rate limited by discord
+    -- Minimum value: 60 seconds
     IntervalSeconds = 600,
 }
 

@@ -70,6 +70,7 @@ end
 
 function Session.close(self: Session)
     self.status:changeState(SessionStatus.States.Closed)
+    self.logger:stopLoop()
     self.logger:close()
 end
 

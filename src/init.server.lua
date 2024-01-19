@@ -1,7 +1,7 @@
 --[[
     blackferrari2's Session Tracker
 
-    Version 1.2
+    Version 1.3
     19th January 2024
 
     SOURCE:
@@ -147,7 +147,6 @@ local autosave
 function onPowerOnClick()
     Icons.changeIconSafely(powerButton, Icons.Power.Off)
     pauseButton.Enabled = true
-    settingsButton.Enabled = false
 
     currentSession = Session.new()
     autosave = Autosave.new(plugin, Info.ProjectName)
@@ -172,7 +171,6 @@ function onPowerOffClick()
     Icons.changeIconSafely(powerButton, Icons.Power.On)
     Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
     pauseButton.Enabled = false
-    settingsButton.Enabled = true
 
     Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
     autosave:erase()
@@ -256,7 +254,7 @@ function onInitializeclick()
     initializeButton.Enabled = false
 
     pluginSettingsRoot = Settings.new()
-    plugin:OpenScript(pluginSettingsRoot.Webhook)
+    plugin:OpenScript(pluginSettingsRoot.Info)
 end
 
 initializeButton.Click:Connect(function()
