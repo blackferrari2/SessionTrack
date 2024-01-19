@@ -1,7 +1,7 @@
 <roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
 	<External>null</External>
 	<External>nil</External>
-	<Item class="Folder" referent="RBX7F88D1D66DE0433B96AAE72C2372FD3D">
+	<Item class="Folder" referent="RBXCD9827BBE74F4AADBB98D17CD403D1CB">
 		<Properties>
 			<BinaryString name="AttributesSerialize"></BinaryString>
 			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -10,7 +10,7 @@
 			<int64 name="SourceAssetId">-1</int64>
 			<BinaryString name="Tags"></BinaryString>
 		</Properties>
-		<Item class="Folder" referent="RBXCEE90257108F4100A12C2BB75C3A358B">
+		<Item class="Folder" referent="RBXA2B88675AB3744D1A363C4DC805A1756">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -19,14 +19,14 @@
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
-			<Item class="ModuleScript" referent="RBX73832D127B1643F58DED2854899CF487">
+			<Item class="ModuleScript" referent="RBX95B959D939634B14A7169CC89BFA52D9">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Signal</string>
-					<string name="ScriptGuid">{E2330BD2-3B21-4B42-B7C5-AE088936AF25}</string>
+					<string name="ScriptGuid">{07F4BFA2-FDB1-4D89-B96C-237505F2EC2D}</string>
 					<ProtectedString name="Source"><![CDATA[local REQUIRED_MODULE = require(script.Parent._Index["sleitnick_signal@2.0.1"]["signal"])
 export type Connection = REQUIRED_MODULE.Connection 
 export type Signal<T...> = REQUIRED_MODULE.Signal<T...>
@@ -36,7 +36,25 @@ return REQUIRED_MODULE
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 			</Item>
-			<Item class="Folder" referent="RBXD9B84CC27C194F3FB74A55E7F649CD76">
+			<Item class="ModuleScript" referent="RBXE6BDA2880EB744D0979C0E6A854061F0">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Voyager</string>
+					<string name="ScriptGuid">{58E76A7F-5FF9-47B3-B155-E14E66280918}</string>
+					<ProtectedString name="Source"><![CDATA[local REQUIRED_MODULE = require(script.Parent._Index["blackferrari2_voyager@0.1.0"]["voyager"])
+export type RatelimitInformation = REQUIRED_MODULE.RatelimitInformation 
+export type RatelimitedInformation = REQUIRED_MODULE.RatelimitedInformation 
+export type RequestStatus = REQUIRED_MODULE.RequestStatus 
+return REQUIRED_MODULE
+]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Folder" referent="RBX7E986C63F4E34FBB965C7BBCB69A29B9">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -45,7 +63,999 @@ return REQUIRED_MODULE
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
-				<Item class="Folder" referent="RBX3955F3E355D741CFB2AEABA82CA50243">
+				<Item class="Folder" referent="RBXE86185CEA19347C688F62447696461B1">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">blackferrari2_voyager@0.1.0</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX03863E4D93364D4398188FBE453F2FAD">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">voyager</string>
+							<string name="ScriptGuid">{FF4E7315-9FF0-4BD4-80CC-FB7B810713F2}</string>
+							<ProtectedString name="Source"><![CDATA[local Webhook = {}
+Webhook.__index = Webhook
+
+local Message = require(script.Message)
+local EditedMessage = require(script.EditedMessage)
+local ThreadMessage = require(script.ThreadMessage)
+local EditedThreadMessage = require(script.EditedThreadMessage)
+local OptionalExecuteInfo = require(script.OptionalExecuteInfo)
+
+type RatelimitInfo = {
+	XRatelimitLimit : number?,
+	XRatelimitRemaining : number?,
+	XRatelimitReset : string?,
+	XRatelimitResetAfter : number?,
+	XRatelimitBucket : string?
+}
+
+export type RatelimitInformation = {
+	limit : number,
+	remaining : number,
+	reset : DateTime,
+	resetAfter : number, -- In seconds.
+	resetAfterSafe : number,
+	bucket : string,
+}
+
+export type RatelimitedInformation = {
+	scope : string,
+	retryAfter : number, -- In milliseconds since proxy uses v6 of the Discord API.
+	retryAfterSafe : number
+}
+
+export type RequestStatus = {
+	success : boolean,
+	statusCode : number,
+	statusMessage : string
+}
+
+function Webhook.new(id : string, token : string, customProxyUrl : string?)
+	local self = setmetatable({}, Webhook)
+
+	self.id = id
+	self.token = token
+	self.baseUrl = (customProxyUrl or "https://webhook.lewisakura.moe") .. "/api/webhooks/" .. self.id .. "/" .. self.token
+	self.ratelimitInfo = {} :: RatelimitInfo
+
+	return self
+end
+
+function Webhook.fromUrl(webhookUrl: string, customProxyUrl : string?)
+	local self = setmetatable({}, Webhook)
+	local webhookId, webhookToken = string.match(webhookUrl, "^https://discord.com/api/webhooks/(%d+)/([%w%p]+)$")
+	
+	if (not webhookId) or (not webhookToken) then
+		error("Invalid webhook url.")
+	end
+	
+	self.id = webhookId
+	self.token = webhookToken
+	self.baseUrl = (customProxyUrl or "https://webhook.lewisakura.moe") .. "/api/webhooks/" .. self.id .. "/" .. self.token
+	self.ratelimitInfo = {} :: RatelimitInfo
+
+	return self
+end
+
+function Webhook:_validateExecuteRequest(content : string?, embeds : {}?, optionalExecuteInfo) : (boolean, string?)
+	if (not content or content == "") and (not embeds or #embeds == 0) then
+		return false, "one of content, embeds are required." 
+	end
+
+	if content then
+		if string.len(content) > 2000 then 
+			return false, "The content must only contain up to 2000 characters." 
+		end 
+	end
+
+	if optionalExecuteInfo.usernameOverride then
+		local restrictedUsernames = {"everyone", "here"}
+		local restrictedSubStrings = {"discord", "clyde", "```"}
+		local loweredUsername = optionalExecuteInfo.usernameOverride:lower()
+
+		for _, restrictedUsername in restrictedUsernames do	
+			if loweredUsername == restrictedUsername then return false, "Username override is a restricted username. \"" .. restrictedUsername .. "\"" end
+		end
+
+		for _, restrictedSubString in restrictedSubStrings do	
+			if loweredUsername:match(restrictedSubString) then return false, "Username override contains a restricted substring. \"" .. restrictedSubString .. "\"" end
+		end
+
+		if string.len(optionalExecuteInfo.usernameOverride) < 1 or string.len(optionalExecuteInfo.usernameOverride) > 80 then
+			return false, "Username override must be between 1 and 80 in length." 
+		end
+	end
+
+	if optionalExecuteInfo.threadId and optionalExecuteInfo.threadName then
+		return false, "threadId and threadName cannot be used together."
+	end
+
+	if embeds then
+		local totalEmbedCharacters = 0
+		
+		if #embeds > 10 then 
+			return false, "A single message must only have up to 10 embeds." 
+		end 
+
+		for _, embed in embeds do
+			local isEmbedValid, errorMessage = embed:_validate()
+			if not isEmbedValid then return false, errorMessage end
+			
+			totalEmbedCharacters += embed:totalCharacters()
+		end
+
+		if totalEmbedCharacters > 6000 then return false, "The combined sum of characters across all embeds attached to a message must only be up to 6000 characters." end
+	end
+
+	return true
+end
+
+function Webhook:_validateEditMessageRequest(content : string?, embeds : {}?) : (boolean, string?)
+	if content then
+		if string.len(content) > 2000 then 
+			return false, "The content must only contain up to 2000 characters." 
+		end 
+	end
+
+	if embeds then
+		local totalEmbedCharacters = 0
+
+		for _, embed in embeds do
+			local isEmbedValid, errorMessage = embed:_validate()
+			if not isEmbedValid then return false, errorMessage end
+
+			totalEmbedCharacters += embed:totalCharacters()
+		end
+
+		if totalEmbedCharacters > 6000 then return false, "The combined sum of characters across all embeds attached to a message must only be up to 6000 characters." end
+	end
+
+	return true
+end
+
+function Webhook:_request(url : string, method : string, body : {}?, contentType : string?) : ({}?, RequestStatus, RatelimitInformation | RatelimitedInformation | {})
+	local httpService = game:GetService("HttpService")
+	
+	local response = httpService:RequestAsync({
+		Url = url,
+		Method = method,
+		Headers = {["Content-Type"] = contentType},
+		Body = httpService:JSONEncode(body)
+	})
+	local responseHeaders : {} = response.Headers
+	local decodedBody : {} | nil
+	local ratelimitInformation : RatelimitInformation | RatelimitedInformation | {} = {}
+	local wasRequestQueued : boolean = false
+	
+	self.ratelimitInfo = {
+		XRatelimitLimit = tonumber(responseHeaders["x-ratelimit-limit"]),
+		XRatelimitRemaining = tonumber(responseHeaders["x-ratelimit-remaining"]),
+		XRatelimitReset = responseHeaders["x-ratelimit-reset"],
+		XRatelimitResetAfter = tonumber(responseHeaders["x-ratelimit-reset-after"]),
+		XRatelimitBucket = responseHeaders["x-ratelimit-bucket"]
+	}
+	
+	if response.Body ~= "" then
+		decodedBody = httpService:JSONDecode(response.Body)
+		wasRequestQueued = decodedBody.proxy
+	end
+	
+	if response.Success and not wasRequestQueued then
+		ratelimitInformation = {
+			limit = tonumber(responseHeaders["x-ratelimit-limit"]),
+			remaining = tonumber(responseHeaders["x-ratelimit-remaining"]),
+			reset = DateTime.fromUnixTimestamp(tonumber(responseHeaders["x-ratelimit-reset"])),
+			resetAfter = tonumber(responseHeaders["x-ratelimit-reset-after"]), 
+			resetAfterSafe = tonumber(responseHeaders["x-ratelimit-reset-after"]) + 1,
+			bucket = responseHeaders["x-ratelimit-bucket"]		
+		} :: RatelimitInformation
+	elseif response.StatusCode == 429 and not wasRequestQueued then	
+		if not responseHeaders["via"] then
+			-- Cloudflare ratelimit
+			
+			ratelimitInformation = {
+				scope = "global", -- Cloudflare ratelimits count as global.
+				retryAfter = tonumber(responseHeaders["retry-after"]),
+				retryAfterSafe = responseHeaders["retry-after"] + 1000	
+			} :: RatelimitedInformation
+		else
+			-- Discord ratelimit
+			
+			ratelimitInformation = {
+				scope = responseHeaders["x-ratelimit-scope"],
+				retryAfter = tonumber(responseHeaders["retry-after"]),
+				retryAfterSafe = responseHeaders["retry-after"] + 1000,
+			} :: RatelimitedInformation
+		end
+	end
+	
+	local requestStatus : requestStatus = {
+		success = response.Success, 
+		statusCode = response.StatusCode, 
+		statusMessage = response.StatusMessage
+	}
+
+	return decodedBody, requestStatus, ratelimitInformation
+end
+
+function Webhook:execute(content : string?, embeds : {}?, queue : boolean, waitForMessage : boolean, optionalExecuteInfo) : ({}?, RequestStatus, RatelimitInformation | RatelimitedInformation | {})
+	local executeInfo = optionalExecuteInfo or OptionalExecuteInfo.new()
+	local isRequestValid, errorMessage = self:_validateExecuteRequest(content, embeds, executeInfo)	
+	if not isRequestValid then return error(errorMessage) end
+	
+	if queue == nil then queue = true end
+	if waitForMessage == nil then waitForMessage = false end
+	
+	local requestUrl = self.baseUrl
+	local requestBody = {
+		content = content,
+		username = executeInfo.usernameOverride,
+		avatar_url = executeInfo.avatarOverride,
+		tts = executeInfo.tts,
+		embeds = embeds,
+		flags = executeInfo.messageFlags.value,
+		thread_name = executeInfo.threadName
+	}
+	
+	if queue then requestUrl ..= "/queue" end
+	requestUrl ..= "?wait=" .. tostring(waitForMessage)
+	if executeInfo.threadId then requestUrl ..= "&thread_id=" .. executeInfo.threadId end
+
+	local responseBody, requestStatus, requestRatelimitInfo = self:_request(requestUrl, "POST", requestBody, "application/json")
+
+	if not queue and waitForMessage and requestStatus.success then
+		if not executeInfo.threadId then 
+			return Message.new(responseBody), requestStatus, requestRatelimitInfo
+		else
+			return ThreadMessage.new(responseBody), requestStatus, requestRatelimitInfo
+		end
+	end
+	
+	return nil, requestStatus, requestRatelimitInfo
+end
+
+function Webhook:editMessage(messageId : string, content : string?, embeds : {}?, threadId : string?) : ({}?, RequestStatus, RatelimitInformation | RatelimitedInformation)
+	local isRequestValid, errorMessage = self:_validateEditMessageRequest(content, embeds)
+	if not isRequestValid then return error(errorMessage) end
+	
+	local requestUrl = self.baseUrl .. "/messages/" .. messageId
+	local requestBody = {
+		content = content,
+		embeds = embeds
+	}
+
+	if threadId then requestUrl ..= "?thread_id=" .. threadId end
+	
+	local responseBody, requestStatus, requestRatelimitInfo = self:_request(requestUrl, "PATCH", requestBody, "application/json")
+	
+	if not requestStatus.success then return nil, requestStatus end
+
+	if not threadId then
+		return EditedMessage.new(responseBody), requestStatus, requestRatelimitInfo
+	else
+		return EditedThreadMessage.new(responseBody), requestStatus, requestRatelimitInfo
+	end
+end
+
+function Webhook:deleteMessage(messageId : string, threadId : string?) : (RequestStatus, RatelimitInformation | RatelimitedInformation)
+	local requestUrl = self.baseUrl .. "/messages/" .. messageId
+
+	if threadId then requestUrl ..= "?thread_id=" .. threadId end	
+	
+	local _, requestStatus, requestRatelimitInfo = self:_request(requestUrl, "DELETE")
+	
+	return requestStatus, requestRatelimitInfo
+end
+
+return Webhook]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+						<Item class="ModuleScript" referent="RBX62375D2255454218B919C7EF8962017B">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">Author</string>
+								<string name="ScriptGuid">{53F59D82-BF8C-42D0-AE0E-B3C69E0E5A4A}</string>
+								<ProtectedString name="Source"><![CDATA[local Author = {}
+Author.__index = Author
+
+function Author.new(data)
+	local self = setmetatable({}, Author)
+	
+	self.id = data.id
+	self.username = data.username
+	self.avatar = data.avatar
+	self.bot = data.bot or false
+	
+	return self
+end
+
+function Author:getAvatarUrl(size : number?, imageFormat : string?) : string?
+	if not self.avatar then return end
+	if imageFormat then 
+		if imageFormat ~= ".jpeg" and imageFormat ~= ".png" and imageFormat ~= ".webp" and imageFormat ~= ".gif" then return error("Unsupported image format given.") end 
+	end
+	
+	if size then
+		if size < 16 or size > 4096 then return error("Image size must be between 16 to 4096.") end
+		if math.sqrt(size) % 1 ~= 0 then return error("Image size must be any power of two") end
+		
+		return "https://cdn.discordapp.com/avatars/" .. self.id .. "/" .. self.avatar .. (imageFormat or ".png") .. "?size=" .. size
+	else
+		return "https://cdn.discordapp.com/avatars/" .. self.id .. "/" .. self.avatar .. (imageFormat or ".png")
+	end
+end
+
+function Author:hasAnimatedAvatar() : boolean
+	if not self.avatar then return false end
+	
+	return self.avatar:match("a_") == "a_"
+end
+
+return Author]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXD6653F5E38FF4B6BB450EA707CA7D34B">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">EditedMessage</string>
+								<string name="ScriptGuid">{1EBCA245-3AC2-4ACD-810F-D5E929900176}</string>
+								<ProtectedString name="Source"><![CDATA[local EditedMessage = {}
+EditedMessage.__index = EditedMessage
+
+local Message = require(script.Parent.Message)
+
+setmetatable(EditedMessage, Message)
+
+function EditedMessage.new(data)
+	local self = setmetatable(Message.new(data), EditedMessage)
+	
+	self.editedTimestamp = data.edited_timestamp
+	self.editedAt = DateTime.fromIsoDate(data.edited_timestamp)
+	
+	return self
+end
+
+return EditedMessage]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXF8BB3F0AA65E41C1A6119DF0B4CB4BF7">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">EditedThreadMessage</string>
+								<string name="ScriptGuid">{0E083F46-28F2-431F-A2BA-75D263C83F2F}</string>
+								<ProtectedString name="Source"><![CDATA[local EditedThreadMessage = {}
+EditedThreadMessage.__index = EditedThreadMessage
+
+local ThreadMessage = require(script.Parent.ThreadMessage)
+
+setmetatable(EditedThreadMessage, ThreadMessage)
+
+function EditedThreadMessage.new(data)
+	local self = setmetatable(ThreadMessage.new(data), EditedThreadMessage)
+	
+	self.editedTimestamp = data.edited_timestamp
+	self.editedAt = DateTime.fromIsoDate(data.edited_timestamp)
+	
+	return self
+end
+
+return EditedThreadMessage]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBX2B73B98D00D04EDB82A098D66F07DD87">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">Embed</string>
+								<string name="ScriptGuid">{328CE4F3-C89B-46E2-873B-4AD704988177}</string>
+								<ProtectedString name="Source"><![CDATA[local Embed = {}
+Embed.__index = Embed
+
+function Embed.new(title : string?, description : string?, url : string?)
+	local self = setmetatable({}, Embed)
+	
+	self.title = title
+	self.description = description
+	self.url = url
+	
+	self.fields = {}
+	
+	return self
+end
+
+function Embed:_validate() : (boolean, string?)
+	if self.title then
+		if string.len(self.title) > 256 then return false, "The title of an embed must only contain up to 256 characters." end 
+	end
+	
+	if self.description then
+		if string.len(self.description) > 4096 then return false, "The description of an embed must only contain up to 4096 characters." end 
+	end
+	
+	if self.footer then 
+		if string.len(self.footer.text) > 2048 then return false, "The text in a footer must only contain up to 2048 characters." end 
+		
+		if self.footer.icon_url then
+			if not self.footer.icon_url:match("https") then return false, "The footer's icon url only supports HTTP(S)." end
+		end
+	end
+	
+	if self.image then
+		if not self.image.url:match("https") then return false, "The image's url only supports HTTP(S)." end
+	end
+	
+	if self.thumbnail then
+		if not self.thumbnail.url:match("https") then return false, "The thumbnail's url only supports HTTP(S)." end	
+	end
+	
+	if self.author then 
+		if string.len(self.author.name) > 256 then return false, "The name of an author must only contain up to 256 characters." end
+		
+		if self.author.icon_url then
+			if not self.author.icon_url:match("https") then return false, "The author's icon url only supports HTTP(S)." end
+		end
+	end
+	
+	if #self.fields > 25 then return false, "One embed must only have up to 25 fields." end
+	
+	for _, field in self.fields do
+		if string.len(field.name) > 256 then return false, "The name of a field must only contain up to 256 characters." end
+		if string.len(field.value) > 1024 then return false, "The value of a field must only contain up to 1024 characters." end			
+	end
+	
+	return true
+end
+
+function Embed:setTitle(title : string) : nil	
+	self.title = title
+end
+
+function Embed:setDescription(description : string) : nil	
+	self.description = description
+end
+
+function Embed:setUrl(url : string) : nil
+	self.url = url
+end
+
+function Embed:setTimestamp(customTimestamp : string?) : nil
+	if customTimestamp then self.timestamp = customTimestamp return end
+
+	self.timestamp = os.date("!%Y-%m-%dT%H:%M:%S." .. math.round(tick() % 1 * 1000) .. "Z")
+end
+
+function Embed:setColor(color3 : Color3) : nil
+	self.color = bit32.lshift((color3.R * 255), 16) + bit32.lshift((color3.G * 255), 8) + (color3.B * 255)
+end
+
+function Embed:setFooter(text : string, iconUrl : string?) : nil
+	self.footer = {
+		text = text,
+		icon_url = iconUrl
+	}
+end
+
+function Embed:setImage(url : string) : nil
+	self.image = {
+		url = url
+	}
+end
+
+function Embed:setThumbnail(url : string) : nil
+	self.thumbnail = {
+		url = url
+	}
+end
+
+function Embed:setAuthor(name : string, url : string?, iconUrl : string?) : nil
+	self.author = {
+		name = name,
+		url = url,
+		icon_url = iconUrl
+	}
+end
+
+function Embed:addField(name : string, value : string, inLine : boolean?) : nil
+	table.insert(self.fields, {
+		name = name,
+		value = value,
+		inline = inLine
+	})
+end
+
+function Embed:totalCharacters() : number
+	local total = 0
+	
+	if self.title then total += string.len(self.title) end
+	if self.description then total += string.len(self.description) end
+	if self.footer then total += string.len(self.footer.text) end
+	if self.author then total += string.len(self.author.name) end
+	
+	if self.fields then
+		for _, field in self.fields do
+			total += (string.len(field.name) + string.len(field.value))
+		end
+	end
+	
+	return total
+end
+
+function Embed:colorToRGB() : {red : number, green : number, blue : number}?
+	if not self.color then return end
+	
+	local r = bit32.band((bit32.rshift(self.color, (8 * 2))), 0xFF)
+	local g = bit32.band((bit32.rshift(self.color, (8 * 1))), 0xFF)
+	local b = bit32.band((bit32.rshift(self.color, (8 * 0))), 0xFF)
+	
+	return {
+		red = r,
+		green = g,
+		blue = b
+	}
+end
+
+return Embed]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXCC6B7737CFAE497AA43FD222DD691B3C">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">Emoji</string>
+								<string name="ScriptGuid">{9ECEA909-A132-4FC4-9993-CB5FA61E5E98}</string>
+								<ProtectedString name="Source"><![CDATA[local Emoji = {}
+Emoji.__index = Emoji
+
+function Emoji.new(data)
+	local self = setmetatable({}, Emoji)
+	
+	self.id = data.id
+	self.name = data.name
+	self.animated = data.animated or false
+	
+	return self
+end
+
+return Emoji]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXDCBEC10703A04B1BBC547443B115465A">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">Message</string>
+								<string name="ScriptGuid">{C482FD2E-8493-4CEB-AB36-CEF2AA62DD13}</string>
+								<ProtectedString name="Source"><![CDATA[local Message = {}
+Message.__index = Message
+
+local Author = require(script.Parent.Author)
+local User = require(script.Parent.User)
+local Embed = require(script.Parent.Embed)
+local Reaction = require(script.Parent.Reaction)
+local MessageFlags = require(script.Parent.MessageFlags)
+
+function Message.new(data)
+	local self = setmetatable({}, Message)
+
+	self.id = data.id
+	self.messageType = data["type"]
+	self.content = data.content
+	self.channelId = data.channel_id
+	self.author = Author.new(data.author)
+	self.embeds = {}
+	self.reactions = {}
+	self.mentions = {}
+	self.mentionRoles = {}
+	self.pinned = data.pinned
+	self.mentionEveryone = data.mention_everyone
+	self.tts = data.tts
+	self.timestamp = data.timestamp
+	self.createdAt = DateTime.fromIsoDate(data.timestamp)
+	self.flags = MessageFlags.fromBitfield(data.flags)
+	self.webhookId = data.webhook_id
+	self.jumpUrl = "https://discord.com/channels/@me/" .. self.channelId .. "/" .. self.id
+
+	if data.embeds then
+		for _, embedData in data.embeds do
+			local embed = Embed.new(embedData.title, embedData.description, embedData.url)
+
+			if embedData.color then
+				embed.color = embedData.color
+			end
+
+			if embedData.timestamp then
+				embed:setTimestamp(embedData.timestamp)
+			end
+
+			if embedData.footer then
+				embed:setFooter(embedData.footer.text, embedData.footer.icon_url) 
+
+				embed.footer.proxy_icon_url = embedData.footer.proxy_icon_url
+			end
+
+			if embedData.image then 
+				embed:setImage(embedData.image.url)
+
+				embed.image.height = embedData.image.height
+				embed.image.width = embedData.image.width
+				embed.image.proxy_url = embedData.image.proxy_url
+			end
+
+			if embedData.thumbnail then
+				embed:setThumbnail(embedData.thumbnail.url)
+
+				embed.thumbnail.height = embedData.thumbnail.height
+				embed.thumbnail.width = embedData.thumbnail.width
+				embed.thumbnail.proxy_url = embedData.thumbnail.proxy_url
+			end
+
+			if embedData.author then 
+				embed:setAuthor(embedData.author.name, embedData.author.url, embedData.author.icon_url)
+
+				embed.author.proxy_icon_url = embedData.author.proxy_icon_url
+			end	
+
+			if embedData.fields then
+				for _, fieldData in embedData.fields do
+					embed:addField(fieldData.name, fieldData.value, fieldData.inline)
+				end
+			end
+
+			table.insert(self.embeds, embed)
+		end
+	end	
+
+	if data.mentions then
+		for _, mentionData in data.mentions do
+			table.insert(self.mentions, User.new(mentionData))
+		end
+	end	
+
+	if data.mention_roles then
+		for _, roleId in data.mention_roles do
+			table.insert(self.mentionRoles, roleId)
+		end
+	end	
+
+	if data.reactions then
+		for _, reactionData in data.reactions do
+			table.insert(self.reactions, Reaction.new(reactionData))
+		end
+	end
+
+	return self
+end
+
+return Message]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXF4B566010FD141AF87FFB48D455325D9">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">MessageFlags</string>
+								<string name="ScriptGuid">{9F1C8FF0-1C72-4797-9E58-51FF344DF0F3}</string>
+								<ProtectedString name="Source"><![CDATA[local MessageFlags = {}
+MessageFlags.__index = MessageFlags
+
+local BaseFlags = require(script.Parent.bases.BaseFlags)
+
+setmetatable(MessageFlags, BaseFlags)
+
+function MessageFlags.fromFlags(flags : {[number] : number})
+	local self = setmetatable(BaseFlags.fromBitfield(0), MessageFlags)
+	
+	for _, flag in flags do
+		self.value = bit32.bor(self.value, flag)
+	end
+
+	return self
+end
+
+return MessageFlags]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXAD3AD31A0934449793DC7FC562C245BE">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">OptionalExecuteInfo</string>
+								<string name="ScriptGuid">{78D14401-48D8-4BEB-BB24-811C8661DB98}</string>
+								<ProtectedString name="Source"><![CDATA[local OptionalExecuteInfo = {}
+OptionalExecuteInfo.__index = OptionalExecuteInfo
+
+local MessageFlags = require(script.Parent.MessageFlags)
+
+function OptionalExecuteInfo.new(threadId : string?, tts : boolean?, usernameOverride : string?, avatarOverride : string?, messageFlags : MessageFlags?, threadName : string?)
+	local self = setmetatable({}, OptionalExecuteInfo)
+	
+	self.threadId = threadId
+	self.tts = tts or false
+	self.usernameOverride = usernameOverride
+	self.avatarOverride = avatarOverride
+	self.messageFlags = messageFlags or MessageFlags.fromBitfield(0)
+	self.threadName = threadName
+	
+	return self
+end
+
+return OptionalExecuteInfo]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBX3D99152528264C6DA464BBA020629F78">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">PublicUserFlags</string>
+								<string name="ScriptGuid">{CE059CA6-6FAA-458C-80C1-14C5D137C57D}</string>
+								<ProtectedString name="Source"><![CDATA[local PublicUserFlags = {}
+PublicUserFlags.__index = PublicUserFlags
+
+local BaseFlags = require(script.Parent.bases.BaseFlags)
+
+setmetatable(PublicUserFlags, BaseFlags)
+
+function PublicUserFlags.fromBitfield(value : number)
+	local self = setmetatable(BaseFlags.fromBitfield(value), PublicUserFlags)
+
+	return self
+end
+
+function PublicUserFlags:getFlags() : {[number] : number}
+	local enum = require(script.Parent.utilities.Enum)
+	local flags = {}
+	
+	for _, flag in enum.UserPublicFlags do
+		if self:hasFlag(flag) then table.insert(flags, flag) end
+	end
+	
+	return flags
+end
+
+return PublicUserFlags]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXF6CE561289A44E19B126EAEEA05A11CE">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">Reaction</string>
+								<string name="ScriptGuid">{8B31B805-BAFA-478A-B3BE-72DBFF0BDFBD}</string>
+								<ProtectedString name="Source"><![CDATA[local Reaction = {}
+Reaction.__index = Reaction
+
+local Emoji = require(script.Parent.Emoji)
+
+function Reaction.new(data)
+	local self = setmetatable({}, Reaction)
+
+	self.emoji = Emoji.new(data.emoji)
+	self.me = data.me
+	self.count = data.count
+
+	return self
+end
+
+return Reaction]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXE5E7102FB1444F5DAEBE6F1821CB14D8">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">ThreadMessage</string>
+								<string name="ScriptGuid">{B5A5DC3C-D66F-4C5A-828F-4FFCBFC3FEB4}</string>
+								<ProtectedString name="Source"><![CDATA[local ThreadMessage = {}
+ThreadMessage.__index = ThreadMessage
+
+local Message = require(script.Parent.Message)
+
+setmetatable(ThreadMessage, Message)
+
+function ThreadMessage.new(data)
+	local self = setmetatable(Message.new(data), ThreadMessage)
+	
+	self.position = data.position
+	
+	return self
+end
+
+return ThreadMessage]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBX96599383F8E648FE8088D0BA72D9ECE3">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">User</string>
+								<string name="ScriptGuid">{11BF1D05-2603-4A7F-B91F-91E6FDBF3E86}</string>
+								<ProtectedString name="Source"><![CDATA[local User = {}
+User.__index = User
+
+local Author = require(script.Parent.Author)
+local PublicUserFlags = require(script.Parent.PublicUserFlags)
+
+setmetatable(User, Author)
+
+function User.new(data)
+	local self = setmetatable(Author.new(data), User)
+	
+	self.globalName = data.global_name
+	self.publicFlags = PublicUserFlags.fromBitfield(data.public_flags)
+	
+	return self
+end
+
+return User]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="Folder" referent="RBX70681339D0E040EDA3DCB81AD9F585E9">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<string name="Name">bases</string>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+							<Item class="ModuleScript" referent="RBX8BE39AAC020E4AE2A0802E4E1D41FE9C">
+								<Properties>
+									<BinaryString name="AttributesSerialize"></BinaryString>
+									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+									<bool name="DefinesCapabilities">false</bool>
+									<Content name="LinkedSource"><null></null></Content>
+									<string name="Name">BaseFlags</string>
+									<string name="ScriptGuid">{11F28485-5875-4ADF-8B50-5CB600F40BD4}</string>
+									<ProtectedString name="Source"><![CDATA[local BaseFlags = {}
+BaseFlags.__index = BaseFlags
+
+function BaseFlags.fromBitfield(value : number)
+	local self = setmetatable({}, BaseFlags)
+	
+	self.value = value
+	
+	return self
+end
+
+function BaseFlags:hasFlag(flag : number) : boolean
+	return bit32.band(self.value, flag) == flag
+end
+
+function BaseFlags:setFlag(flag : number, toggle : boolean) : nil
+	if toggle then
+		self.value = bit32.bor(self.value, flag)
+	else
+		self.value = bit32.band(self.value, bit32.bnot(flag))
+	end
+end
+
+return BaseFlags]]></ProtectedString>
+									<int64 name="SourceAssetId">-1</int64>
+									<BinaryString name="Tags"></BinaryString>
+								</Properties>
+							</Item>
+						</Item>
+						<Item class="Folder" referent="RBX506B9AC83078446A970F17AE2752B3D8">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<string name="Name">utilities</string>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+							<Item class="ModuleScript" referent="RBXD1B69B4487434D0FB4586FC18595C04F">
+								<Properties>
+									<BinaryString name="AttributesSerialize"></BinaryString>
+									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+									<bool name="DefinesCapabilities">false</bool>
+									<Content name="LinkedSource"><null></null></Content>
+									<string name="Name">Enum</string>
+									<string name="ScriptGuid">{FC427941-F831-49DA-93CC-E71FE2BCA975}</string>
+									<ProtectedString name="Source"><![CDATA[return {
+	UserPublicFlags = {
+		STAFF = 1,
+		PARTNER = 2,
+		HYPESQUAD = 4,
+		BUG_HUNTER_LEVEL_1 = 8,
+		HYPESQUAD_ONLINE_HOUSE_1 = 64,
+		HYPESQUAD_ONLINE_HOUSE_2 = 128,
+		HYPESQUAD_ONLINE_HOUSE_3 = 256,
+		PREMIUM_EARLY_SUPPORTER = 512,
+		TEAM_PSEUDO_USER = 1024,
+		BUG_HUNTER_LEVEL_2 = 16384,
+		VERIFIED_BOT = 65536,
+		VERIFIED_DEVELOPER = 131072,
+		CERTIFIED_MODERATOR = 262144,
+		BOT_HTTP_INTERACTIONS = 524288,
+		ACTIVE_DEVELOPER = 4194304		
+	},
+
+	MessageFlags = {
+		SUPPRESS_EMBEDS = 4
+	},
+
+	AvatarImageFormats = {
+		JPEG = ".jpeg",
+		PNG = ".png",
+		WebP = ".webp",
+		GIF = ".gif"
+	},
+	
+	RatelimitScopes = {
+		USER = "user",
+		SHARED = "shared",
+		GLOBAL = "global"
+	}
+}]]></ProtectedString>
+									<int64 name="SourceAssetId">-1</int64>
+									<BinaryString name="Tags"></BinaryString>
+								</Properties>
+							</Item>
+						</Item>
+					</Item>
+				</Item>
+				<Item class="Folder" referent="RBX615BF1F4685A4C8ABA990BACEF978C7C">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -54,14 +1064,14 @@ return REQUIRED_MODULE
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX9EFB82E3A47D4E82925C9370748D3839">
+					<Item class="ModuleScript" referent="RBX01232DCA73514E459BB3B32E1FEFE683">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">t</string>
-							<string name="ScriptGuid">{8229FE4D-30D6-44A5-92B5-E4261E43FC69}</string>
+							<string name="ScriptGuid">{B6669504-AA13-45BB-BA0A-25199ED3BD65}</string>
 							<ProtectedString name="Source"><![CDATA[-- t: a runtime typechecker for Roblox
 
 local t = {}
@@ -1317,7 +2327,7 @@ return t
 						</Properties>
 					</Item>
 				</Item>
-				<Item class="Folder" referent="RBX0192722B76094CA28822816A46F29EA8">
+				<Item class="Folder" referent="RBX23D05DBA6848427CA2C1337444434D40">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -1326,14 +2336,14 @@ return t
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX435D8F20001346008FF244078E3FCEF6">
+					<Item class="ModuleScript" referent="RBX097742A05FEE4C77840C13CCBD6120C4">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">signal</string>
-							<string name="ScriptGuid">{3D3F207A-9A49-4464-BFFE-59B576E38C4F}</string>
+							<string name="ScriptGuid">{F8027F4B-5C89-480E-93D2-C2F990F615B8}</string>
 							<ProtectedString name="Source"><![CDATA[-- -----------------------------------------------------------------------------
 --               Batched Yield-Safe Signal Implementation                     --
 -- This is a Signal class which has effectively identical behavior to a       --
@@ -1761,14 +2771,14 @@ return table.freeze({
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
-						<Item class="ModuleScript" referent="RBX6C81527F9AA44716BD2225BD28ADADFE">
+						<Item class="ModuleScript" referent="RBX5B88489C2966469F9DBABFEB86E6AAB1">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">init.spec</string>
-								<string name="ScriptGuid">{D0BEF32E-7628-4DCC-88DF-F38EAA74A17D}</string>
+								<string name="ScriptGuid">{860AE5DE-08BD-4A47-9408-8DE6DF192BA2}</string>
 								<ProtectedString name="Source"><![CDATA[local function AwaitCondition(predicate, timeout)
 	local start = os.clock()
 	timeout = (timeout or 10)
@@ -1960,14 +2970,14 @@ end
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBX88593BD4F96342DA9AADF50ACB26098D">
+						<Item class="ModuleScript" referent="RBX7296B36D802B4557BE8713405751709B">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">wally</string>
-								<string name="ScriptGuid">{96010EE0-1DE5-4434-8059-AE785E613CA3}</string>
+								<string name="ScriptGuid">{329527C7-E8F6-4945-B0BE-E7A2508D2742}</string>
 								<ProtectedString name="Source"><![CDATA[return {
 	package = {
 		authors = {"Stephen Leitnick"},
@@ -1987,14 +2997,14 @@ end
 					</Item>
 				</Item>
 			</Item>
-			<Item class="ModuleScript" referent="RBXC7EFE97D899B4F0FA0F80FE3D44AAEBE">
+			<Item class="ModuleScript" referent="RBXEC1B22EB50B441D89245BE63ADDC7343">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">t</string>
-					<string name="ScriptGuid">{3A998B29-A38A-4033-A661-F726BEE422ED}</string>
+					<string name="ScriptGuid">{D7E737C3-10A8-4B3C-8F8C-5DEA214D1ABF}</string>
 					<ProtectedString name="Source"><![CDATA[return require(script.Parent._Index["osyrisrblx_t@3.0.0"]["t"])
 ]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
@@ -2002,7 +3012,7 @@ end
 				</Properties>
 			</Item>
 		</Item>
-		<Item class="Script" referent="RBXB444151CE22F44D29B2B891D46465E3D">
+		<Item class="Script" referent="RBX3B765180D4FC4ECEB74E8523A0DFDD83">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -2011,11 +3021,11 @@ end
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">Plugin</string>
 				<token name="RunContext">0</token>
-				<string name="ScriptGuid">{41D18F5A-0B5C-4C6B-951E-DF513256396A}</string>
+				<string name="ScriptGuid">{4974FF77-6E9C-4E88-B4C7-18D06CAC22A4}</string>
 				<ProtectedString name="Source"><![CDATA[--[[
     blackferrari2's Session Tracker
 
-    Version 1.2
+    Version 1.3
     19th January 2024
 
     SOURCE:
@@ -2161,7 +3171,6 @@ local autosave
 function onPowerOnClick()
     Icons.changeIconSafely(powerButton, Icons.Power.Off)
     pauseButton.Enabled = true
-    settingsButton.Enabled = false
 
     currentSession = Session.new()
     autosave = Autosave.new(plugin, Info.ProjectName)
@@ -2186,7 +3195,6 @@ function onPowerOffClick()
     Icons.changeIconSafely(powerButton, Icons.Power.On)
     Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
     pauseButton.Enabled = false
-    settingsButton.Enabled = true
 
     Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
     autosave:erase()
@@ -2270,7 +3278,7 @@ function onInitializeclick()
     initializeButton.Enabled = false
 
     pluginSettingsRoot = Settings.new()
-    plugin:OpenScript(pluginSettingsRoot.Webhook)
+    plugin:OpenScript(pluginSettingsRoot.Info)
 end
 
 initializeButton.Click:Connect(function()
@@ -2284,14 +3292,57 @@ end)
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
-			<Item class="ModuleScript" referent="RBX9C404092791048D58C7611060C3759CB">
+			<Item class="ModuleScript" referent="RBXB9E947DF71DD43A09798F484B044D603">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Icons</string>
+					<string name="ScriptGuid">{2D26F36F-5817-42DF-AF12-74E22BF54FF2}</string>
+					<ProtectedString name="Source"><![CDATA[local Icons = {
+    Power = {
+        On = "http://www.roblox.com/asset/?id=16008923978",
+        Off = "http://www.roblox.com/asset/?id=16008923312",
+        Recover = "http://www.roblox.com/asset/?id=16025418149",
+    },
+
+    Pause = {
+        Paused = "http://www.roblox.com/asset/?id=16008921548",
+        Unpaused = "http://www.roblox.com/asset/?id=16008922394",
+    },
+
+    Settings = "http://www.roblox.com/asset/?id=16008920257",
+    Initialize = "http://www.roblox.com/asset/?id=16008985266",
+    AssertionFailPage = "http://www.roblox.com/asset/?id=14219067357",
+}
+
+---------------
+
+-- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
+function Icons.changeIconSafely(of: PluginToolbarButton, to: string)
+    if of.Icon == to then
+        return
+    end
+
+    of.Icon = to
+end
+
+---------------
+
+return Icons]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="ModuleScript" referent="RBXDDD0581F5A384896BA7A808306F7575A">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Session</string>
-					<string name="ScriptGuid">{AC0F1AE9-6D7A-4E94-BC1E-A0241FE8F0F7}</string>
+					<string name="ScriptGuid">{4D1275C3-5DC8-423D-9E9D-CE3309C8CB1A}</string>
 					<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.SessionStatus)
 local Logger = require(script.Logger)
 
@@ -2364,6 +3415,7 @@ end
 
 function Session.close(self: Session)
     self.status:changeState(SessionStatus.States.Closed)
+    self.logger:stopLoop()
     self.logger:close()
 end
 
@@ -2373,14 +3425,14 @@ return Session]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
-				<Item class="ModuleScript" referent="RBX828C25541430491DB84D705E40167EF8">
+				<Item class="ModuleScript" referent="RBX3E72D6E4422D4081B03A2629CF8261C8">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">Autosave</string>
-						<string name="ScriptGuid">{A0D9C31D-942F-4C55-A4FD-D90B35E6C4BC}</string>
+						<string name="ScriptGuid">{65C23A95-73B3-482F-8E87-E7C131BC2790}</string>
 						<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.Parent.SessionStatus)
 
 local Autosave = {
@@ -2467,21 +3519,22 @@ return Autosave]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
-				<Item class="ModuleScript" referent="RBXDFDC5A3CF3C843C19F2D085FA4CF7157">
+				<Item class="ModuleScript" referent="RBX852D0F60D23F4077813C13AF6F77FAAB">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">Logger</string>
-						<string name="ScriptGuid">{C43D7B1A-0BBB-4CEF-A2BA-835F64A01542}</string>
-						<ProtectedString name="Source"><![CDATA[local baseModules = script.Parent.Parent.Settings.Modules
+						<string name="ScriptGuid">{99D5EDB5-3523-49D2-8A5A-102574EC2F53}</string>
+						<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Packages
+local baseModules = script.Parent.Parent.Settings.Modules
 
 local Messages = require(baseModules.Messages)
 local Checkpoints = require(baseModules.Checkpoints)
-local Webhook = require(baseModules.Webhook)
 local Info = require(baseModules.Info)
 
+local Voyager = require(packages.Voyager)
 local Settings = require(script.Parent.Parent.Settings)
 local SessionStatus = require(script.Parent.SessionStatus)
 
@@ -2504,8 +3557,8 @@ type self = {
     settingsRoot: Settings.Settings,
     messages: Messages.Messages,
     checkpoints: Checkpoints.Checkpoints,
-    webhook: Webhook.Webhook,
     info: Info.Info,
+    webhook: any,
     sessionStatus: SessionStatus.SessionStatus,
     loopThread: thread?,
 }
@@ -2538,11 +3591,12 @@ function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatu
         settingsRoot = settingsRoot,
         messages = require(settingsRoot.Messages),
         checkpoints = require(settingsRoot.Checkpoints),
-        webhook = require(settingsRoot.Webhook),
         info = require(settingsRoot.Info),
         sessionStatus = sessionStatus,
         loopThread = nil,
     }
+
+    self.webhook = Voyager.fromUrl(self.info.WebhookURL)
 
     setmetatable(self, Logger)
 
@@ -2623,7 +3677,7 @@ function Logger.post(self: Logger, text: string)
 
     text = self:getTextWithTagsApplied(text)
 
-    self.webhook.post(text)
+    self.webhook:execute(text, nil, true, true)
 end
 
 function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?
@@ -2650,14 +3704,14 @@ return Logger]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
-				<Item class="ModuleScript" referent="RBXA57BB351EE3147DBB2905BD590DFB139">
+				<Item class="ModuleScript" referent="RBX1C0E186D878640DA880DFD49758DB9B6">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">SessionStatus</string>
-						<string name="ScriptGuid">{A1DD3CAF-0195-4150-95B7-9EDFC3587517}</string>
+						<string name="ScriptGuid">{B9F90FDB-7911-4118-AA04-9031C2A737DB}</string>
 						<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Packages
 
 local Signal = require(packages.Signal)
@@ -2735,14 +3789,14 @@ return SessionStatus]]></ProtectedString>
 					</Properties>
 				</Item>
 			</Item>
-			<Item class="ModuleScript" referent="RBX3E4317D2907D44C6891DB1B1672013B0">
+			<Item class="ModuleScript" referent="RBX8FF3CB9B83F24EE28E6F47B55E3A28C3">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Settings</string>
-					<string name="ScriptGuid">{C573F5BD-C425-4316-AF66-090D49B821A7}</string>
+					<string name="ScriptGuid">{83B5E5BB-3F2B-4EE8-9BCD-0E1FF9FB4860}</string>
 					<ProtectedString name="Source"><![CDATA[local ServerStorage = game:GetService("ServerStorage")
 
 local baseModules = script.Modules
@@ -2751,10 +3805,9 @@ local assertions = script.Assertions
 local Messages = require(baseModules.Messages)
 local Checkpoints = require(baseModules.Checkpoints)
 local Info = require(baseModules.Info)
-local Webhook = require(baseModules.Webhook)
 
 local Settings = {
-    Version = 4,
+    Version = 1,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",
@@ -2766,7 +3819,6 @@ export type Settings = Folder & {
     Messages: Messages.Messages,
     Checkpoints: Checkpoints.Checkpoints,
     Info: Info.Info,
-    Webhook: Webhook.Webhook,
 }
 
 ---------------
@@ -2848,7 +3900,7 @@ return Settings]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
-				<Item class="Folder" referent="RBXA894EF047DED4094B9D4F87C2BBD6FDC">
+				<Item class="Folder" referent="RBX1F8A22C55BCF48C992BEF9873FAAAB68">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -2857,14 +3909,39 @@ return Settings]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX1F8C422AE9704DD79D612566216437D8">
+					<Item class="ModuleScript" referent="RBX2725B02A45C84F8185B91AD68087C355">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Assets</string>
+							<string name="ScriptGuid">{01C9A669-8C08-46C0-8C23-76FA8D290359}</string>
+							<ProtectedString name="Source"><![CDATA[-- nothing to check lol
+
+local AssetsAssertion = {}
+
+---------------
+
+function AssetsAssertion.run(): boolean
+    return true
+end
+
+---------------
+
+return AssetsAssertion]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBX6907FD3BA8654261A4BDE9F6E0C17110">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Checkpoints</string>
-							<string name="ScriptGuid">{A34257A6-ED24-42C7-8811-E6C4A65C4A6D}</string>
+							<string name="ScriptGuid">{CBCF17AE-3FA5-44D2-8D1B-F550E2B1926B}</string>
 							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Modules
 
@@ -2883,7 +3960,7 @@ local checkpointInterface = t.interface({
 })
 
 local moduleInterface = t.interface({
-    IntervalSeconds = t.number,
+    IntervalSeconds = t.numberMin(60),
 })
 
 ---------------
@@ -2928,18 +4005,19 @@ return CheckpointsAssertion]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBXDD23A8427C244723B8963C8CCEF066E4">
+					<Item class="ModuleScript" referent="RBX4A369357E0AA424F947EB9002BEDBA2C">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Info</string>
-							<string name="ScriptGuid">{6681A592-2373-46F6-B4C0-B67DF323AAB6}</string>
+							<string name="ScriptGuid">{06CB0454-1E45-468E-8FB2-EB12652F3572}</string>
 							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Modules
 
 local t = require(packages.t)
+local Voyager = require(packages.Voyager)
 local Info = require(baseModules.Info)
 
 local InfoAssertion = {}
@@ -2950,6 +4028,8 @@ local ASSERTFAIL_PREFIX = "[SessionTrack]: INFO FAILED TO LOAD - "
 
 local moduleInterface = t.interface({
     ProjectName = t.string,
+    WebhookURL = t.string,
+    UseOutputInstead = t.boolean,
     TotalProjectTimeAttribute = t.string,
 })
 
@@ -2957,6 +4037,21 @@ local moduleInterface = t.interface({
 
 function InfoAssertion.run(module: Info.Info): (boolean, string?)
     local success, errorMessage = moduleInterface(module)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    success, errorMessage = pcall(function()
+        local webhook = Voyager.fromUrl(module.WebhookURL)
+        local message, requestStatus = webhook:execute("Plugin is starting... (This is a check to see if the webhook actually works). Message will be deleted.", nil, false, true)
+
+        if not requestStatus.success then
+            error("Webhook fails to send messages. Proxy request status and code: " .. requestStatus.statusMessage .. " " .. requestStatus.statusCode)
+        else
+            webhook:deleteMessage(message.id)
+        end
+    end)
 
     if not success then
         return success, ASSERTFAIL_PREFIX .. errorMessage
@@ -3005,14 +4100,14 @@ return InfoAssertion]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX1CE5CBFA27C7449487D4F8F51BE63186">
+					<Item class="ModuleScript" referent="RBXD2392E97CA964AF39234B67DD12D2840">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Messages</string>
-							<string name="ScriptGuid">{BDCCBAAA-813A-4254-A285-91D9F800F894}</string>
+							<string name="ScriptGuid">{B9E0D9E1-E1B8-4F2A-99CD-BE9AE6E08056}</string>
 							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Modules
 
@@ -3070,85 +4165,40 @@ return MessagesAssertion]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBXC11FBA0A165845D59B96FA26374062D5">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-							<bool name="DefinesCapabilities">false</bool>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">Webhook</string>
-							<string name="ScriptGuid">{D25D532E-DEF6-4610-9E7A-2A2C031CD50C}</string>
-							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
-local baseModules = script.Parent.Parent.Modules
-
-local t = require(packages.t)
-local Webhook = require(baseModules.Webhook)
-
-local WebhookAssertion = {}
-
----------------
-
-local ASSERTFAIL_PREFIX = "[SessionTrack]: WEBHOOK FAILED TO LOAD - "
-
-local moduleInterface = t.interface({
-    URL = t.string,
-    UseOutputInstead = t.boolean,
-})
-
----------------
-
-function WebhookAssertion.run(module: Webhook.Webhook): (boolean, string?)
-    local success, errorMessage = moduleInterface(module)
-
-    if not success then
-        return success, ASSERTFAIL_PREFIX .. errorMessage
-    end
-
-    success, errorMessage = pcall(function()
-        module.post("Plugin is starting... (This is a check to see if the webhook actually works)")
-    end)
-
-    if not success then
-        return success, ASSERTFAIL_PREFIX .. "webhook fails to post. Did you setup the URL? | " .. errorMessage
-    end
-
-    return true
-end
-
----------------
-
-return WebhookAssertion]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-						</Properties>
-					</Item>
-					<Item class="ModuleScript" referent="RBX1FA8D65624174566AD44BB34C99262EF">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-							<bool name="DefinesCapabilities">false</bool>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">Assets</string>
-							<string name="ScriptGuid">{CDB0B7DC-5FD4-41A9-984A-EC2B84937B09}</string>
-							<ProtectedString name="Source"><![CDATA[-- nothing to check lol
-
-local AssetsAssertion = {}
-
----------------
-
-function AssetsAssertion.run(): boolean
-    return true
-end
-
----------------
-
-return AssetsAssertion]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-						</Properties>
-					</Item>
 				</Item>
-				<Item class="Folder" referent="RBXC72FE993A9B74C5485348AD25761CCE2">
+				<Item class="ModuleScript" referent="RBX18F9F62976604717ABD55A2A83907693">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">FailedAssertionLandingPage</string>
+						<string name="ScriptGuid">{87D0CE68-BB13-43ED-BFA8-BC06280E5AB9}</string>
+						<ProtectedString name="Source"><![CDATA[--[[
+                       ██████   ██████  ██████  ███████          
+                      ██    ██ ██    ██ ██   ██ ██               
+                      ██    ██ ██    ██ ██████  ███████          
+                      ██    ██ ██    ██ ██           ██          
+                       ██████   ██████  ██      ███████ ██ ██ ██ 
+                            
+                       
+    ...........
+
+    WHAT DID YOU DO???
+        If you can see this page then your settings are setup incorrectly.
+
+    Check your output (View > Output) for the error info
+        FYI, your settings folder is located in ServerStorage, under the name "SessionTrack.PluginSettings"
+
+    ...........
+
+    Once the issue is fixed, save and reload studio to apply your new settings!
+]]]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="Folder" referent="RBXA46EA11595B2404A818CF1E4EC5A9E9C">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -3157,14 +4207,14 @@ return AssetsAssertion]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX7C708975C7A84206BC9D2BD1EBBCF994">
+					<Item class="ModuleScript" referent="RBXF5A7FFA7EC6940268407D9FFBFAC78CE">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Assets</string>
-							<string name="ScriptGuid">{10E192BA-EDCF-4BBD-A738-5C211C882DBD}</string>
+							<string name="ScriptGuid">{45FF8C6F-A2AD-41DB-AF75-1C20864355C5}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     NOTE:
 
@@ -3192,14 +4242,14 @@ return Assets]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBXBFD75118BDCC4908A613FAF3E5DFF187">
+					<Item class="ModuleScript" referent="RBX4F764FA539F3416BA553A2D4FFF646D1">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Checkpoints</string>
-							<string name="ScriptGuid">{EA2F5386-5E8F-470F-9DF9-FA36620091E6}</string>
+							<string name="ScriptGuid">{0484686B-BD86-4693-B05E-0C7FC15E20D0}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     NOTE:
 
@@ -3216,7 +4266,7 @@ return Assets]]></ProtectedString>
 local Assets = require(script.Parent.Assets)
 
 local Checkpoints = {
-    -- dont set this number too low or you may be rate limited by discord
+    -- Minimum value: 60 seconds
     IntervalSeconds = 600,
 }
 
@@ -3300,28 +4350,52 @@ return Checkpoints]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBXE26019AC93D94D14A83FB39BEC7A1A5B">
+					<Item class="ModuleScript" referent="RBX8DCB69FD8EFE48B1B9A14A649C734120">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Info</string>
-							<string name="ScriptGuid">{A53BB152-964D-4B64-9331-037AD69B044A}</string>
+							<string name="ScriptGuid">{AE30153E-1DDB-436D-A581-04B075F53493}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
-    NOTE:
+    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★
 
-    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+    HELLO! thanks for using my plugin
+
+    FOR IT TO WORK, first replace the `WebhookURL` field down there with the url of your discord webhook
+
+    save and restart studio afterwards to apply the changes. Enjoy!
+        (you can close this after youre done)
+
+
+    ...........
+
+    QnA:
+        Reset/Delete settings?
+            > delete/take out the `SessionTrack.PluginSettings` folder from ServerStorage and save and restart studio afterwards like normal.
+
+        settings are GONE?
+            > your settings mightve been outdated (check the output to confirm that and for more instructions). They werent deleted.
+
+
+    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★ 
 ]]
 
 --[[
     info about your project
 
-    all you should need to edit here is the project name, dont worry about the total time stuff!
+    please edit the fields with "REPLACEME" for the plugin to work properly. dont worry about the other fields like `TotalProjectTime` :P
+
+    if you wanna test the plugin without posting to the webhook, change the `UseOutputInstead` option to `true`.
+        thatll, like the name says, send all the messages to roblox studios output
+            set it back to `false` once youre done
 ]]
 
 local Info = {
     ProjectName = "REPLACEME",
+    WebhookURL = "REPLACEME",
+    UseOutputInstead = false,
     TotalProjectTimeAttribute = "TotalProjectTime",
 }
 
@@ -3348,14 +4422,14 @@ return Info]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX0D9A7751530F45FEB67B9950829415C5">
+					<Item class="ModuleScript" referent="RBX8F857EF267D3438CA98A18BFAE0D5DC0">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Messages</string>
-							<string name="ScriptGuid">{B784C9C9-A0DF-48B8-B4DA-7413F37BFC91}</string>
+							<string name="ScriptGuid">{84FD6915-B9C0-4EFA-9F5D-D75E16052C71}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     NOTE:
 
@@ -3470,157 +4544,7 @@ return Messages]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBXA60A7E89F99E47A4B88924B29842923A">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-							<bool name="DefinesCapabilities">false</bool>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">Webhook</string>
-							<string name="ScriptGuid">{7F0203F0-2BE7-4DA4-8E96-E17939C97AA3}</string>
-							<ProtectedString name="Source"><![CDATA[--[[
-    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★
-
-    HELLO! thanks for using my plugin
-
-    FOR IT TO WORK, first replace the `URL` field down there with the url of your discord webhook
-
-    save and restart studio afterwards to apply the changes. Enjoy!
-        (you can close this after youre done)
-
-
-    ...........
-
-    QnA:
-        Reset/Delete settings?
-            > delete/take out the `SessionTrack.PluginSettings` folder from ServerStorage and save and restart studio afterwards like normal.
-
-        settings are GONE?
-            > your settings mightve been outdated (check the output to confirm that and for more instructions). They werent deleted.
-
-
-    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★ 
-]]
-
---[[
-    webhook is the module used to send the plugin messages over to discord
-    
-    if you want the messages NOT to be sent to the webhook, but to the roblox studio output, change the `UseOutputInstead` field to true.
-]]
-
-local HttpService = game:GetService("HttpService")
-
-local Webhook = {
-    URL = "REPLACEME",
-    UseOutputInstead = false,
-}
-
----------------
-
-export type Webhook = typeof(Webhook)
-
----------------
-
-function Webhook.post(text: string?)
-    if not text then
-        return
-    end
-
-    if Webhook.UseOutputInstead then
-        print(text)
-        return
-    end
-
-    local data = HttpService:JSONEncode({
-        content = text
-    })
-
-    HttpService:PostAsync(Webhook.URL, data)
-end
-
----------------
-
-return Webhook]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-						</Properties>
-					</Item>
 				</Item>
-				<Item class="ModuleScript" referent="RBXE1298520C1864C55B266DCB8E95F1929">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-						<bool name="DefinesCapabilities">false</bool>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">FailedAssertionLandingPage</string>
-						<string name="ScriptGuid">{A0691653-7608-4E2A-95AD-3110361DF284}</string>
-						<ProtectedString name="Source"><![CDATA[--[[
-                       ██████   ██████  ██████  ███████          
-                      ██    ██ ██    ██ ██   ██ ██               
-                      ██    ██ ██    ██ ██████  ███████          
-                      ██    ██ ██    ██ ██           ██          
-                       ██████   ██████  ██      ███████ ██ ██ ██ 
-                            
-                       
-    ...........
-
-    WHAT DID YOU DO???
-        If you can see this page then your settings are setup incorrectly.
-
-    Check your output (View > Output) for the error info
-        FYI, your settings folder is located in ServerStorage, under the name "SessionTrack.PluginSettings"
-
-    ...........
-
-    Once the issue is fixed, save and reload studio to apply your new settings!
-]]]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-					</Properties>
-				</Item>
-			</Item>
-			<Item class="ModuleScript" referent="RBXA333327C1F954F8FAE6C762CA6C7385B">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-					<bool name="DefinesCapabilities">false</bool>
-					<Content name="LinkedSource"><null></null></Content>
-					<string name="Name">Icons</string>
-					<string name="ScriptGuid">{06B70D3F-159B-445D-9FE4-24B3D8B05E5F}</string>
-					<ProtectedString name="Source"><![CDATA[local Icons = {
-    Power = {
-        On = "http://www.roblox.com/asset/?id=16008923978",
-        Off = "http://www.roblox.com/asset/?id=16008923312",
-        Recover = "http://www.roblox.com/asset/?id=16025418149",
-    },
-
-    Pause = {
-        Paused = "http://www.roblox.com/asset/?id=16008921548",
-        Unpaused = "http://www.roblox.com/asset/?id=16008922394",
-    },
-
-    Settings = "http://www.roblox.com/asset/?id=16008920257",
-    Initialize = "http://www.roblox.com/asset/?id=16008985266",
-    AssertionFailPage = "http://www.roblox.com/asset/?id=14219067357",
-}
-
----------------
-
--- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
-function Icons.changeIconSafely(of: PluginToolbarButton, to: string)
-    if of.Icon == to then
-        return
-    end
-
-    of.Icon = to
-end
-
----------------
-
-return Icons]]></ProtectedString>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-				</Properties>
 			</Item>
 		</Item>
 	</Item>
