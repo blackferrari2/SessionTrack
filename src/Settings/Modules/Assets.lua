@@ -20,8 +20,4 @@ local Assets = {
 
 ---------------
 
-export type Assets = typeof(Assets)
-
----------------
-
 return Assets

@@ -149,7 +149,11 @@ function Logger.post(self: Logger, text: string)
     self.webhook.post(text)
 end
 
-function Logger.getTextWithTagsApplied(self: Logger, text: string): string
+function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?
+    if not text then
+        return
+    end
+
     local tagApplications = {
         [Logger.Tags.DayToday] = os.date(),
         [Logger.Tags.SessionTime] = formatSecondsToHMS(self.sessionStatus:getTimeElapsed()),

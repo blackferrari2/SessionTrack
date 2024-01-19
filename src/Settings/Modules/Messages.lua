@@ -51,8 +51,8 @@ end
     ADD MORE MESSAGES HERE
     ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
 
-    to opt out of the special messages, dont add anything
-        this applies to all the categories of messages here
+    If you dont want special messages to be sent, dont add them.
+        this applies to all the specific categories too
             dont want "Close" messages? remove all the `Messages.add(Messages.Close)` lines
 
     Example:

@@ -55,7 +55,7 @@ end
     ADD MORE CHECKPOINTS HERE
     ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
 
-    dont add anything to opt out of checkpoints.
+    If you dont want checkpoints to be sent, do not add any.
 
     Example:
         Checkpoints.add("TestAuthor", "hey")

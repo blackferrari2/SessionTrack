@@ -1,0 +1,3627 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Folder" referent="RBX7F88D1D66DE0433B96AAE72C2372FD3D">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+			<bool name="DefinesCapabilities">false</bool>
+			<string name="Name">SessionTrack</string>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+		</Properties>
+		<Item class="Folder" referent="RBXCEE90257108F4100A12C2BB75C3A358B">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<string name="Name">Packages</string>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+			<Item class="ModuleScript" referent="RBX73832D127B1643F58DED2854899CF487">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Signal</string>
+					<string name="ScriptGuid">{E2330BD2-3B21-4B42-B7C5-AE088936AF25}</string>
+					<ProtectedString name="Source"><![CDATA[local REQUIRED_MODULE = require(script.Parent._Index["sleitnick_signal@2.0.1"]["signal"])
+export type Connection = REQUIRED_MODULE.Connection 
+export type Signal<T...> = REQUIRED_MODULE.Signal<T...>
+return REQUIRED_MODULE
+]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Folder" referent="RBXD9B84CC27C194F3FB74A55E7F649CD76">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">_Index</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Folder" referent="RBX3955F3E355D741CFB2AEABA82CA50243">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">osyrisrblx_t@3.0.0</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX9EFB82E3A47D4E82925C9370748D3839">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">t</string>
+							<string name="ScriptGuid">{8229FE4D-30D6-44A5-92B5-E4261E43FC69}</string>
+							<ProtectedString name="Source"><![CDATA[-- t: a runtime typechecker for Roblox
+
+local t = {}
+
+function t.type(typeName)
+	return function(value)
+		local valueType = type(value)
+		if valueType == typeName then
+			return true
+		else
+			return false, string.format("%s expected, got %s", typeName, valueType)
+		end
+	end
+end
+
+function t.typeof(typeName)
+	return function(value)
+		local valueType = typeof(value)
+		if valueType == typeName then
+			return true
+		else
+			return false, string.format("%s expected, got %s", typeName, valueType)
+		end
+	end
+end
+
+--[[**
+	matches any type except nil
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.any(value)
+	if value ~= nil then
+		return true
+	else
+		return false, "any expected, got nil"
+	end
+end
+
+--Lua primitives
+
+--[[**
+	ensures Lua primitive boolean type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.boolean = t.typeof("boolean")
+
+--[[**
+	ensures Lua primitive thread type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.thread = t.typeof("thread")
+
+--[[**
+	ensures Lua primitive callback type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.callback = t.typeof("function")
+t["function"] = t.callback
+
+--[[**
+	ensures Lua primitive none type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.none = t.typeof("nil")
+t["nil"] = t.none
+
+--[[**
+	ensures Lua primitive string type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.string = t.typeof("string")
+
+--[[**
+	ensures Lua primitive table type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.table = t.typeof("table")
+
+--[[**
+	ensures Lua primitive userdata type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.userdata = t.type("userdata")
+
+--[[**
+	ensures value is a number and non-NaN
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.number(value)
+	local valueType = typeof(value)
+	if valueType == "number" then
+		if value == value then
+			return true
+		else
+			return false, "unexpected NaN value"
+		end
+	else
+		return false, string.format("number expected, got %s", valueType)
+	end
+end
+
+--[[**
+	ensures value is NaN
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.nan(value)
+	local valueType = typeof(value)
+	if valueType == "number" then
+		if value ~= value then
+			return true
+		else
+			return false, "unexpected non-NaN value"
+		end
+	else
+		return false, string.format("number expected, got %s", valueType)
+	end
+end
+
+-- roblox types
+
+--[[**
+	ensures Roblox Axes type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Axes = t.typeof("Axes")
+
+--[[**
+	ensures Roblox BrickColor type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.BrickColor = t.typeof("BrickColor")
+
+--[[**
+	ensures Roblox CatalogSearchParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.CatalogSearchParams = t.typeof("CatalogSearchParams")
+
+--[[**
+	ensures Roblox CFrame type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.CFrame = t.typeof("CFrame")
+
+--[[**
+	ensures Roblox Color3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Color3 = t.typeof("Color3")
+
+--[[**
+	ensures Roblox ColorSequence type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.ColorSequence = t.typeof("ColorSequence")
+
+--[[**
+	ensures Roblox ColorSequenceKeypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.ColorSequenceKeypoint = t.typeof("ColorSequenceKeypoint")
+
+--[[**
+	ensures Roblox DateTime type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.DateTime = t.typeof("DateTime")
+
+--[[**
+	ensures Roblox DockWidgetPluginGuiInfo type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.DockWidgetPluginGuiInfo = t.typeof("DockWidgetPluginGuiInfo")
+
+--[[**
+	ensures Roblox Enum type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Enum = t.typeof("Enum")
+
+--[[**
+	ensures Roblox EnumItem type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.EnumItem = t.typeof("EnumItem")
+
+--[[**
+	ensures Roblox Enums type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Enums = t.typeof("Enums")
+
+--[[**
+	ensures Roblox Faces type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Faces = t.typeof("Faces")
+
+--[[**
+	ensures Roblox Instance type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Instance = t.typeof("Instance")
+
+--[[**
+	ensures Roblox NumberRange type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberRange = t.typeof("NumberRange")
+
+--[[**
+	ensures Roblox NumberSequence type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberSequence = t.typeof("NumberSequence")
+
+--[[**
+	ensures Roblox NumberSequenceKeypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.NumberSequenceKeypoint = t.typeof("NumberSequenceKeypoint")
+
+--[[**
+	ensures Roblox PathWaypoint type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.PathWaypoint = t.typeof("PathWaypoint")
+
+--[[**
+	ensures Roblox PhysicalProperties type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.PhysicalProperties = t.typeof("PhysicalProperties")
+
+--[[**
+	ensures Roblox Random type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Random = t.typeof("Random")
+
+--[[**
+	ensures Roblox Ray type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Ray = t.typeof("Ray")
+
+--[[**
+	ensures Roblox RaycastParams type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RaycastParams = t.typeof("RaycastParams")
+
+--[[**
+	ensures Roblox RaycastResult type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RaycastResult = t.typeof("RaycastResult")
+
+--[[**
+	ensures Roblox RBXScriptConnection type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RBXScriptConnection = t.typeof("RBXScriptConnection")
+
+--[[**
+	ensures Roblox RBXScriptSignal type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.RBXScriptSignal = t.typeof("RBXScriptSignal")
+
+--[[**
+	ensures Roblox Rect type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Rect = t.typeof("Rect")
+
+--[[**
+	ensures Roblox Region3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Region3 = t.typeof("Region3")
+
+--[[**
+	ensures Roblox Region3int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Region3int16 = t.typeof("Region3int16")
+
+--[[**
+	ensures Roblox TweenInfo type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.TweenInfo = t.typeof("TweenInfo")
+
+--[[**
+	ensures Roblox UDim type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.UDim = t.typeof("UDim")
+
+--[[**
+	ensures Roblox UDim2 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.UDim2 = t.typeof("UDim2")
+
+--[[**
+	ensures Roblox Vector2 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector2 = t.typeof("Vector2")
+
+--[[**
+	ensures Roblox Vector2int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector2int16 = t.typeof("Vector2int16")
+
+--[[**
+	ensures Roblox Vector3 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector3 = t.typeof("Vector3")
+
+--[[**
+	ensures Roblox Vector3int16 type
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+t.Vector3int16 = t.typeof("Vector3int16")
+
+--[[**
+	ensures value is a given literal value
+
+	@param literal The literal to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.literal(...)
+	local size = select("#", ...)
+	if size == 1 then
+		local literal = ...
+		return function(value)
+			if value ~= literal then
+				return false, string.format("expected %s, got %s", tostring(literal), tostring(value))
+			end
+
+			return true
+		end
+	else
+		local literals = {}
+		for i = 1, size do
+			local value = select(i, ...)
+			literals[i] = t.literal(value)
+		end
+
+		return t.union(table.unpack(literals, 1, size))
+	end
+end
+
+--[[**
+	DEPRECATED
+	Please use t.literal
+**--]]
+t.exactly = t.literal
+
+--[[**
+	Returns a t.union of each key in the table as a t.literal
+
+	@param keyTable The table to get keys from
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.keyOf(keyTable)
+	local keys = {}
+	local length = 0
+	for key in pairs(keyTable) do
+		length = length + 1
+		keys[length] = key
+	end
+
+	return t.literal(table.unpack(keys, 1, length))
+end
+
+--[[**
+	Returns a t.union of each value in the table as a t.literal
+
+	@param valueTable The table to get values from
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.valueOf(valueTable)
+	local values = {}
+	local length = 0
+	for _, value in pairs(valueTable) do
+		length = length + 1
+		values[length] = value
+	end
+
+	return t.literal(table.unpack(values, 1, length))
+end
+
+--[[**
+	ensures value is an integer
+
+	@param value The value to check against
+
+	@returns True iff the condition is satisfied, false otherwise
+**--]]
+function t.integer(value)
+	local success, errMsg = t.number(value)
+	if not success then
+		return false, errMsg or ""
+	end
+
+	if value % 1 == 0 then
+		return true
+	else
+		return false, string.format("integer expected, got %s", value)
+	end
+end
+
+--[[**
+	ensures value is a number where min <= value
+
+	@param min The minimum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMin(min)
+	return function(value)
+		local success, errMsg = t.number(value)
+		if not success then
+			return false, errMsg or ""
+		end
+
+		if value >= min then
+			return true
+		else
+			return false, string.format("number >= %s expected, got %s", min, value)
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value <= max
+
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMax(max)
+	return function(value)
+		local success, errMsg = t.number(value)
+		if not success then
+			return false, errMsg
+		end
+
+		if value <= max then
+			return true
+		else
+			return false, string.format("number <= %s expected, got %s", max, value)
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where min < value
+
+	@param min The minimum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMinExclusive(min)
+	return function(value)
+		local success, errMsg = t.number(value)
+		if not success then
+			return false, errMsg or ""
+		end
+
+		if min < value then
+			return true
+		else
+			return false, string.format("number > %s expected, got %s", min, value)
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value < max
+
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberMaxExclusive(max)
+	return function(value)
+		local success, errMsg = t.number(value)
+		if not success then
+			return false, errMsg or ""
+		end
+
+		if value < max then
+			return true
+		else
+			return false, string.format("number < %s expected, got %s", max, value)
+		end
+	end
+end
+
+--[[**
+	ensures value is a number where value > 0
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+t.numberPositive = t.numberMinExclusive(0)
+
+--[[**
+	ensures value is a number where value < 0
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+t.numberNegative = t.numberMaxExclusive(0)
+
+--[[**
+	ensures value is a number where min <= value <= max
+
+	@param min The minimum to use
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberConstrained(min, max)
+	assert(t.number(min))
+	assert(t.number(max))
+	local minCheck = t.numberMin(min)
+	local maxCheck = t.numberMax(max)
+
+	return function(value)
+		local minSuccess, minErrMsg = minCheck(value)
+		if not minSuccess then
+			return false, minErrMsg or ""
+		end
+
+		local maxSuccess, maxErrMsg = maxCheck(value)
+		if not maxSuccess then
+			return false, maxErrMsg or ""
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a number where min < value < max
+
+	@param min The minimum to use
+	@param max The maximum to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.numberConstrainedExclusive(min, max)
+	assert(t.number(min))
+	assert(t.number(max))
+	local minCheck = t.numberMinExclusive(min)
+	local maxCheck = t.numberMaxExclusive(max)
+
+	return function(value)
+		local minSuccess, minErrMsg = minCheck(value)
+		if not minSuccess then
+			return false, minErrMsg or ""
+		end
+
+		local maxSuccess, maxErrMsg = maxCheck(value)
+		if not maxSuccess then
+			return false, maxErrMsg or ""
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value matches string pattern
+
+	@param string pattern to check against
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.match(pattern)
+	assert(t.string(pattern))
+	return function(value)
+		local stringSuccess, stringErrMsg = t.string(value)
+		if not stringSuccess then
+			return false, stringErrMsg
+		end
+
+		if string.match(value, pattern) == nil then
+			return false, string.format("%q failed to match pattern %q", value, pattern)
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is either nil or passes check
+
+	@param check The check to use
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.optional(check)
+	assert(t.callback(check))
+	return function(value)
+		if value == nil then
+			return true
+		end
+
+		local success, errMsg = check(value)
+		if success then
+			return true
+		else
+			return false, string.format("(optional) %s", errMsg or "")
+		end
+	end
+end
+
+--[[**
+	matches given tuple against tuple type definition
+
+	@param ... The type definition for the tuples
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.tuple(...)
+	local checks = { ... }
+	return function(...)
+		local args = { ... }
+		for i, check in ipairs(checks) do
+			local success, errMsg = check(args[i])
+			if success == false then
+				return false, string.format("Bad tuple index #%s:\n\t%s", i, errMsg or "")
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures all keys in given table pass check
+
+	@param check The function to use to check the keys
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.keys(check)
+	assert(t.callback(check))
+	return function(value)
+		local tableSuccess, tableErrMsg = t.table(value)
+		if tableSuccess == false then
+			return false, tableErrMsg or ""
+		end
+
+		for key in pairs(value) do
+			local success, errMsg = check(key)
+			if success == false then
+				return false, string.format("bad key %s:\n\t%s", tostring(key), errMsg or "")
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures all values in given table pass check
+
+	@param check The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.values(check)
+	assert(t.callback(check))
+	return function(value)
+		local tableSuccess, tableErrMsg = t.table(value)
+		if tableSuccess == false then
+			return false, tableErrMsg or ""
+		end
+
+		for key, val in pairs(value) do
+			local success, errMsg = check(val)
+			if success == false then
+				return false, string.format("bad value for key %s:\n\t%s", tostring(key), errMsg or "")
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a table and all keys pass keyCheck and all values pass valueCheck
+
+	@param keyCheck The function to use to check the keys
+	@param valueCheck The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.map(keyCheck, valueCheck)
+	assert(t.callback(keyCheck))
+	assert(t.callback(valueCheck))
+	local keyChecker = t.keys(keyCheck)
+	local valueChecker = t.values(valueCheck)
+
+	return function(value)
+		local keySuccess, keyErr = keyChecker(value)
+		if not keySuccess then
+			return false, keyErr or ""
+		end
+
+		local valueSuccess, valueErr = valueChecker(value)
+		if not valueSuccess then
+			return false, valueErr or ""
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is a table and all keys pass valueCheck and all values are true
+
+	@param valueCheck The function to use to check the values
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.set(valueCheck)
+	return t.map(valueCheck, t.literal(true))
+end
+
+do
+	local arrayKeysCheck = t.keys(t.integer)
+--[[**
+		ensures value is an array and all values of the array match check
+
+		@param check The check to compare all values with
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.array(check)
+		assert(t.callback(check))
+		local valuesCheck = t.values(check)
+
+		return function(value)
+			local keySuccess, keyErrMsg = arrayKeysCheck(value)
+			if keySuccess == false then
+				return false, string.format("[array] %s", keyErrMsg or "")
+			end
+
+			-- # is unreliable for sparse arrays
+			-- Count upwards using ipairs to avoid false positives from the behavior of #
+			local arraySize = 0
+
+			for _ in ipairs(value) do
+				arraySize = arraySize + 1
+			end
+
+			for key in pairs(value) do
+				if key < 1 or key > arraySize then
+					return false, string.format("[array] key %s must be sequential", tostring(key))
+				end
+			end
+
+			local valueSuccess, valueErrMsg = valuesCheck(value)
+			if not valueSuccess then
+				return false, string.format("[array] %s", valueErrMsg or "")
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		ensures value is an array of a strict makeup and size
+
+		@param check The check to compare all values with
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.strictArray(...)
+		local valueTypes = { ... }
+		assert(t.array(t.callback)(valueTypes))
+
+		return function(value)
+			local keySuccess, keyErrMsg = arrayKeysCheck(value)
+			if keySuccess == false then
+				return false, string.format("[strictArray] %s", keyErrMsg or "")
+			end
+
+			-- If there's more than the set array size, disallow
+			if #valueTypes < #value then
+				return false, string.format("[strictArray] Array size exceeds limit of %d", #valueTypes)
+			end
+
+			for idx, typeFn in pairs(valueTypes) do
+				local typeSuccess, typeErrMsg = typeFn(value[idx])
+				if not typeSuccess then
+					return false, string.format("[strictArray] Array index #%d - %s", idx, typeErrMsg)
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+do
+	local callbackArray = t.array(t.callback)
+--[[**
+		creates a union type
+
+		@param ... The checks to union
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.union(...)
+		local checks = { ... }
+		assert(callbackArray(checks))
+
+		return function(value)
+			for _, check in ipairs(checks) do
+				if check(value) then
+					return true
+				end
+			end
+
+			return false, "bad type for union"
+		end
+	end
+
+--[[**
+		Alias for t.union
+	**--]]
+	t.some = t.union
+
+--[[**
+		creates an intersection type
+
+		@param ... The checks to intersect
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.intersection(...)
+		local checks = { ... }
+		assert(callbackArray(checks))
+
+		return function(value)
+			for _, check in ipairs(checks) do
+				local success, errMsg = check(value)
+				if not success then
+					return false, errMsg or ""
+				end
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		Alias for t.intersection
+	**--]]
+	t.every = t.intersection
+end
+
+do
+	local checkInterface = t.map(t.any, t.callback)
+--[[**
+		ensures value matches given interface definition
+
+		@param checkTable The interface definition
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.interface(checkTable)
+		assert(checkInterface(checkTable))
+		return function(value)
+			local tableSuccess, tableErrMsg = t.table(value)
+			if tableSuccess == false then
+				return false, tableErrMsg or ""
+			end
+
+			for key, check in pairs(checkTable) do
+				local success, errMsg = check(value[key])
+				if success == false then
+					return false, string.format("[interface] bad value for %s:\n\t%s", tostring(key), errMsg or "")
+				end
+			end
+
+			return true
+		end
+	end
+
+--[[**
+		ensures value matches given interface definition strictly
+
+		@param checkTable The interface definition
+
+		@returns A function that will return true iff the condition is passed
+	**--]]
+	function t.strictInterface(checkTable)
+		assert(checkInterface(checkTable))
+		return function(value)
+			local tableSuccess, tableErrMsg = t.table(value)
+			if tableSuccess == false then
+				return false, tableErrMsg or ""
+			end
+
+			for key, check in pairs(checkTable) do
+				local success, errMsg = check(value[key])
+				if success == false then
+					return false, string.format("[interface] bad value for %s:\n\t%s", tostring(key), errMsg or "")
+				end
+			end
+
+			for key in pairs(value) do
+				if not checkTable[key] then
+					return false, string.format("[interface] unexpected field %q", tostring(key))
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+--[[**
+	ensure value is an Instance and it's ClassName matches the given ClassName
+
+	@param className The class name to check for
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.instanceOf(className, childTable)
+	assert(t.string(className))
+
+	local childrenCheck
+	if childTable ~= nil then
+		childrenCheck = t.children(childTable)
+	end
+
+	return function(value)
+		local instanceSuccess, instanceErrMsg = t.Instance(value)
+		if not instanceSuccess then
+			return false, instanceErrMsg or ""
+		end
+
+		if value.ClassName ~= className then
+			return false, string.format("%s expected, got %s", className, value.ClassName)
+		end
+
+		if childrenCheck then
+			local childrenSuccess, childrenErrMsg = childrenCheck(value)
+			if not childrenSuccess then
+				return false, childrenErrMsg
+			end
+		end
+
+		return true
+	end
+end
+
+t.instance = t.instanceOf
+
+--[[**
+	ensure value is an Instance and it's ClassName matches the given ClassName by an IsA comparison
+
+	@param className The class name to check for
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.instanceIsA(className, childTable)
+	assert(t.string(className))
+
+	local childrenCheck
+	if childTable ~= nil then
+		childrenCheck = t.children(childTable)
+	end
+
+	return function(value)
+		local instanceSuccess, instanceErrMsg = t.Instance(value)
+		if not instanceSuccess then
+			return false, instanceErrMsg or ""
+		end
+
+		if not value:IsA(className) then
+			return false, string.format("%s expected, got %s", className, value.ClassName)
+		end
+
+		if childrenCheck then
+			local childrenSuccess, childrenErrMsg = childrenCheck(value)
+			if not childrenSuccess then
+				return false, childrenErrMsg
+			end
+		end
+
+		return true
+	end
+end
+
+--[[**
+	ensures value is an enum of the correct type
+
+	@param enum The enum to check
+
+	@returns A function that will return true iff the condition is passed
+**--]]
+function t.enum(enum)
+	assert(t.Enum(enum))
+	return function(value)
+		local enumItemSuccess, enumItemErrMsg = t.EnumItem(value)
+		if not enumItemSuccess then
+			return false, enumItemErrMsg
+		end
+
+		if value.EnumType == enum then
+			return true
+		else
+			return false, string.format("enum of %s expected, got enum of %s", tostring(enum), tostring(value.EnumType))
+		end
+	end
+end
+
+do
+	local checkWrap = t.tuple(t.callback, t.callback)
+
+--[[**
+		wraps a callback in an assert with checkArgs
+
+		@param callback The function to wrap
+		@param checkArgs The function to use to check arguments in the assert
+
+		@returns A function that first asserts using checkArgs and then calls callback
+	**--]]
+	function t.wrap(callback, checkArgs)
+		assert(checkWrap(callback, checkArgs))
+		return function(...)
+			assert(checkArgs(...))
+			return callback(...)
+		end
+	end
+end
+
+--[[**
+	asserts a given check
+
+	@param check The function to wrap with an assert
+
+	@returns A function that simply wraps the given check in an assert
+**--]]
+function t.strict(check)
+	return function(...)
+		assert(check(...))
+	end
+end
+
+do
+	local checkChildren = t.map(t.string, t.callback)
+
+--[[**
+		Takes a table where keys are child names and values are functions to check the children against.
+		Pass an instance tree into the function.
+		If at least one child passes each check, the overall check passes.
+
+		Warning! If you pass in a tree with more than one child of the same name, this function will always return false
+
+		@param checkTable The table to check against
+
+		@returns A function that checks an instance tree
+	**--]]
+	function t.children(checkTable)
+		assert(checkChildren(checkTable))
+
+		return function(value)
+			local instanceSuccess, instanceErrMsg = t.Instance(value)
+			if not instanceSuccess then
+				return false, instanceErrMsg or ""
+			end
+
+			local childrenByName = {}
+			for _, child in ipairs(value:GetChildren()) do
+				local name = child.Name
+				if checkTable[name] then
+					if childrenByName[name] then
+						return false, string.format("Cannot process multiple children with the same name %q", name)
+					end
+
+					childrenByName[name] = child
+				end
+			end
+
+			for name, check in pairs(checkTable) do
+				local success, errMsg = check(childrenByName[name])
+				if not success then
+					return false, string.format("[%s.%s] %s", value:GetFullName(), name, errMsg or "")
+				end
+			end
+
+			return true
+		end
+	end
+end
+
+return t
+]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+				</Item>
+				<Item class="Folder" referent="RBX0192722B76094CA28822816A46F29EA8">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">sleitnick_signal@2.0.1</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX435D8F20001346008FF244078E3FCEF6">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">signal</string>
+							<string name="ScriptGuid">{3D3F207A-9A49-4464-BFFE-59B576E38C4F}</string>
+							<ProtectedString name="Source"><![CDATA[-- -----------------------------------------------------------------------------
+--               Batched Yield-Safe Signal Implementation                     --
+-- This is a Signal class which has effectively identical behavior to a       --
+-- normal RBXScriptSignal, with the only difference being a couple extra      --
+-- stack frames at the bottom of the stack trace when an error is thrown.     --
+-- This implementation caches runner coroutines, so the ability to yield in   --
+-- the signal handlers comes at minimal extra cost over a naive signal        --
+-- implementation that either always or never spawns a thread.                --
+--                                                                            --
+-- License:                                                                   --
+--   Licensed under the MIT license.                                          --
+--                                                                            --
+-- Authors:                                                                   --
+--   stravant - July 31st, 2021 - Created the file.                           --
+--   sleitnick - August 3rd, 2021 - Modified for Knit.                        --
+-- -----------------------------------------------------------------------------
+
+-- Signal types
+export type Connection = {
+	Disconnect: (self: Connection) -> (),
+	Destroy: (self: Connection) -> (),
+	Connected: boolean,
+}
+
+export type Signal<T...> = {
+	Fire: (self: Signal<T...>, T...) -> (),
+	FireDeferred: (self: Signal<T...>, T...) -> (),
+	Connect: (self: Signal<T...>, fn: (T...) -> ()) -> Connection,
+	Once: (self: Signal<T...>, fn: (T...) -> ()) -> Connection,
+	DisconnectAll: (self: Signal<T...>) -> (),
+	GetConnections: (self: Signal<T...>) -> { Connection },
+	Destroy: (self: Signal<T...>) -> (),
+	Wait: (self: Signal<T...>) -> T...,
+}
+
+-- The currently idle thread to run the next handler on
+local freeRunnerThread = nil
+
+-- Function which acquires the currently idle handler runner thread, runs the
+-- function fn on it, and then releases the thread, returning it to being the
+-- currently idle one.
+-- If there was a currently idle runner thread already, that's okay, that old
+-- one will just get thrown and eventually GCed.
+local function acquireRunnerThreadAndCallEventHandler(fn, ...)
+	local acquiredRunnerThread = freeRunnerThread
+	freeRunnerThread = nil
+	fn(...)
+	-- The handler finished running, this runner thread is free again.
+	freeRunnerThread = acquiredRunnerThread
+end
+
+-- Coroutine runner that we create coroutines of. The coroutine can be
+-- repeatedly resumed with functions to run followed by the argument to run
+-- them with.
+local function runEventHandlerInFreeThread(...)
+	acquireRunnerThreadAndCallEventHandler(...)
+	while true do
+		acquireRunnerThreadAndCallEventHandler(coroutine.yield())
+	end
+end
+
+--[=[
+	@within Signal
+	@interface SignalConnection
+	.Connected boolean
+	.Disconnect (SignalConnection) -> ()
+
+	Represents a connection to a signal.
+	```lua
+	local connection = signal:Connect(function() end)
+	print(connection.Connected) --> true
+	connection:Disconnect()
+	print(connection.Connected) --> false
+	```
+]=]
+
+-- Connection class
+local Connection = {}
+Connection.__index = Connection
+
+function Connection:Disconnect()
+	if not self.Connected then
+		return
+	end
+	self.Connected = false
+
+	-- Unhook the node, but DON'T clear it. That way any fire calls that are
+	-- currently sitting on this node will be able to iterate forwards off of
+	-- it, but any subsequent fire calls will not hit it, and it will be GCed
+	-- when no more fire calls are sitting on it.
+	if self._signal._handlerListHead == self then
+		self._signal._handlerListHead = self._next
+	else
+		local prev = self._signal._handlerListHead
+		while prev and prev._next ~= self do
+			prev = prev._next
+		end
+		if prev then
+			prev._next = self._next
+		end
+	end
+end
+
+Connection.Destroy = Connection.Disconnect
+
+-- Make Connection strict
+setmetatable(Connection, {
+	__index = function(_tb, key)
+		error(("Attempt to get Connection::%s (not a valid member)"):format(tostring(key)), 2)
+	end,
+	__newindex = function(_tb, key, _value)
+		error(("Attempt to set Connection::%s (not a valid member)"):format(tostring(key)), 2)
+	end,
+})
+
+--[=[
+	@within Signal
+	@type ConnectionFn (...any) -> ()
+
+	A function connected to a signal.
+]=]
+
+--[=[
+	@class Signal
+
+	Signals allow events to be dispatched and handled.
+
+	For example:
+	```lua
+	local signal = Signal.new()
+
+	signal:Connect(function(msg)
+		print("Got message:", msg)
+	end)
+
+	signal:Fire("Hello world!")
+	```
+]=]
+local Signal = {}
+Signal.__index = Signal
+
+--[=[
+	Constructs a new Signal
+
+	@return Signal
+]=]
+function Signal.new<T...>(): Signal<T...>
+	local self = setmetatable({
+		_handlerListHead = false,
+		_proxyHandler = nil,
+		_yieldedThreads = nil,
+	}, Signal)
+
+	return self
+end
+
+--[=[
+	Constructs a new Signal that wraps around an RBXScriptSignal.
+
+	@param rbxScriptSignal RBXScriptSignal -- Existing RBXScriptSignal to wrap
+	@return Signal
+
+	For example:
+	```lua
+	local signal = Signal.Wrap(workspace.ChildAdded)
+	signal:Connect(function(part) print(part.Name .. " added") end)
+	Instance.new("Part").Parent = workspace
+	```
+]=]
+function Signal.Wrap<T...>(rbxScriptSignal: RBXScriptSignal): Signal<T...>
+	assert(
+		typeof(rbxScriptSignal) == "RBXScriptSignal",
+		"Argument #1 to Signal.Wrap must be a RBXScriptSignal; got " .. typeof(rbxScriptSignal)
+	)
+
+	local signal = Signal.new()
+	signal._proxyHandler = rbxScriptSignal:Connect(function(...)
+		signal:Fire(...)
+	end)
+
+	return signal
+end
+
+--[=[
+	Checks if the given object is a Signal.
+
+	@param obj any -- Object to check
+	@return boolean -- `true` if the object is a Signal.
+]=]
+function Signal.Is(obj: any): boolean
+	return type(obj) == "table" and getmetatable(obj) == Signal
+end
+
+--[=[
+	@param fn ConnectionFn
+	@return SignalConnection
+
+	Connects a function to the signal, which will be called anytime the signal is fired.
+	```lua
+	signal:Connect(function(msg, num)
+		print(msg, num)
+	end)
+
+	signal:Fire("Hello", 25)
+	```
+]=]
+function Signal:Connect(fn)
+	local connection = setmetatable({
+		Connected = true,
+		_signal = self,
+		_fn = fn,
+		_next = false,
+	}, Connection)
+
+	if self._handlerListHead then
+		connection._next = self._handlerListHead
+		self._handlerListHead = connection
+	else
+		self._handlerListHead = connection
+	end
+
+	return connection
+end
+
+--[=[
+	@deprecated v1.3.0 -- Use `Signal:Once` instead.
+	@param fn ConnectionFn
+	@return SignalConnection
+]=]
+function Signal:ConnectOnce(fn)
+	return self:Once(fn)
+end
+
+--[=[
+	@param fn ConnectionFn
+	@return SignalConnection
+
+	Connects a function to the signal, which will be called the next time the signal fires. Once
+	the connection is triggered, it will disconnect itself.
+	```lua
+	signal:Once(function(msg, num)
+		print(msg, num)
+	end)
+
+	signal:Fire("Hello", 25)
+	signal:Fire("This message will not go through", 10)
+	```
+]=]
+function Signal:Once(fn)
+	local connection
+	local done = false
+
+	connection = self:Connect(function(...)
+		if done then
+			return
+		end
+
+		done = true
+		connection:Disconnect()
+		fn(...)
+	end)
+
+	return connection
+end
+
+function Signal:GetConnections()
+	local items = {}
+
+	local item = self._handlerListHead
+	while item do
+		table.insert(items, item)
+		item = item._next
+	end
+
+	return items
+end
+
+-- Disconnect all handlers. Since we use a linked list it suffices to clear the
+-- reference to the head handler.
+--[=[
+	Disconnects all connections from the signal.
+	```lua
+	signal:DisconnectAll()
+	```
+]=]
+function Signal:DisconnectAll()
+	local item = self._handlerListHead
+	while item do
+		item.Connected = false
+		item = item._next
+	end
+	self._handlerListHead = false
+
+	local yieldedThreads = rawget(self, "_yieldedThreads")
+	if yieldedThreads then
+		for thread in yieldedThreads do
+			if coroutine.status(thread) == "suspended" then
+				warn(debug.traceback(thread, "signal disconnected; yielded thread cancelled", 2))
+				task.cancel(thread)
+			end
+		end
+		table.clear(self._yieldedThreads)
+	end
+end
+
+-- Signal:Fire(...) implemented by running the handler functions on the
+-- coRunnerThread, and any time the resulting thread yielded without returning
+-- to us, that means that it yielded to the Roblox scheduler and has been taken
+-- over by Roblox scheduling, meaning we have to make a new coroutine runner.
+--[=[
+	@param ... any
+
+	Fire the signal, which will call all of the connected functions with the given arguments.
+	```lua
+	signal:Fire("Hello")
+
+	-- Any number of arguments can be fired:
+	signal:Fire("Hello", 32, {Test = "Test"}, true)
+	```
+]=]
+function Signal:Fire(...)
+	local item = self._handlerListHead
+	while item do
+		if item.Connected then
+			if not freeRunnerThread then
+				freeRunnerThread = coroutine.create(runEventHandlerInFreeThread)
+			end
+			task.spawn(freeRunnerThread, item._fn, ...)
+		end
+		item = item._next
+	end
+end
+
+--[=[
+	@param ... any
+
+	Same as `Fire`, but uses `task.defer` internally & doesn't take advantage of thread reuse.
+	```lua
+	signal:FireDeferred("Hello")
+	```
+]=]
+function Signal:FireDeferred(...)
+	local item = self._handlerListHead
+	while item do
+		local conn = item
+		task.defer(function(...)
+			if conn.Connected then
+				conn._fn(...)
+			end
+		end, ...)
+		item = item._next
+	end
+end
+
+--[=[
+	@return ... any
+	@yields
+
+	Yields the current thread until the signal is fired, and returns the arguments fired from the signal.
+	Yielding the current thread is not always desirable. If the desire is to only capture the next event
+	fired, using `Once` might be a better solution.
+	```lua
+	task.spawn(function()
+		local msg, num = signal:Wait()
+		print(msg, num) --> "Hello", 32
+	end)
+	signal:Fire("Hello", 32)
+	```
+]=]
+function Signal:Wait()
+	local yieldedThreads = rawget(self, "_yieldedThreads")
+	if not yieldedThreads then
+		yieldedThreads = {}
+		rawset(self, "_yieldedThreads", yieldedThreads)
+	end
+
+	local thread = coroutine.running()
+	yieldedThreads[thread] = true
+
+	self:Once(function(...)
+		yieldedThreads[thread] = nil
+		task.spawn(thread, ...)
+	end)
+
+	return coroutine.yield()
+end
+
+--[=[
+	Cleans up the signal.
+
+	Technically, this is only necessary if the signal is created using
+	`Signal.Wrap`. Connections should be properly GC'd once the signal
+	is no longer referenced anywhere. However, it is still good practice
+	to include ways to strictly clean up resources. Calling `Destroy`
+	on a signal will also disconnect all connections immediately.
+	```lua
+	signal:Destroy()
+	```
+]=]
+function Signal:Destroy()
+	self:DisconnectAll()
+
+	local proxyHandler = rawget(self, "_proxyHandler")
+	if proxyHandler then
+		proxyHandler:Disconnect()
+	end
+end
+
+-- Make signal strict
+setmetatable(Signal, {
+	__index = function(_tb, key)
+		error(("Attempt to get Signal::%s (not a valid member)"):format(tostring(key)), 2)
+	end,
+	__newindex = function(_tb, key, _value)
+		error(("Attempt to set Signal::%s (not a valid member)"):format(tostring(key)), 2)
+	end,
+})
+
+return table.freeze({
+	new = Signal.new,
+	Wrap = Signal.Wrap,
+	Is = Signal.Is,
+})
+]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+						<Item class="ModuleScript" referent="RBX6C81527F9AA44716BD2225BD28ADADFE">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">init.spec</string>
+								<string name="ScriptGuid">{D0BEF32E-7628-4DCC-88DF-F38EAA74A17D}</string>
+								<ProtectedString name="Source"><![CDATA[local function AwaitCondition(predicate, timeout)
+	local start = os.clock()
+	timeout = (timeout or 10)
+	while true do
+		if predicate() then
+			return true
+		end
+		if (os.clock() - start) > timeout then
+			return false
+		end
+		task.wait()
+	end
+end
+
+return function()
+	local Signal = require(script.Parent)
+
+	local signal
+
+	local function NumConns(sig)
+		sig = sig or signal
+		return #sig:GetConnections()
+	end
+
+	beforeEach(function()
+		signal = Signal.new()
+	end)
+
+	afterEach(function()
+		signal:Destroy()
+	end)
+
+	describe("Constructor", function()
+		it("should create a new signal and fire it", function()
+			expect(Signal.Is(signal)).to.equal(true)
+			task.defer(function()
+				signal:Fire(10, 20)
+			end)
+			local n1, n2 = signal:Wait()
+			expect(n1).to.equal(10)
+			expect(n2).to.equal(20)
+		end)
+
+		it("should create a proxy signal and connect to it", function()
+			local signalWrap = Signal.Wrap(game:GetService("RunService").Heartbeat)
+			expect(Signal.Is(signalWrap)).to.equal(true)
+			local fired = false
+			signalWrap:Connect(function()
+				fired = true
+			end)
+			expect(AwaitCondition(function()
+				return fired
+			end, 2)).to.equal(true)
+			signalWrap:Destroy()
+		end)
+	end)
+
+	describe("FireDeferred", function()
+		it("should be able to fire primitive argument", function()
+			local send = 10
+			local value
+			signal:Connect(function(v)
+				value = v
+			end)
+			signal:FireDeferred(send)
+			expect(AwaitCondition(function()
+				return (send == value)
+			end, 1)).to.equal(true)
+		end)
+
+		it("should be able to fire a reference based argument", function()
+			local send = { 10, 20 }
+			local value
+			signal:Connect(function(v)
+				value = v
+			end)
+			signal:FireDeferred(send)
+			expect(AwaitCondition(function()
+				return (send == value)
+			end, 1)).to.equal(true)
+		end)
+	end)
+
+	describe("Fire", function()
+		it("should be able to fire primitive argument", function()
+			local send = 10
+			local value
+			signal:Connect(function(v)
+				value = v
+			end)
+			signal:Fire(send)
+			expect(value).to.equal(send)
+		end)
+
+		it("should be able to fire a reference based argument", function()
+			local send = { 10, 20 }
+			local value
+			signal:Connect(function(v)
+				value = v
+			end)
+			signal:Fire(send)
+			expect(value).to.equal(send)
+		end)
+	end)
+
+	describe("ConnectOnce", function()
+		it("should only capture first fire", function()
+			local value
+			local c = signal:ConnectOnce(function(v)
+				value = v
+			end)
+			expect(c.Connected).to.equal(true)
+			signal:Fire(10)
+			expect(c.Connected).to.equal(false)
+			signal:Fire(20)
+			expect(value).to.equal(10)
+		end)
+	end)
+
+	describe("Wait", function()
+		it("should be able to wait for a signal to fire", function()
+			task.defer(function()
+				signal:Fire(10, 20, 30)
+			end)
+			local n1, n2, n3 = signal:Wait()
+			expect(n1).to.equal(10)
+			expect(n2).to.equal(20)
+			expect(n3).to.equal(30)
+		end)
+	end)
+
+	describe("DisconnectAll", function()
+		it("should disconnect all connections", function()
+			signal:Connect(function() end)
+			signal:Connect(function() end)
+			expect(NumConns()).to.equal(2)
+			signal:DisconnectAll()
+			expect(NumConns()).to.equal(0)
+		end)
+	end)
+
+	describe("Disconnect", function()
+		it("should disconnect connection", function()
+			local con = signal:Connect(function() end)
+			expect(NumConns()).to.equal(1)
+			con:Disconnect()
+			expect(NumConns()).to.equal(0)
+		end)
+
+		it("should still work if connections disconnected while firing", function()
+			local a = 0
+			local c
+			signal:Connect(function()
+				a += 1
+			end)
+			c = signal:Connect(function()
+				c:Disconnect()
+				a += 1
+			end)
+			signal:Connect(function()
+				a += 1
+			end)
+			signal:Fire()
+			expect(a).to.equal(3)
+		end)
+
+		it("should still work if connections disconnected while firing deferred", function()
+			local a = 0
+			local c
+			signal:Connect(function()
+				a += 1
+			end)
+			c = signal:Connect(function()
+				c:Disconnect()
+				a += 1
+			end)
+			signal:Connect(function()
+				a += 1
+			end)
+			signal:FireDeferred()
+			expect(AwaitCondition(function()
+				return a == 3
+			end)).to.equal(true)
+		end)
+	end)
+end
+]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBX88593BD4F96342DA9AADF50ACB26098D">
+							<Properties>
+								<BinaryString name="AttributesSerialize"></BinaryString>
+								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+								<bool name="DefinesCapabilities">false</bool>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">wally</string>
+								<string name="ScriptGuid">{96010EE0-1DE5-4434-8059-AE785E613CA3}</string>
+								<ProtectedString name="Source"><![CDATA[return {
+	package = {
+		authors = {"Stephen Leitnick"},
+		description = "Signal class",
+		exclude = {"node_modules", "package.json", "**/*.ts"},
+		license = "MIT",
+		name = "sleitnick/signal",
+		realm = "shared",
+		registry = "https://github.com/UpliftGames/wally-index",
+		version = "2.0.1",
+	},
+}]]></ProtectedString>
+								<int64 name="SourceAssetId">-1</int64>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+					</Item>
+				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBXC7EFE97D899B4F0FA0F80FE3D44AAEBE">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">t</string>
+					<string name="ScriptGuid">{3A998B29-A38A-4033-A661-F726BEE422ED}</string>
+					<ProtectedString name="Source"><![CDATA[return require(script.Parent._Index["osyrisrblx_t@3.0.0"]["t"])
+]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Script" referent="RBXB444151CE22F44D29B2B891D46465E3D">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="Disabled">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Plugin</string>
+				<token name="RunContext">0</token>
+				<string name="ScriptGuid">{41D18F5A-0B5C-4C6B-951E-DF513256396A}</string>
+				<ProtectedString name="Source"><![CDATA[--[[
+    blackferrari2's Session Tracker
+
+    Version 1.2
+    19th January 2024
+
+    SOURCE:
+    https://github.com/blackferrari2/session-tracker
+]]
+
+assert(plugin, "SessionTrack must run as a plugin NOW")
+
+if game:GetService("RunService"):IsRunning() then
+    return
+end
+
+local Session = require(script.Session)
+local SessionStatus = require(script.Session.SessionStatus)
+local Logger = require(script.Session.Logger)
+local Autosave = require(script.Session.Autosave)
+local Settings = require(script.Settings)
+local Icons = require(script.Icons)
+
+local pluginSettingsRoot = Settings.get()
+local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
+
+---------------
+
+if pluginSettingsRoot then
+    local success, errorMessage = Settings.assert(pluginSettingsRoot)
+
+    if not success then
+        local toolbar = plugin:CreateToolbar("BrokenSessionTrack")
+
+        local viewAssertionFailPageButton = toolbar:CreateButton(
+            "what happened??",
+            "you messed up...",
+            Icons.AssertionFailPage
+        )
+
+        local function onViewPageClick()
+            plugin:OpenScript(script.Settings.FailedAssertionLandingPage)
+        end
+
+        viewAssertionFailPageButton.Click:Connect(onViewPageClick)
+
+        error(errorMessage)
+    end
+end
+
+---------------
+
+local toolbar = plugin:CreateToolbar("SessionTrack")
+
+local powerButton = toolbar:CreateButton(
+    "power",
+    "turn bot on or off",
+    Icons.Power.On
+)
+
+local pauseButton = toolbar:CreateButton(
+    "pause",
+    "pause or resume session",
+    Icons.Pause.Unpaused
+)
+
+local settingsButton = toolbar:CreateButton(
+    "settings",
+    "open settings widget",
+    Icons.Settings
+)
+
+local initializeButton = toolbar:CreateButton(
+    "initialize",
+    "create new settings",
+    Icons.Initialize
+)
+
+--
+
+local settingsButtonHeight = 40
+local settingsWidget do
+    local widgetInfo = DockWidgetPluginGuiInfo.new(
+        Enum.InitialDockState.Float,
+        false,
+        true,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5,
+        settingsButtonHeight * 5
+    )
+
+    settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", widgetInfo)
+    settingsWidget.Title = "select what you wanna edit"
+end
+
+local scroll = Instance.new("ScrollingFrame")
+
+scroll.Size = UDim2.fromScale(1, 1)
+scroll.Position = UDim2.fromScale(0, 0)
+scroll.BackgroundColor3 = Color3.new(0, 0, 0)
+scroll.Parent = settingsWidget
+
+local UIListLayout = Instance.new("UIListLayout")
+
+UIListLayout.Parent = scroll
+
+local function updateSettingsWidget(modules)
+    for _, module in pairs(modules) do
+        -- replace old button
+        local oldButton = scroll:FindFirstChild(module.Name)
+        
+        if oldButton then
+            oldButton:Destroy()
+        end
+
+        local openScriptButton = Instance.new("TextButton")
+
+        openScriptButton.Text = module.Name
+        openScriptButton.Name = module.Name
+        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsButtonHeight))
+        openScriptButton.Font = Enum.Font.Arcade
+        openScriptButton.TextSize = settingsButtonHeight - 15
+        openScriptButton.TextStrokeTransparency = 0
+        openScriptButton.TextColor3 = Color3.new(1, 1, 1)
+        openScriptButton.BackgroundColor3 = Color3.new(0, 0, 0)
+        openScriptButton.Parent = scroll
+    end
+end
+
+---------------
+
+pauseButton.Enabled = false
+
+if not pluginSettingsRoot then
+    settingsButton.Enabled = false
+    powerButton.Enabled = false
+else
+    initializeButton.Enabled = false
+end
+
+---------------
+
+local currentSession
+local autosave
+
+function onPowerOnClick()
+    Icons.changeIconSafely(powerButton, Icons.Power.Off)
+    pauseButton.Enabled = true
+    settingsButton.Enabled = false
+
+    currentSession = Session.new()
+    autosave = Autosave.new(plugin, Info.ProjectName)
+
+    local currentSessionStatus = currentSession.status
+    local recoveredSessionStatus = autosave:recover()
+    local logger = Logger.new(pluginSettingsRoot, currentSessionStatus)
+
+    if recoveredSessionStatus and recoveredSessionStatus.state == SessionStatus.States.Paused then
+        Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
+    end
+
+    currentSessionStatus.stateChanged:Connect(function()
+        autosave:update(currentSessionStatus)
+    end)
+
+    currentSession:begin(logger, recoveredSessionStatus)
+    autosave:loop(currentSessionStatus)
+end
+
+function onPowerOffClick()
+    Icons.changeIconSafely(powerButton, Icons.Power.On)
+    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
+    pauseButton.Enabled = false
+    settingsButton.Enabled = true
+
+    Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
+    autosave:erase()
+    currentSession:close()
+    currentSession = nil
+end
+
+powerButton.Click:Connect(function()
+    powerButton.Enabled = false
+
+    if currentSession then
+        onPowerOffClick()
+        powerButton.Enabled = true
+        return
+    end
+
+    onPowerOnClick()
+    powerButton.Enabled = true
+end)
+
+if pluginSettingsRoot and Autosave.new(plugin, Info.ProjectName):recover() then
+    Icons.changeIconSafely(powerButton, Icons.Power.Recover)
+end
+
+--
+
+function onPauseClick()
+    currentSession:pause()
+    Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
+end
+
+function onResumeClick()
+    currentSession:resume()
+    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
+end
+
+pauseButton.Click:Connect(function()
+    if not currentSession then
+        return
+    end
+
+    pauseButton.Enabled = false
+
+    if currentSession.status.state == SessionStatus.States.Paused then
+        onResumeClick()
+        pauseButton.Enabled = true
+        return
+    end
+
+    onPauseClick()
+    pauseButton.Enabled = true
+end)
+
+--
+
+function setupSettingsButtonEvents(modules)
+    for _, module in pairs(modules) do
+        local openScriptButton = scroll:FindFirstChild(module.Name)
+    
+        openScriptButton.Activated:Connect(function()
+            plugin:OpenScript(module)
+        end)
+    end
+end
+
+function onSettingsClick()
+    local modules = pluginSettingsRoot:GetChildren()
+
+    updateSettingsWidget(modules)
+    setupSettingsButtonEvents(modules)
+
+    settingsWidget.Enabled = not settingsWidget.Enabled
+end
+
+settingsButton.Click:Connect(onSettingsClick)
+
+--
+
+function onInitializeclick()
+    settingsButton.Enabled = true
+    initializeButton.Enabled = false
+
+    pluginSettingsRoot = Settings.new()
+    plugin:OpenScript(pluginSettingsRoot.Webhook)
+end
+
+initializeButton.Click:Connect(function()
+    if pluginSettingsRoot then
+        return
+    end
+
+    onInitializeclick()
+end)
+]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+			<Item class="ModuleScript" referent="RBX9C404092791048D58C7611060C3759CB">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Session</string>
+					<string name="ScriptGuid">{AC0F1AE9-6D7A-4E94-BC1E-A0241FE8F0F7}</string>
+					<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.SessionStatus)
+local Logger = require(script.Logger)
+
+local Session = {}
+Session.__index = Session
+
+---------------
+
+type self = {
+    status: SessionStatus.SessionStatus,
+    logger: Logger.Logger,
+}
+
+export type Session = typeof(setmetatable({} :: self, Session))
+
+-------------
+
+function Session.new(): Session
+    local self = {
+        status = SessionStatus.new(),
+        logger = nil,
+    }
+
+    setmetatable(self, Session)
+
+    return self
+end
+
+function Session.begin(self: Session, logger: Logger.Logger, recoveredSessionStatus: SessionStatus.SessionStatus?)
+    if self.status.state ~= SessionStatus.States.DidntStart then
+        return
+    end
+
+    self.logger = logger
+    self.status:changeState(SessionStatus.States.Ongoing)
+
+    if recoveredSessionStatus then
+        self.status.state = recoveredSessionStatus.state
+        self.status.timePassed = recoveredSessionStatus.timePassed
+        self.status.timeStarted = recoveredSessionStatus.timeStarted
+        logger:onSessionRecovered()
+    else
+        logger:start()
+    end
+
+    if self.status.state ~= SessionStatus.States.Paused then
+        logger:loopCheckpointPosting()
+    end
+end
+
+function Session.pause(self: Session)
+    if self.status.state ~= SessionStatus.States.Ongoing then
+        return
+    end
+
+    self.status:changeState(SessionStatus.States.Paused)
+    self.logger:stopLoop()
+    self.logger:pause()
+end
+
+function Session.resume(self: Session)
+    if self.status.state ~= SessionStatus.States.Paused then
+        return
+    end
+
+    self.status:changeState(SessionStatus.States.Ongoing)
+    self.logger:resume()
+    self.logger:loopCheckpointPosting()
+end
+
+function Session.close(self: Session)
+    self.status:changeState(SessionStatus.States.Closed)
+    self.logger:close()
+end
+
+---------------
+
+return Session]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="ModuleScript" referent="RBX828C25541430491DB84D705E40167EF8">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">Autosave</string>
+						<string name="ScriptGuid">{A0D9C31D-942F-4C55-A4FD-D90B35E6C4BC}</string>
+						<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.Parent.SessionStatus)
+
+local Autosave = {
+    Key = "SessionTrackAutosave%s",
+    IntervalSeconds = 5,
+}
+
+Autosave.__index = Autosave
+
+---------------
+
+type self = {
+    plugin: Plugin,
+    projectName: string,
+    loopThread: thread,
+}
+
+export type Autosave = typeof(setmetatable({} :: self, Autosave))
+
+-------------
+
+local function getKey(projectName)
+    return string.format(Autosave.Key, projectName)
+end
+
+-------------
+
+function Autosave.new(plugin: Plugin, projectName: string): Autosave
+    local self = {
+        plugin = plugin,
+        projectName = projectName,
+        loopThread = nil,
+    }
+
+    setmetatable(self, Autosave)
+
+    return self
+end
+
+function Autosave.update(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
+    -- the .stateChanged signal cant be saved by the plugin. itll throw an error
+    local statusWithoutSignal = SessionStatus.new()
+
+    statusWithoutSignal.state = sessionStatus.state
+    statusWithoutSignal.timeStarted = sessionStatus.timeStarted
+    statusWithoutSignal.timePassed = sessionStatus.timePassed
+    statusWithoutSignal.stateChanged:DisconnectAll()
+    statusWithoutSignal.stateChanged = nil
+
+    self.plugin:SetSetting(getKey(self.projectName), statusWithoutSignal)
+end
+
+function Autosave.erase(self: Autosave)
+    self:stop()
+    self.plugin:SetSetting(getKey(self.projectName), nil)
+end
+
+function Autosave.recover(self: Autosave): SessionStatus.SessionStatus?
+    return self.plugin:GetSetting(getKey(self.projectName))
+end
+
+function Autosave.loop(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
+    if self.loopThread then
+        return
+    end
+
+    self.loopThread = task.spawn(function()
+        self:update(sessionStatus)
+    end)
+end
+
+function Autosave.stop(self: Autosave)
+    if not self.loopThread then
+        return
+    end
+
+    task.cancel(self.loopThread)
+end
+
+---------------
+
+return Autosave]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="ModuleScript" referent="RBXDFDC5A3CF3C843C19F2D085FA4CF7157">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">Logger</string>
+						<string name="ScriptGuid">{C43D7B1A-0BBB-4CEF-A2BA-835F64A01542}</string>
+						<ProtectedString name="Source"><![CDATA[local baseModules = script.Parent.Parent.Settings.Modules
+
+local Messages = require(baseModules.Messages)
+local Checkpoints = require(baseModules.Checkpoints)
+local Webhook = require(baseModules.Webhook)
+local Info = require(baseModules.Info)
+
+local Settings = require(script.Parent.Parent.Settings)
+local SessionStatus = require(script.Parent.SessionStatus)
+
+local Logger = {
+    Tags = {
+        DayToday = "TODAYSDATE",
+        SessionTime = "SESSIONTIME",
+        TotalTime = "TOTALTIME",
+        RawSessionTime = "RAWSESSIONTIME",
+        RawTotalTime = "RAWTOTALTIME",
+        SessionState = "SESSIONSTATE",
+    }
+}
+
+Logger.__index = Logger
+
+---------------
+
+type self = {
+    settingsRoot: Settings.Settings,
+    messages: Messages.Messages,
+    checkpoints: Checkpoints.Checkpoints,
+    webhook: Webhook.Webhook,
+    info: Info.Info,
+    sessionStatus: SessionStatus.SessionStatus,
+    loopThread: thread?,
+}
+
+export type Logger = typeof(setmetatable({} :: self, Logger))
+
+-------------
+
+local function formatSecondsToHMS(time)
+    local seconds = math.floor(time % 60)
+    local minutes = math.floor(time / 60) % 60
+    local hours = math.floor(time / 3600) % 24
+
+    return string.format("%s Hours, %s Minutes and %s Seconds", hours, minutes, seconds)
+end
+
+local function formatSecondsToDHMS(time)
+    local seconds = math.floor(time % 60)
+    local minutes = math.floor(time / 60) % 60
+    local hours = math.floor(time / 3600) % 24
+    local days = math.floor(time / 86400)
+
+    return string.format("%s Days, %s Hours, %s Minutes and %s Seconds", days, hours, minutes, seconds)
+end
+
+-------------
+
+function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatus.SessionStatus): Logger
+    local self = {
+        settingsRoot = settingsRoot,
+        messages = require(settingsRoot.Messages),
+        checkpoints = require(settingsRoot.Checkpoints),
+        webhook = require(settingsRoot.Webhook),
+        info = require(settingsRoot.Info),
+        sessionStatus = sessionStatus,
+        loopThread = nil,
+    }
+
+    setmetatable(self, Logger)
+
+    return self
+end
+
+function Logger.start(self: Logger)
+    local message = self.messages.get(self.messages.Start)
+    local separator = self.messages.get(self.messages.LineSeparators)
+
+    self:post(message)
+    self:post(separator)
+end
+
+function Logger.onSessionRecovered(self: Logger)
+    local message = self.messages.get(self.messages.SessionRecovered)
+    
+    self:post(message)
+end
+
+function Logger.postCheckpoint(self: Logger)
+    local checkpoint = self.checkpoints.get()
+        
+    self:post(checkpoint)
+end
+
+function Logger.loopCheckpointPosting(self: Logger)
+    if self.loopThread then
+        return
+    end
+
+    local function loop()
+        local interval = self.checkpoints.IntervalSeconds
+
+        while task.wait(interval) do
+            self:postCheckpoint()
+        end
+    end
+
+    self.loopThread = task.spawn(loop)
+end
+
+function Logger.stopLoop(self: Logger)
+    if self.loopThread then
+        task.cancel(self.loopThread)
+        self.loopThread = nil 
+    end
+end
+
+function Logger.pause(self: Logger)
+    local message = self.messages.get(self.messages.Pause)
+
+    self:post(message)
+end
+
+function Logger.resume(self: Logger)
+    local message = self.messages.get(self.messages.Resume)
+    
+    self:post(message)
+end
+
+function Logger.close(self: Logger)
+    local separator = self.messages.get(self.messages.LineSeparators)
+    local message = self.messages.get(self.messages.Close)
+
+   self:post(separator)
+   self:post(message)
+end
+
+--
+
+-- non-message methods
+
+function Logger.post(self: Logger, text: string)
+    if self.isFaulty then
+        return
+    end
+
+    text = self:getTextWithTagsApplied(text)
+
+    self.webhook.post(text)
+end
+
+function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?
+    if not text then
+        return
+    end
+
+    local tagApplications = {
+        [Logger.Tags.DayToday] = os.date(),
+        [Logger.Tags.SessionTime] = formatSecondsToHMS(self.sessionStatus:getTimeElapsed()),
+        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.info.getTotalProjectTime()),
+        [Logger.Tags.RawSessionTime] = self.sessionStatus:getTimeElapsed(),
+        [Logger.Tags.RawTotalTime] = self.info.getTotalProjectTime(),
+        [Logger.Tags.SessionState] = self.sessionStatus.state,
+    }
+    
+    return string.gsub(text, "%u+", tagApplications)
+end
+
+---------------
+
+return Logger]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="ModuleScript" referent="RBXA57BB351EE3147DBB2905BD590DFB139">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">SessionStatus</string>
+						<string name="ScriptGuid">{A1DD3CAF-0195-4150-95B7-9EDFC3587517}</string>
+						<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Packages
+
+local Signal = require(packages.Signal)
+
+local SessionStatus = {
+    States = {
+        DidntStart = "DidntStart",
+        Ongoing = "Ongoing",
+        Paused = "Paused",
+        Closed = "Closed",
+    },
+}
+
+SessionStatus.__index = SessionStatus
+
+---------------
+
+type self = {
+    state: State,
+    stateChanged: Signal.Signal<State>,
+    timePassed: number,
+    timeStarted: number,
+}
+
+export type State = "DidntStart" | "Ongoing" | "Paused" | "Closed"
+export type SessionStatus = typeof(setmetatable({} :: self, SessionStatus))
+
+-------------
+
+function SessionStatus.new(): SessionStatus
+    local self = {
+        state = SessionStatus.States.DidntStart,
+        stateChanged = Signal.new(),
+        timePassed = 0,
+        timeStarted = nil,
+    }
+
+    setmetatable(self, SessionStatus)
+
+    return self
+end
+
+function SessionStatus.changeState(self: SessionStatus, to: State)
+    if to == SessionStatus.States.Ongoing then
+        self.timeStarted = tick()
+    end
+
+    if to == SessionStatus.States.Paused or to == SessionStatus.States.Closed then
+        self.timePassed = self:getTimeElapsed()
+    end
+
+    if to == SessionStatus.States.Closed then
+        self.stateChanged:Destroy()
+    end
+
+    self.state = to
+    self.stateChanged:Fire(to)
+end
+
+function SessionStatus.getTimeElapsed(self: SessionStatus)
+    if self.state == SessionStatus.States.Paused or self.state == SessionStatus.States.Closed then
+        return self.timePassed
+    end
+
+    local timeElapsedSoFar = tick() - self.timeStarted
+
+    return self.timePassed + timeElapsedSoFar
+end
+
+---------------
+
+return SessionStatus]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBX3E4317D2907D44C6891DB1B1672013B0">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Settings</string>
+					<string name="ScriptGuid">{C573F5BD-C425-4316-AF66-090D49B821A7}</string>
+					<ProtectedString name="Source"><![CDATA[local ServerStorage = game:GetService("ServerStorage")
+
+local baseModules = script.Modules
+local assertions = script.Assertions
+
+local Messages = require(baseModules.Messages)
+local Checkpoints = require(baseModules.Checkpoints)
+local Info = require(baseModules.Info)
+local Webhook = require(baseModules.Webhook)
+
+local Settings = {
+    Version = 4,
+    InstanceName = "SessionTrack.PluginSettings",
+    OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
+    VersionAttribute = "Version",
+}
+
+---------------
+
+export type Settings = Folder & {
+    Messages: Messages.Messages,
+    Checkpoints: Checkpoints.Checkpoints,
+    Info: Info.Info,
+    Webhook: Webhook.Webhook,
+}
+
+---------------
+
+local PRINT_NEW_SETTINGS = "[SessionTrack]: created new settings folder!"
+local WARN_OUTDATED_SETTINGS = "[SessionTrack]: your settings are outdated. please migrate your stuff over to a new copy. the old copy was renamed and you can still view it - its in ServerStorage"
+local ASSERTFAIL_INVALID_INSTANCE = "[SessionTrack]: %s found in settings folder. ModuleScripts ONLY please"
+local ASSERTFAIL_INVALID_NAME = "[SessionTrack]: the module name of %s is invalid. Please change it back to its original name (either that or its not a module found in the original settings.)"
+local ASSERTFAIL_CANT_LOAD_MODULE = "[SessionTrack]: couldnt load settings module %s. %s"
+
+---------------
+
+function Settings.new(): Folder
+    local clone = baseModules:Clone()
+
+    clone.Name = Settings.InstanceName
+    clone:SetAttribute(Settings.VersionAttribute, Settings.Version)
+    clone.Parent = ServerStorage
+
+    print(PRINT_NEW_SETTINGS)
+
+    return clone
+end
+
+function Settings.get(): Folder?
+    local modules = ServerStorage:FindFirstChild(Settings.InstanceName)
+
+    if modules then
+        if modules:GetAttribute(Settings.VersionAttribute) ~= Settings.Version then
+            warn(WARN_OUTDATED_SETTINGS)
+
+            modules.Name = Settings.OutdatedInstanceName
+
+            return nil
+        end
+
+        return modules
+    end
+
+    return nil
+end
+
+function Settings.assert(root: Settings): (boolean, string?)
+    for _, module in pairs(root:GetChildren()) do
+        if module.ClassName ~= "ModuleScript" then
+            return false, string.format(ASSERTFAIL_INVALID_INSTANCE, module.ClassName)
+        end
+
+        local assertion = assertions:FindFirstChild(module.Name)
+
+        if not assertion then
+            return false, string.format(ASSERTFAIL_INVALID_NAME, module.Name)
+        end
+
+        local loadedModule
+        local _, errorMessage = pcall(function() 
+            loadedModule = require(module)
+        end)
+
+        if errorMessage then
+            return false, string.format(ASSERTFAIL_CANT_LOAD_MODULE, module.Name, errorMessage)
+        end
+
+        assertion = require(assertion)
+
+        local moduleChecksPassed, moduleErrorMessage = assertion.run(loadedModule)
+
+        if not moduleChecksPassed then
+            return moduleChecksPassed, moduleErrorMessage
+        end
+    end
+
+    return true
+end
+
+---------------
+
+return Settings]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Folder" referent="RBXA894EF047DED4094B9D4F87C2BBD6FDC">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">Assertions</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX1F8C422AE9704DD79D612566216437D8">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Checkpoints</string>
+							<string name="ScriptGuid">{A34257A6-ED24-42C7-8811-E6C4A65C4A6D}</string>
+							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
+local baseModules = script.Parent.Parent.Modules
+
+local t = require(packages.t)
+local Checkpoints = require(baseModules.Checkpoints)
+
+local CheckpointsAssertion = {}
+
+---------------
+
+local ASSERTFAIL_PREFIX = "[SessionTrack]: CHECKPOINTS FAILED TO LOAD - "
+
+local checkpointInterface = t.interface({
+    author = t.string,
+    message = t.string,
+})
+
+local moduleInterface = t.interface({
+    IntervalSeconds = t.number,
+})
+
+---------------
+
+function CheckpointsAssertion.run(module: Checkpoints.Checkpoints): (boolean, string?)
+    local success, errorMessage = moduleInterface(module)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    for _, checkpoint in ipairs(module) do
+        success, errorMessage = checkpointInterface(checkpoint)
+
+        if not success then
+            return success, ASSERTFAIL_PREFIX .. "checkpoints arent structured correctly. Did you mess with the .add() function? | " .. errorMessage
+        end
+    end
+
+    local checkpoint
+    success, errorMessage = pcall(function()
+        checkpoint = module.get()
+    end)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    success, errorMessage = t.optional(t.string)(checkpoint)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "checkpoints.get() dont return text for some reason. What did you DO? | " .. errorMessage
+    end
+
+    return true
+end
+
+---------------
+
+return CheckpointsAssertion]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXDD23A8427C244723B8963C8CCEF066E4">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Info</string>
+							<string name="ScriptGuid">{6681A592-2373-46F6-B4C0-B67DF323AAB6}</string>
+							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
+local baseModules = script.Parent.Parent.Modules
+
+local t = require(packages.t)
+local Info = require(baseModules.Info)
+
+local InfoAssertion = {}
+
+---------------
+
+local ASSERTFAIL_PREFIX = "[SessionTrack]: INFO FAILED TO LOAD - "
+
+local moduleInterface = t.interface({
+    ProjectName = t.string,
+    TotalProjectTimeAttribute = t.string,
+})
+
+---------------
+
+function InfoAssertion.run(module: Info.Info): (boolean, string?)
+    local success, errorMessage = moduleInterface(module)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    local totalProjectTime
+    success, errorMessage = pcall(function()
+        totalProjectTime = module.getTotalProjectTime()
+    end)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "getTotalProjectTime is erroring. What?"
+    end
+
+    success, errorMessage = t.number(totalProjectTime)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "getTotalProjectTime doesnt return a number. | " .. errorMessage
+    end
+
+    success, errorMessage = pcall(function()
+        module.addToTotalProjectTime(1)
+    end)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    local newTotalProjectTime = module.getTotalProjectTime()
+
+    success, errorMessage = t.literal(totalProjectTime + 1)(newTotalProjectTime)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "addToTotalProjectTime is inaccurate. You know what you did. Theres no way a normal person would get this error"
+    end
+
+    module.addToTotalProjectTime(-1)
+
+    return true
+end
+
+---------------
+
+return InfoAssertion]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBX1CE5CBFA27C7449487D4F8F51BE63186">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Messages</string>
+							<string name="ScriptGuid">{BDCCBAAA-813A-4254-A285-91D9F800F894}</string>
+							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
+local baseModules = script.Parent.Parent.Modules
+
+local t = require(packages.t)
+local Messages = require(baseModules.Messages)
+
+local MessagesAssertion = {}
+
+---------------
+
+local ASSERTFAIL_PREFIX = "[SessionTrack]: MESSAGES FAILED TO LOAD - "
+
+local messageList = t.array(t.string)
+
+local moduleInterface = t.interface({
+    Start = messageList,
+    SessionRecovered = messageList,
+    Close = messageList,
+    Pause = messageList,
+    Resume = messageList,
+    LineSeparators = messageList,
+})
+
+---------------
+
+function MessagesAssertion.run(module: Messages.Messages): (boolean, string?)
+    local success, errorMessage = moduleInterface(module)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "the module isnt structured correctly. Did you mess with the .add() function? | " .. errorMessage
+    end
+
+    local message
+    success, errorMessage = pcall(function()
+        message = module.get(Messages.Start)
+    end)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    success, errorMessage = t.optional(t.string)(message)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "messages arent text for some reason. What did you DO? | " .. errorMessage
+    end
+
+    return true
+end
+
+---------------
+
+return MessagesAssertion]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXC11FBA0A165845D59B96FA26374062D5">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Webhook</string>
+							<string name="ScriptGuid">{D25D532E-DEF6-4610-9E7A-2A2C031CD50C}</string>
+							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
+local baseModules = script.Parent.Parent.Modules
+
+local t = require(packages.t)
+local Webhook = require(baseModules.Webhook)
+
+local WebhookAssertion = {}
+
+---------------
+
+local ASSERTFAIL_PREFIX = "[SessionTrack]: WEBHOOK FAILED TO LOAD - "
+
+local moduleInterface = t.interface({
+    URL = t.string,
+    UseOutputInstead = t.boolean,
+})
+
+---------------
+
+function WebhookAssertion.run(module: Webhook.Webhook): (boolean, string?)
+    local success, errorMessage = moduleInterface(module)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. errorMessage
+    end
+
+    success, errorMessage = pcall(function()
+        module.post("Plugin is starting... (This is a check to see if the webhook actually works)")
+    end)
+
+    if not success then
+        return success, ASSERTFAIL_PREFIX .. "webhook fails to post. Did you setup the URL? | " .. errorMessage
+    end
+
+    return true
+end
+
+---------------
+
+return WebhookAssertion]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBX1FA8D65624174566AD44BB34C99262EF">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Assets</string>
+							<string name="ScriptGuid">{CDB0B7DC-5FD4-41A9-984A-EC2B84937B09}</string>
+							<ProtectedString name="Source"><![CDATA[-- nothing to check lol
+
+local AssetsAssertion = {}
+
+---------------
+
+function AssetsAssertion.run(): boolean
+    return true
+end
+
+---------------
+
+return AssetsAssertion]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+				</Item>
+				<Item class="Folder" referent="RBXC72FE993A9B74C5485348AD25761CCE2">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">Modules</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBX7C708975C7A84206BC9D2BD1EBBCF994">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Assets</string>
+							<string name="ScriptGuid">{10E192BA-EDCF-4BBD-A738-5C211C882DBD}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    plugin assets
+
+    not used for anything in particular other than to spice up messages and checkpoints. Feel free to do anything with this
+]]
+
+local Assets = {
+    Emojis = {
+        Smiley = "🙂",
+        Angry = "😡",
+        Rat = "🐀",
+    },
+}
+
+---------------
+
+return Assets]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXBFD75118BDCC4908A613FAF3E5DFF187">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Checkpoints</string>
+							<string name="ScriptGuid">{EA2F5386-5E8F-470F-9DF9-FA36620091E6}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    Checkpoints are random messages that are sent during a session.
+
+    scroll down
+    ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+]]
+
+local Assets = require(script.Parent.Assets)
+
+local Checkpoints = {
+    -- dont set this number too low or you may be rate limited by discord
+    IntervalSeconds = 600,
+}
+
+---------------
+
+export type Checkpoints = typeof(Checkpoints)
+
+---------------
+
+local FORMAT = "[%s]: %s"
+
+---------------
+
+function Checkpoints.add(author: string, message: string)
+    local checkpoint = {
+        author = author,
+        message = message
+    }
+
+    table.insert(Checkpoints, checkpoint)
+end
+
+function Checkpoints.get(): string?
+    if #Checkpoints < 1 then
+        return nil
+    end
+
+    local randomCheckpoint = math.random(1, #Checkpoints)
+    local checkpoint = Checkpoints[randomCheckpoint]
+
+    return string.format(FORMAT, checkpoint.author, checkpoint.message)
+end
+
+---------------
+
+--[[
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+    ADD MORE CHECKPOINTS HERE
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+
+    If you dont want checkpoints to be sent, do not add any.
+
+    Example:
+        Checkpoints.add("TestAuthor", "hey")
+]]
+
+--[[
+    SPECIAL TAGS
+    spice up your checkpoints with them
+
+    ...
+
+    SESSIONTIME
+        time spent on the current session
+
+    TOTALTIME
+        total time spent on the project
+
+    TODAYSDATE
+        day, hour, minute, second at the moment of starting the session
+
+    RAWSESSIONTIME
+        SESSIONTIME, in pure seconds
+
+    RAWTOTALTIME
+        TOTALTIME, in pure seconds
+
+    SESSIONSTATE
+        state of the session (paused or ongoing)
+
+    ...
+]]
+
+Checkpoints.add("TestAuthor", "hey" .. Assets.Emojis.Smiley)
+Checkpoints.add("TestAuthor2", "helolo SESSIONTIME")
+
+---------------
+
+return Checkpoints]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXE26019AC93D94D14A83FB39BEC7A1A5B">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Info</string>
+							<string name="ScriptGuid">{A53BB152-964D-4B64-9331-037AD69B044A}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    info about your project
+
+    all you should need to edit here is the project name, dont worry about the total time stuff!
+]]
+
+local Info = {
+    ProjectName = "REPLACEME",
+    TotalProjectTimeAttribute = "TotalProjectTime",
+}
+
+---------------
+
+export type Info = typeof(Info)
+
+---------------
+
+function Info.addToTotalProjectTime(time: number)
+    local currentAmount = script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
+
+    script:SetAttribute(Info.TotalProjectTimeAttribute, currentAmount + time)
+end
+
+function Info.getTotalProjectTime()
+    return script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
+end
+
+---------------
+
+return Info]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBX0D9A7751530F45FEB67B9950829415C5">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Messages</string>
+							<string name="ScriptGuid">{B784C9C9-A0DF-48B8-B4DA-7413F37BFC91}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    NOTE:
+
+    SAVE AND RESTART STUDIO TO APPLY CHANGES.
+]]
+
+--[[
+    These are the special messages sent upon starting / ending / pausing a session.
+
+    scroll down
+    ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+]]
+
+local Assets = require(script.Parent.Assets)
+local Info = require(script.Parent.Info)
+
+local Messages = {
+    Start = {},
+    SessionRecovered = {},
+    Close = {},
+    Pause = {},
+    Resume = {},
+    LineSeparators = {},
+}
+
+---------------
+
+export type MessageList = {string}
+export type Messages = typeof(Messages)
+
+---------------
+
+function Messages.add(to: MessageList, text: string)
+    table.insert(to, text)
+end
+
+function Messages.get(from: MessageList): string?
+    if #from < 1 then
+        return nil
+    end
+
+    local randomMessage = math.random(1, #from)
+
+    return from[randomMessage]
+end
+
+---------------
+
+--[[
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+    ADD MORE MESSAGES HERE
+    ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ ☆ 
+
+    If you dont want special messages to be sent, dont add them.
+        this applies to all the specific categories too
+            dont want "Close" messages? remove all the `Messages.add(Messages.Close)` lines
+
+    Example:
+        Messages.add(Messages.Start, "hello world!")
+
+        to add a message to the session start
+]]
+
+--[[
+    SPECIAL TAGS
+    spice up your messages with them
+
+    ...
+
+    SESSIONTIME
+        time spent on the current session
+
+    TOTALTIME
+        total time spent on the project
+
+    TODAYSDATE
+        day, hour, minute, second at the moment of starting the session
+
+    RAWSESSIONTIME
+        SESSIONTIME, in pure seconds
+
+    RAWTOTALTIME
+        TOTALTIME, in pure seconds
+
+    SESSIONSTATE
+        state of the session (paused or ongoing)
+
+    ...
+]]
+
+Messages.add(Messages.Start, "Session Started! TODAYSDATE " .. Assets.Emojis.Rat)
+Messages.add(Messages.Start, Info.ProjectName .. " Session Started... TODAYSDATE yay" .. Assets.Emojis.Angry)
+
+Messages.add(Messages.SessionRecovered, "Session Recovered! state: SESSIONSTATE time rn: SESSIONTIME")
+Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! SESSIONSTATE Session recovered. SESSIONTIME")
+
+Messages.add(Messages.Close, "Session Closed! total time ever: TOTALTIME")
+Messages.add(Messages.Close, "Session Closed unfortunately. total time ever: TOTALTIME")
+
+Messages.add(Messages.Pause, "paused.")
+Messages.add(Messages.Pause, "pausedddddd")
+
+Messages.add(Messages.Resume, "resumed")
+Messages.add(Messages.Resume, "resumeddddddddddd12313213")
+
+Messages.add(Messages.LineSeparators, "----------------")
+
+---------------
+
+return Messages]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+					<Item class="ModuleScript" referent="RBXA60A7E89F99E47A4B88924B29842923A">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">Webhook</string>
+							<string name="ScriptGuid">{7F0203F0-2BE7-4DA4-8E96-E17939C97AA3}</string>
+							<ProtectedString name="Source"><![CDATA[--[[
+    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★
+
+    HELLO! thanks for using my plugin
+
+    FOR IT TO WORK, first replace the `URL` field down there with the url of your discord webhook
+
+    save and restart studio afterwards to apply the changes. Enjoy!
+        (you can close this after youre done)
+
+
+    ...........
+
+    QnA:
+        Reset/Delete settings?
+            > delete/take out the `SessionTrack.PluginSettings` folder from ServerStorage and save and restart studio afterwards like normal.
+
+        settings are GONE?
+            > your settings mightve been outdated (check the output to confirm that and for more instructions). They werent deleted.
+
+
+    ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★ 
+]]
+
+--[[
+    webhook is the module used to send the plugin messages over to discord
+    
+    if you want the messages NOT to be sent to the webhook, but to the roblox studio output, change the `UseOutputInstead` field to true.
+]]
+
+local HttpService = game:GetService("HttpService")
+
+local Webhook = {
+    URL = "REPLACEME",
+    UseOutputInstead = false,
+}
+
+---------------
+
+export type Webhook = typeof(Webhook)
+
+---------------
+
+function Webhook.post(text: string?)
+    if not text then
+        return
+    end
+
+    if Webhook.UseOutputInstead then
+        print(text)
+        return
+    end
+
+    local data = HttpService:JSONEncode({
+        content = text
+    })
+
+    HttpService:PostAsync(Webhook.URL, data)
+end
+
+---------------
+
+return Webhook]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
+				</Item>
+				<Item class="ModuleScript" referent="RBXE1298520C1864C55B266DCB8E95F1929">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">FailedAssertionLandingPage</string>
+						<string name="ScriptGuid">{A0691653-7608-4E2A-95AD-3110361DF284}</string>
+						<ProtectedString name="Source"><![CDATA[--[[
+                       ██████   ██████  ██████  ███████          
+                      ██    ██ ██    ██ ██   ██ ██               
+                      ██    ██ ██    ██ ██████  ███████          
+                      ██    ██ ██    ██ ██           ██          
+                       ██████   ██████  ██      ███████ ██ ██ ██ 
+                            
+                       
+    ...........
+
+    WHAT DID YOU DO???
+        If you can see this page then your settings are setup incorrectly.
+
+    Check your output (View > Output) for the error info
+        FYI, your settings folder is located in ServerStorage, under the name "SessionTrack.PluginSettings"
+
+    ...........
+
+    Once the issue is fixed, save and reload studio to apply your new settings!
+]]]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="ModuleScript" referent="RBXA333327C1F954F8FAE6C762CA6C7385B">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Icons</string>
+					<string name="ScriptGuid">{06B70D3F-159B-445D-9FE4-24B3D8B05E5F}</string>
+					<ProtectedString name="Source"><![CDATA[local Icons = {
+    Power = {
+        On = "http://www.roblox.com/asset/?id=16008923978",
+        Off = "http://www.roblox.com/asset/?id=16008923312",
+        Recover = "http://www.roblox.com/asset/?id=16025418149",
+    },
+
+    Pause = {
+        Paused = "http://www.roblox.com/asset/?id=16008921548",
+        Unpaused = "http://www.roblox.com/asset/?id=16008922394",
+    },
+
+    Settings = "http://www.roblox.com/asset/?id=16008920257",
+    Initialize = "http://www.roblox.com/asset/?id=16008985266",
+    AssertionFailPage = "http://www.roblox.com/asset/?id=14219067357",
+}
+
+---------------
+
+-- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
+function Icons.changeIconSafely(of: PluginToolbarButton, to: string)
+    if of.Icon == to then
+        return
+    end
+
+    of.Icon = to
+end
+
+---------------
+
+return Icons]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+		</Item>
+	</Item>
+</roblox>

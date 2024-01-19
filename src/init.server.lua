@@ -1,8 +1,8 @@
 --[[
     blackferrari2's Session Tracker
 
-    Version 2.00
-    18th January 2024
+    Version 1.2
+    19th January 2024
 
     SOURCE:
     https://github.com/blackferrari2/session-tracker
@@ -19,56 +19,61 @@ local SessionStatus = require(script.Session.SessionStatus)
 local Logger = require(script.Session.Logger)
 local Autosave = require(script.Session.Autosave)
 local Settings = require(script.Settings)
+local Icons = require(script.Icons)
 
 local pluginSettingsRoot = Settings.get()
 local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
 
 ---------------
 
-local WARN_LOGGER_ERROR = "[SessionTrack]: session aborted because of an error - %s"
+if pluginSettingsRoot then
+    local success, errorMessage = Settings.assert(pluginSettingsRoot)
 
---
+    if not success then
+        local toolbar = plugin:CreateToolbar("BrokenSessionTrack")
+
+        local viewAssertionFailPageButton = toolbar:CreateButton(
+            "what happened??",
+            "you messed up...",
+            Icons.AssertionFailPage
+        )
+
+        local function onViewPageClick()
+            plugin:OpenScript(script.Settings.FailedAssertionLandingPage)
+        end
+
+        viewAssertionFailPageButton.Click:Connect(onViewPageClick)
+
+        error(errorMessage)
+    end
+end
+
+---------------
 
 local toolbar = plugin:CreateToolbar("SessionTrack")
-
-local icons = {
-    power = {
-        on = "http://www.roblox.com/asset/?id=16008923978",
-        off = "http://www.roblox.com/asset/?id=16008923312",
-        recover = "http://www.roblox.com/asset/?id=16025418149",
-    },
-
-    pause = {
-        paused = "http://www.roblox.com/asset/?id=16008921548",
-        unpaused = "http://www.roblox.com/asset/?id=16008922394",
-    },
-
-    settings = "http://www.roblox.com/asset/?id=16008920257",
-    initialize = "http://www.roblox.com/asset/?id=16008985266"
-}
 
 local powerButton = toolbar:CreateButton(
     "power",
     "turn bot on or off",
-    icons.power.on
+    Icons.Power.On
 )
 
 local pauseButton = toolbar:CreateButton(
     "pause",
     "pause or resume session",
-    icons.pause.unpaused
+    Icons.Pause.Unpaused
 )
 
 local settingsButton = toolbar:CreateButton(
     "settings",
     "open settings widget",
-    icons.settings
+    Icons.Settings
 )
 
 local initializeButton = toolbar:CreateButton(
     "initialize",
     "create new settings",
-    icons.initialize
+    Icons.Initialize
 )
 
 --
@@ -123,17 +128,6 @@ local function updateSettingsWidget(modules)
     end
 end
 
---
-
--- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
-local function changeIconSafely(of, to)
-    if of.Icon == to then
-        return
-    end
-
-    of.Icon = to
-end
-
 ---------------
 
 pauseButton.Enabled = false
@@ -151,6 +145,7 @@ local currentSession
 local autosave
 
 function onPowerOnClick()
+    Icons.changeIconSafely(powerButton, Icons.Power.Off)
     pauseButton.Enabled = true
     settingsButton.Enabled = false
 
@@ -162,39 +157,26 @@ function onPowerOnClick()
     local logger = Logger.new(pluginSettingsRoot, currentSessionStatus)
 
     if recoveredSessionStatus and recoveredSessionStatus.state == SessionStatus.States.Paused then
-        changeIconSafely(pauseButton, icons.pause.paused)
+        Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
     end
 
     currentSessionStatus.stateChanged:Connect(function()
         autosave:update(currentSessionStatus)
     end)
 
-    local success, errorMessage = pcall(function()
-        currentSession:begin(logger, recoveredSessionStatus)
-    end)
-
-    if success then
-        autosave:loop(currentSessionStatus)
-        changeIconSafely(powerButton, icons.power.off)
-    else
-        warn(string.format(WARN_LOGGER_ERROR, errorMessage))
-        onPowerOffClick()
-    end
+    currentSession:begin(logger, recoveredSessionStatus)
+    autosave:loop(currentSessionStatus)
 end
 
 function onPowerOffClick()
-    changeIconSafely(powerButton, icons.power.on)
-    changeIconSafely(pauseButton, icons.pause.unpaused)
+    Icons.changeIconSafely(powerButton, Icons.Power.On)
+    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
     pauseButton.Enabled = false
     settingsButton.Enabled = true
 
     Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
     autosave:erase()
-
-    pcall(function()
-        currentSession:close()
-    end)
-
+    currentSession:close()
     currentSession = nil
 end
 
@@ -212,19 +194,19 @@ powerButton.Click:Connect(function()
 end)
 
 if pluginSettingsRoot and Autosave.new(plugin, Info.ProjectName):recover() then
-    changeIconSafely(powerButton, icons.power.recover)
+    Icons.changeIconSafely(powerButton, Icons.Power.Recover)
 end
 
 --
 
 function onPauseClick()
     currentSession:pause()
-    changeIconSafely(pauseButton, icons.pause.paused)
+    Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
 end
 
 function onResumeClick()
     currentSession:resume()
-    changeIconSafely(pauseButton, icons.pause.unpaused)
+    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
 end
 
 pauseButton.Click:Connect(function()
