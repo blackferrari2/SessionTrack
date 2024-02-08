@@ -25,7 +25,7 @@
 --[[
     info about your project
 
-    please edit the fields with "REPLACEME" for the plugin to work properly. dont worry about the other fields like `TotalProjectTime` :P
+    please edit the fields with "REPLACEME" for the plugin to work properly.
 
     if you wanna test the plugin without posting to the webhook, change the `UseOutputInstead` option to `true`.
         thatll, like the name says, send all the messages to roblox studios output
@@ -36,24 +36,11 @@ local Info = {
     ProjectName = "REPLACEME",
     WebhookURL = "REPLACEME",
     UseOutputInstead = false,
-    TotalProjectTimeAttribute = "TotalProjectTime",
 }
 
 ---------------
 
 export type Info = typeof(Info)
-
----------------
-
-function Info.addToTotalProjectTime(time: number)
-    local currentAmount = script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
-
-    script:SetAttribute(Info.TotalProjectTimeAttribute, currentAmount + time)
-end
-
-function Info.getTotalProjectTime()
-    return script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
-end
 
 ---------------
 

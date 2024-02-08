@@ -7,6 +7,7 @@ local Info = require(baseModules.Info)
 
 local Voyager = require(packages.Voyager)
 local Settings = require(script.Parent.Parent.Settings)
+local TotalTime = require(script.Parent.TotalTime)
 local SessionStatus = require(script.Parent.SessionStatus)
 
 local Logger = {
@@ -14,9 +15,6 @@ local Logger = {
         DayToday = "TODAYSDATE",
         SessionTime = "SESSIONTIME",
         TotalTime = "TOTALTIME",
-        RawSessionTime = "RAWSESSIONTIME",
-        RawTotalTime = "RAWTOTALTIME",
-        SessionState = "SESSIONSTATE",
     }
 }
 
@@ -31,6 +29,7 @@ type self = {
     info: Info.Info,
     webhook: any,
     sessionStatus: SessionStatus.SessionStatus,
+    totalTime: TotalTime.TotalTime,
     loopThread: thread?,
 }
 
@@ -57,17 +56,18 @@ end
 
 -------------
 
-function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatus.SessionStatus): Logger
+function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatus.SessionStatus, totalTime: TotalTime.TotalTime): Logger
     local self = {
         settingsRoot = settingsRoot,
         messages = require(settingsRoot.Messages),
         checkpoints = require(settingsRoot.Checkpoints),
         info = require(settingsRoot.Info),
         sessionStatus = sessionStatus,
+        totalTime = totalTime,
         loopThread = nil,
     }
 
-    self.webhook = Voyager.fromUrl(self.info.WebhookURL)
+    self.webhook = self.info.UseOutputInstead or Voyager.fromUrl(self.info.WebhookURL)
 
     setmetatable(self, Logger)
 
@@ -142,11 +142,12 @@ end
 -- non-message methods
 
 function Logger.post(self: Logger, text: string)
-    if self.isFaulty then
+    text = self:getTextWithTagsApplied(text)
+
+    if self.webhook == true then
+        print(text)
         return
     end
-
-    text = self:getTextWithTagsApplied(text)
 
     self.webhook:execute(text, nil, true, true)
 end
@@ -159,10 +160,7 @@ function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?
     local tagApplications = {
         [Logger.Tags.DayToday] = os.date(),
         [Logger.Tags.SessionTime] = formatSecondsToHMS(self.sessionStatus:getTimeElapsed()),
-        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.info.getTotalProjectTime()),
-        [Logger.Tags.RawSessionTime] = self.sessionStatus:getTimeElapsed(),
-        [Logger.Tags.RawTotalTime] = self.info.getTotalProjectTime(),
-        [Logger.Tags.SessionState] = self.sessionStatus.state,
+        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.totalTime:get()),
     }
     
     return string.gsub(text, "%u+", tagApplications)

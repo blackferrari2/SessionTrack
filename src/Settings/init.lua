@@ -8,7 +8,7 @@ local Checkpoints = require(baseModules.Checkpoints)
 local Info = require(baseModules.Info)
 
 local Settings = {
-    Version = 1,
+    Version = 2,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",

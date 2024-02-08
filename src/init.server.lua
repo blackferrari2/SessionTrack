@@ -1,8 +1,8 @@
 --[[
     blackferrari2's Session Tracker
 
-    Version 1.3
-    19th January 2024
+    Version 1.4
+    8th February 2024
 
     SOURCE:
     https://github.com/blackferrari2/session-tracker
@@ -18,6 +18,7 @@ local Session = require(script.Session)
 local SessionStatus = require(script.Session.SessionStatus)
 local Logger = require(script.Session.Logger)
 local Autosave = require(script.Session.Autosave)
+local TotalTime = require(script.Session.TotalTime)
 local Settings = require(script.Settings)
 local Icons = require(script.Icons)
 
@@ -143,6 +144,7 @@ end
 
 local currentSession
 local autosave
+local totalTime
 
 function onPowerOnClick()
     Icons.changeIconSafely(powerButton, Icons.Power.Off)
@@ -150,10 +152,11 @@ function onPowerOnClick()
 
     currentSession = Session.new()
     autosave = Autosave.new(plugin, Info.ProjectName)
+    totalTime = TotalTime.new(plugin, Info.ProjectName, pluginSettingsRoot.Info)
 
-    local currentSessionStatus = currentSession.status
     local recoveredSessionStatus = autosave:recover()
-    local logger = Logger.new(pluginSettingsRoot, currentSessionStatus)
+    local currentSessionStatus = currentSession.status
+    local logger = Logger.new(pluginSettingsRoot, currentSessionStatus, totalTime)
 
     if recoveredSessionStatus and recoveredSessionStatus.state == SessionStatus.States.Paused then
         Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
@@ -172,7 +175,7 @@ function onPowerOffClick()
     Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
     pauseButton.Enabled = false
 
-    Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
+    totalTime:update(currentSession.status:getTimeElapsed())
     autosave:erase()
     currentSession:close()
     currentSession = nil
