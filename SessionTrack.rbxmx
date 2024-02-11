@@ -1,7 +1,7 @@
 <roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
 	<External>null</External>
 	<External>nil</External>
-	<Item class="Folder" referent="RBXCD9827BBE74F4AADBB98D17CD403D1CB">
+	<Item class="Folder" referent="RBX14928AEB684542B4A45E628FE4F43656">
 		<Properties>
 			<BinaryString name="AttributesSerialize"></BinaryString>
 			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -10,7 +10,7 @@
 			<int64 name="SourceAssetId">-1</int64>
 			<BinaryString name="Tags"></BinaryString>
 		</Properties>
-		<Item class="Folder" referent="RBXA2B88675AB3744D1A363C4DC805A1756">
+		<Item class="Folder" referent="RBX08D5328132874509942F4846E8D5FD90">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -19,14 +19,14 @@
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
-			<Item class="ModuleScript" referent="RBX95B959D939634B14A7169CC89BFA52D9">
+			<Item class="ModuleScript" referent="RBX611EF9AF2FDC4BDCAC0AEA5AEA48BDEA">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Signal</string>
-					<string name="ScriptGuid">{07F4BFA2-FDB1-4D89-B96C-237505F2EC2D}</string>
+					<string name="ScriptGuid">{05384696-FB6A-414D-9EAF-4D79D606D476}</string>
 					<ProtectedString name="Source"><![CDATA[local REQUIRED_MODULE = require(script.Parent._Index["sleitnick_signal@2.0.1"]["signal"])
 export type Connection = REQUIRED_MODULE.Connection 
 export type Signal<T...> = REQUIRED_MODULE.Signal<T...>
@@ -36,14 +36,14 @@ return REQUIRED_MODULE
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 			</Item>
-			<Item class="ModuleScript" referent="RBXE6BDA2880EB744D0979C0E6A854061F0">
+			<Item class="ModuleScript" referent="RBX576C511704F642D7992401C3E41AD7C5">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Voyager</string>
-					<string name="ScriptGuid">{58E76A7F-5FF9-47B3-B155-E14E66280918}</string>
+					<string name="ScriptGuid">{2F26A823-A459-4AAC-A907-9F69ED321C23}</string>
 					<ProtectedString name="Source"><![CDATA[local REQUIRED_MODULE = require(script.Parent._Index["blackferrari2_voyager@0.1.0"]["voyager"])
 export type RatelimitInformation = REQUIRED_MODULE.RatelimitInformation 
 export type RatelimitedInformation = REQUIRED_MODULE.RatelimitedInformation 
@@ -54,7 +54,7 @@ return REQUIRED_MODULE
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 			</Item>
-			<Item class="Folder" referent="RBX7E986C63F4E34FBB965C7BBCB69A29B9">
+			<Item class="Folder" referent="RBX484AE9C33AF2490D8604323FE6E7DF9C">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -63,7 +63,7 @@ return REQUIRED_MODULE
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
-				<Item class="Folder" referent="RBXE86185CEA19347C688F62447696461B1">
+				<Item class="Folder" referent="RBX030C5C9F919E4F4BB63AEE72EAE05D4A">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -72,14 +72,14 @@ return REQUIRED_MODULE
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX03863E4D93364D4398188FBE453F2FAD">
+					<Item class="ModuleScript" referent="RBXAE5381C51A3A4CFCA551207EA5367B32">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">voyager</string>
-							<string name="ScriptGuid">{FF4E7315-9FF0-4BD4-80CC-FB7B810713F2}</string>
+							<string name="ScriptGuid">{5D3FD4CF-5FBB-4B08-9CE2-F2EBBA8DDBD1}</string>
 							<ProtectedString name="Source"><![CDATA[local Webhook = {}
 Webhook.__index = Webhook
 
@@ -359,14 +359,14 @@ return Webhook]]></ProtectedString>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
-						<Item class="ModuleScript" referent="RBX62375D2255454218B919C7EF8962017B">
+						<Item class="ModuleScript" referent="RBX513942074C604BF4B938CB3FAEAABD9E">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">Author</string>
-								<string name="ScriptGuid">{53F59D82-BF8C-42D0-AE0E-B3C69E0E5A4A}</string>
+								<string name="ScriptGuid">{F8EC08C6-786A-4A4A-AE39-B6764C13D53E}</string>
 								<ProtectedString name="Source"><![CDATA[local Author = {}
 Author.__index = Author
 
@@ -408,14 +408,14 @@ return Author]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXD6653F5E38FF4B6BB450EA707CA7D34B">
+						<Item class="ModuleScript" referent="RBX5AA1C385FB5740A1855B73450111B403">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">EditedMessage</string>
-								<string name="ScriptGuid">{1EBCA245-3AC2-4ACD-810F-D5E929900176}</string>
+								<string name="ScriptGuid">{34275909-5D71-4759-B849-1A06EACE99E8}</string>
 								<ProtectedString name="Source"><![CDATA[local EditedMessage = {}
 EditedMessage.__index = EditedMessage
 
@@ -437,14 +437,14 @@ return EditedMessage]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXF8BB3F0AA65E41C1A6119DF0B4CB4BF7">
+						<Item class="ModuleScript" referent="RBX4B2E7E4D25D648FB8F0CD0154E9C7D59">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">EditedThreadMessage</string>
-								<string name="ScriptGuid">{0E083F46-28F2-431F-A2BA-75D263C83F2F}</string>
+								<string name="ScriptGuid">{71BC642D-0B31-4C78-AD93-4408263FF5BA}</string>
 								<ProtectedString name="Source"><![CDATA[local EditedThreadMessage = {}
 EditedThreadMessage.__index = EditedThreadMessage
 
@@ -466,14 +466,14 @@ return EditedThreadMessage]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBX2B73B98D00D04EDB82A098D66F07DD87">
+						<Item class="ModuleScript" referent="RBXFCBFB7605EBE46D584D2E8F4B7169AC9">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">Embed</string>
-								<string name="ScriptGuid">{328CE4F3-C89B-46E2-873B-4AD704988177}</string>
+								<string name="ScriptGuid">{5BEE53D2-5F7D-4FB2-B7BB-444C74FEAED3}</string>
 								<ProtectedString name="Source"><![CDATA[local Embed = {}
 Embed.__index = Embed
 
@@ -625,14 +625,14 @@ return Embed]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXCC6B7737CFAE497AA43FD222DD691B3C">
+						<Item class="ModuleScript" referent="RBX34BC04785ECB4DF3A8561949DDFC452A">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">Emoji</string>
-								<string name="ScriptGuid">{9ECEA909-A132-4FC4-9993-CB5FA61E5E98}</string>
+								<string name="ScriptGuid">{FA3FCE2B-140F-47D1-99E7-BB47D7DD0CEF}</string>
 								<ProtectedString name="Source"><![CDATA[local Emoji = {}
 Emoji.__index = Emoji
 
@@ -651,14 +651,14 @@ return Emoji]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXDCBEC10703A04B1BBC547443B115465A">
+						<Item class="ModuleScript" referent="RBX0537602518CB4C43B2DE02A1F05E45C3">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">Message</string>
-								<string name="ScriptGuid">{C482FD2E-8493-4CEB-AB36-CEF2AA62DD13}</string>
+								<string name="ScriptGuid">{A03D2F8F-5064-4C9D-910F-D371EEDF0968}</string>
 								<ProtectedString name="Source"><![CDATA[local Message = {}
 Message.__index = Message
 
@@ -765,14 +765,14 @@ return Message]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXF4B566010FD141AF87FFB48D455325D9">
+						<Item class="ModuleScript" referent="RBXE7C83CF5939041C09CEEF0BD58E6DB3D">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">MessageFlags</string>
-								<string name="ScriptGuid">{9F1C8FF0-1C72-4797-9E58-51FF344DF0F3}</string>
+								<string name="ScriptGuid">{C18D0F8A-193C-48C2-AC35-122FD397DE5E}</string>
 								<ProtectedString name="Source"><![CDATA[local MessageFlags = {}
 MessageFlags.__index = MessageFlags
 
@@ -795,14 +795,14 @@ return MessageFlags]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXAD3AD31A0934449793DC7FC562C245BE">
+						<Item class="ModuleScript" referent="RBX1197CA1D1A1A42C7A70A3305CFDA543A">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">OptionalExecuteInfo</string>
-								<string name="ScriptGuid">{78D14401-48D8-4BEB-BB24-811C8661DB98}</string>
+								<string name="ScriptGuid">{72EA2FBA-BC1B-4AB9-92A2-1FFB4B580D23}</string>
 								<ProtectedString name="Source"><![CDATA[local OptionalExecuteInfo = {}
 OptionalExecuteInfo.__index = OptionalExecuteInfo
 
@@ -826,14 +826,14 @@ return OptionalExecuteInfo]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBX3D99152528264C6DA464BBA020629F78">
+						<Item class="ModuleScript" referent="RBXE4BB58A0B33849C1B9EF3372F2EBA7E2">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">PublicUserFlags</string>
-								<string name="ScriptGuid">{CE059CA6-6FAA-458C-80C1-14C5D137C57D}</string>
+								<string name="ScriptGuid">{AA35FF8C-973D-4651-A55E-E71C883663E5}</string>
 								<ProtectedString name="Source"><![CDATA[local PublicUserFlags = {}
 PublicUserFlags.__index = PublicUserFlags
 
@@ -863,14 +863,14 @@ return PublicUserFlags]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXF6CE561289A44E19B126EAEEA05A11CE">
+						<Item class="ModuleScript" referent="RBXA0FCAA84B4AD45BE8C5E8004A73C741D">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">Reaction</string>
-								<string name="ScriptGuid">{8B31B805-BAFA-478A-B3BE-72DBFF0BDFBD}</string>
+								<string name="ScriptGuid">{B70B24D8-A5A6-4DB3-AD31-915A14F9784E}</string>
 								<ProtectedString name="Source"><![CDATA[local Reaction = {}
 Reaction.__index = Reaction
 
@@ -891,14 +891,14 @@ return Reaction]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBXE5E7102FB1444F5DAEBE6F1821CB14D8">
+						<Item class="ModuleScript" referent="RBXEDFEF873D8FB4C56AAF7227357206F41">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">ThreadMessage</string>
-								<string name="ScriptGuid">{B5A5DC3C-D66F-4C5A-828F-4FFCBFC3FEB4}</string>
+								<string name="ScriptGuid">{F57E88B7-5123-423A-82C2-E63E45A37FFE}</string>
 								<ProtectedString name="Source"><![CDATA[local ThreadMessage = {}
 ThreadMessage.__index = ThreadMessage
 
@@ -919,14 +919,14 @@ return ThreadMessage]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBX96599383F8E648FE8088D0BA72D9ECE3">
+						<Item class="ModuleScript" referent="RBX650B1E535A6A4AF2B8C683B6C35FEF5F">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">User</string>
-								<string name="ScriptGuid">{11BF1D05-2603-4A7F-B91F-91E6FDBF3E86}</string>
+								<string name="ScriptGuid">{BDB00773-E4B9-436F-9FA0-48C4B462266B}</string>
 								<ProtectedString name="Source"><![CDATA[local User = {}
 User.__index = User
 
@@ -949,7 +949,7 @@ return User]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="Folder" referent="RBX70681339D0E040EDA3DCB81AD9F585E9">
+						<Item class="Folder" referent="RBX9A03FABB7717480ABE31529B593A1079">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -958,14 +958,14 @@ return User]]></ProtectedString>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
-							<Item class="ModuleScript" referent="RBX8BE39AAC020E4AE2A0802E4E1D41FE9C">
+							<Item class="ModuleScript" referent="RBX139A9903113F4483BD23C8DB20B6A1F8">
 								<Properties>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
 									<Content name="LinkedSource"><null></null></Content>
 									<string name="Name">BaseFlags</string>
-									<string name="ScriptGuid">{11F28485-5875-4ADF-8B50-5CB600F40BD4}</string>
+									<string name="ScriptGuid">{DF34089C-42A5-48A3-977D-F2CFE8DE2E39}</string>
 									<ProtectedString name="Source"><![CDATA[local BaseFlags = {}
 BaseFlags.__index = BaseFlags
 
@@ -995,7 +995,7 @@ return BaseFlags]]></ProtectedString>
 								</Properties>
 							</Item>
 						</Item>
-						<Item class="Folder" referent="RBX506B9AC83078446A970F17AE2752B3D8">
+						<Item class="Folder" referent="RBXEB0279109D3C462C9FE5A40568C7A565">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -1004,14 +1004,14 @@ return BaseFlags]]></ProtectedString>
 								<int64 name="SourceAssetId">-1</int64>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
-							<Item class="ModuleScript" referent="RBXD1B69B4487434D0FB4586FC18595C04F">
+							<Item class="ModuleScript" referent="RBX5F970CB799D0463B8BCDC852B4C78931">
 								<Properties>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 									<bool name="DefinesCapabilities">false</bool>
 									<Content name="LinkedSource"><null></null></Content>
 									<string name="Name">Enum</string>
-									<string name="ScriptGuid">{FC427941-F831-49DA-93CC-E71FE2BCA975}</string>
+									<string name="ScriptGuid">{CE057838-BE56-4C66-B84D-8A82B7A37AFF}</string>
 									<ProtectedString name="Source"><![CDATA[return {
 	UserPublicFlags = {
 		STAFF = 1,
@@ -1055,7 +1055,7 @@ return BaseFlags]]></ProtectedString>
 						</Item>
 					</Item>
 				</Item>
-				<Item class="Folder" referent="RBX615BF1F4685A4C8ABA990BACEF978C7C">
+				<Item class="Folder" referent="RBX55478201CFB749108BF1322FB9731503">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -1064,14 +1064,14 @@ return BaseFlags]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX01232DCA73514E459BB3B32E1FEFE683">
+					<Item class="ModuleScript" referent="RBX3535927C15B64D87BAF3DE4F7AFD5844">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">t</string>
-							<string name="ScriptGuid">{B6669504-AA13-45BB-BA0A-25199ED3BD65}</string>
+							<string name="ScriptGuid">{C0603562-839E-4E10-95F6-0E8B6E1174D7}</string>
 							<ProtectedString name="Source"><![CDATA[-- t: a runtime typechecker for Roblox
 
 local t = {}
@@ -2327,7 +2327,7 @@ return t
 						</Properties>
 					</Item>
 				</Item>
-				<Item class="Folder" referent="RBX23D05DBA6848427CA2C1337444434D40">
+				<Item class="Folder" referent="RBX1467D7557D8B4B6E80F3E41FF93072CF">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -2336,14 +2336,14 @@ return t
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX097742A05FEE4C77840C13CCBD6120C4">
+					<Item class="ModuleScript" referent="RBXD9B8BFDAA15B40D4BF5DB6AFCF6C0B95">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">signal</string>
-							<string name="ScriptGuid">{F8027F4B-5C89-480E-93D2-C2F990F615B8}</string>
+							<string name="ScriptGuid">{31A3A036-5F1B-4987-9C80-DCABD69B84DD}</string>
 							<ProtectedString name="Source"><![CDATA[-- -----------------------------------------------------------------------------
 --               Batched Yield-Safe Signal Implementation                     --
 -- This is a Signal class which has effectively identical behavior to a       --
@@ -2771,14 +2771,14 @@ return table.freeze({
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
-						<Item class="ModuleScript" referent="RBX5B88489C2966469F9DBABFEB86E6AAB1">
+						<Item class="ModuleScript" referent="RBXB4711CF90FFB4198A3E91E100A637864">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">init.spec</string>
-								<string name="ScriptGuid">{860AE5DE-08BD-4A47-9408-8DE6DF192BA2}</string>
+								<string name="ScriptGuid">{30BC70E7-00D0-4CAB-B546-B22CFE2E7126}</string>
 								<ProtectedString name="Source"><![CDATA[local function AwaitCondition(predicate, timeout)
 	local start = os.clock()
 	timeout = (timeout or 10)
@@ -2970,14 +2970,14 @@ end
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="ModuleScript" referent="RBX7296B36D802B4557BE8713405751709B">
+						<Item class="ModuleScript" referent="RBX2A53FE257CD54E5EAB0F9E8CA97344B1">
 							<Properties>
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 								<bool name="DefinesCapabilities">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">wally</string>
-								<string name="ScriptGuid">{329527C7-E8F6-4945-B0BE-E7A2508D2742}</string>
+								<string name="ScriptGuid">{F1B8CBD2-C941-4335-8FC0-98A72AB6085A}</string>
 								<ProtectedString name="Source"><![CDATA[return {
 	package = {
 		authors = {"Stephen Leitnick"},
@@ -2997,14 +2997,14 @@ end
 					</Item>
 				</Item>
 			</Item>
-			<Item class="ModuleScript" referent="RBXEC1B22EB50B441D89245BE63ADDC7343">
+			<Item class="ModuleScript" referent="RBX73BC1D7CC9C74CC79B0C68F1E7851AA6">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">t</string>
-					<string name="ScriptGuid">{D7E737C3-10A8-4B3C-8F8C-5DEA214D1ABF}</string>
+					<string name="ScriptGuid">{75CC8108-DC56-4E09-A150-EF66B82BBBC1}</string>
 					<ProtectedString name="Source"><![CDATA[return require(script.Parent._Index["osyrisrblx_t@3.0.0"]["t"])
 ]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
@@ -3012,7 +3012,7 @@ end
 				</Properties>
 			</Item>
 		</Item>
-		<Item class="Script" referent="RBX3B765180D4FC4ECEB74E8523A0DFDD83">
+		<Item class="Script" referent="RBX555A37CC5AC346668BF8395CA49E897A">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -3021,37 +3021,40 @@ end
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">Plugin</string>
 				<token name="RunContext">0</token>
-				<string name="ScriptGuid">{4974FF77-6E9C-4E88-B4C7-18D06CAC22A4}</string>
+				<string name="ScriptGuid">{CB3A5B08-6490-45A1-941C-448A439042E6}</string>
 				<ProtectedString name="Source"><![CDATA[--[[
     blackferrari2's Session Tracker
 
-    Version 1.3
-    19th January 2024
+    Version 2.0
+    10th February 2024
 
     SOURCE:
     https://github.com/blackferrari2/session-tracker
 ]]
 
-assert(plugin, "SessionTrack must run as a plugin NOW")
+assert(plugin, "SessionTrack must run as a plugin")
 
 if game:GetService("RunService"):IsRunning() then
     return
 end
 
 local Session = require(script.Session)
-local SessionStatus = require(script.Session.SessionStatus)
-local Logger = require(script.Session.Logger)
-local Autosave = require(script.Session.Autosave)
 local Settings = require(script.Settings)
 local Icons = require(script.Icons)
+local Logger = require(script.Session.Logger)
+local SessionSave = require(script.Session.SessionSave)
+local TotalProjectTime = require(script.Session.TotalProjectTime)
+local SessionStatus = require(script.Session.SessionStatus)
 
-local pluginSettingsRoot = Settings.get()
-local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
+local settings = Settings.get()
+local Info = settings and require(settings.Info)
 
 ---------------
 
-if pluginSettingsRoot then
-    local success, errorMessage = Settings.assert(pluginSettingsRoot)
+-- if the settings are wrong, abort plugin entirely
+
+if settings then
+    local success, errorMessage = Settings.assert(settings)
 
     if not success then
         local toolbar = plugin:CreateToolbar("BrokenSessionTrack")
@@ -3062,11 +3065,9 @@ if pluginSettingsRoot then
             Icons.AssertionFailPage
         )
 
-        local function onViewPageClick()
-            plugin:OpenScript(script.Settings.FailedAssertionLandingPage)
-        end
-
-        viewAssertionFailPageButton.Click:Connect(onViewPageClick)
+        viewAssertionFailPageButton.Click:Connect(function()
+            plugin:OpenScript(script.FailedAssertionLandingPage)
+        end)
 
         error(errorMessage)
     end
@@ -3100,51 +3101,204 @@ local initializeButton = toolbar:CreateButton(
     Icons.Initialize
 )
 
+local deleteProjectButton = toolbar:CreateButton(
+    "delete",
+    "delete your project",
+    Icons.Delete
+)
+
 --
 
-local settingsButtonHeight = 40
-local settingsWidget do
-    local widgetInfo = DockWidgetPluginGuiInfo.new(
-        Enum.InitialDockState.Float,
-        false,
-        true,
-        settingsButtonHeight * 5,
-        settingsButtonHeight * 5,
-        settingsButtonHeight * 5,
-        settingsButtonHeight * 5
-    )
+local settingsWidgetButtonHeight = 40
+local settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", DockWidgetPluginGuiInfo.new(
+    Enum.InitialDockState.Float,
+    false,
+    true,
+    settingsWidgetButtonHeight * 5,
+    settingsWidgetButtonHeight * 5,
+    settingsWidgetButtonHeight * 5,
+    settingsWidgetButtonHeight * 5
+))
 
-    settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", widgetInfo)
-    settingsWidget.Title = "select what you wanna edit"
+local deleteProjectPromptWidgetButtonHeight = 70
+local deleteProjectPromptWidget = plugin:CreateDockWidgetPluginGui("SessionTrackDeleteProject", DockWidgetPluginGuiInfo.new(
+    Enum.InitialDockState.Float,
+    false,
+    true,
+    400,
+    400,
+    400,
+    400
+))
+
+--
+
+local function toggleSessionButtons(offOrOn: boolean)
+    powerButton.Enabled = offOrOn
+    pauseButton.Enabled = offOrOn
 end
 
+---------------
+
+-- setup the settings widget
+
+settingsWidget.Title = "select what you wanna edit"
+
 local scroll = Instance.new("ScrollingFrame")
+Instance.new("UIListLayout", scroll)
 
 scroll.Size = UDim2.fromScale(1, 1)
 scroll.Position = UDim2.fromScale(0, 0)
 scroll.BackgroundColor3 = Color3.new(0, 0, 0)
 scroll.Parent = settingsWidget
 
-local UIListLayout = Instance.new("UIListLayout")
+-- setup project delete widget
 
-UIListLayout.Parent = scroll
+deleteProjectPromptWidget.Title = "SessionTrack DELETE"
 
-local function updateSettingsWidget(modules)
-    for _, module in pairs(modules) do
-        -- replace old button
-        local oldButton = scroll:FindFirstChild(module.Name)
+local warningLabel = Instance.new("TextLabel")
+
+warningLabel.Text = "Are you sure you want to erase all your project data?"
+warningLabel.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight))
+warningLabel.Position = UDim2.fromScale(0, 0)
+warningLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+warningLabel.TextColor3 = Color3.new(1, 1, 1)
+warningLabel.Parent = deleteProjectPromptWidget
+
+local confirmButton = Instance.new("TextButton")
+
+confirmButton.Text = "YES"
+confirmButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight))
+confirmButton.Position = UDim2.new(UDim.new(0, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight * 2))
+confirmButton.BackgroundColor3 = Color3.new(0, 0, 0)
+confirmButton.TextColor3 = Color3.new(1.000000, 0.462745, 0.462745)
+confirmButton.TextSize = deleteProjectPromptWidgetButtonHeight - 15
+confirmButton.Font = Enum.Font.Arcade
+confirmButton.Parent = deleteProjectPromptWidget
+
+local rejectButton = Instance.new("TextButton")
+
+rejectButton.Text = "NO"
+rejectButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight))
+rejectButton.Position = UDim2.new(UDim.new(0, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight * 3))
+rejectButton.BackgroundColor3 = Color3.new(0, 0, 0)
+rejectButton.TextColor3 = Color3.new(0.462745, 1.000000, 0.552941)
+rejectButton.TextSize = deleteProjectPromptWidgetButtonHeight - 15
+rejectButton.Font = Enum.Font.Arcade
+rejectButton.Parent = deleteProjectPromptWidget
+
+-- configure initial button states
+
+if settings then
+    initializeButton.Enabled = false
+    deleteProjectButton.Enabled = true
+else
+    settingsButton.Enabled = false
+    powerButton.Enabled = false
+    deleteProjectButton.Enabled = false
+end
+
+pauseButton.Enabled = false
+
+-- if theres a recovered session detected, switch out the power button icon
+
+if settings and SessionSave.recover(plugin, Info.ProjectName) then
+    Icons.switch(powerButton, Icons.Power.Recover)
+end
+
+---------------
+
+-- button handling
+
+local totalProjectTime = settings and TotalProjectTime.new(plugin, Info.ProjectName, settings)
+local save = settings and SessionSave.new(plugin, Info.ProjectName, 1)
+
+local session
+local logger
+
+powerButton.Click:Connect(function()
+    toggleSessionButtons(false)
+
+    if session then
+        Icons.switch(powerButton, Icons.Power.On)
+        Icons.switch(pauseButton, Icons.Pause.Unpaused)
         
+        session:close()        
+        totalProjectTime:commit(totalProjectTime:get() + session.status:getTimeElapsed())
+        session:destroy()
+        logger:destroy()
+        save:stopAutosaving()
+        save:erase()
+
+        session = nil
+        logger = nil
+        toggleSessionButtons(true)
+        deleteProjectButton.Enabled = true
+
+        return
+    end
+
+    Icons.switch(powerButton, Icons.Power.Off)
+    deleteProjectButton.Enabled = false
+
+    session = Session.new()
+    logger = Logger.new(settings, session.status, totalProjectTime)
+
+    local recoveredSessionStatus, timeSinceLastSave = SessionSave.recover(plugin, Info.ProjectName)
+
+    if recoveredSessionStatus then
+        session:startFromRecoveredSession(logger, recoveredSessionStatus, timeSinceLastSave)
+
+        -- session recovered to paused state, change icons to reflect that
+        if recoveredSessionStatus.state == SessionStatus.States.Paused then
+            Icons.switch(pauseButton, Icons.Pause.Paused)
+        end
+    else
+        session:start(logger)
+    end
+
+    save:startAutosaving(session)
+    toggleSessionButtons(true)
+end)
+
+--
+
+pauseButton.Click:Connect(function()
+    if not session then
+        return
+    end
+
+    toggleSessionButtons(false)
+
+    if session.status.state == SessionStatus.States.Paused then
+        Icons.switch(pauseButton, Icons.Pause.Unpaused)
+        session:resume()
+        toggleSessionButtons(true)
+        return
+    end
+
+    Icons.switch(pauseButton, Icons.Pause.Paused)
+    session:pause()
+    toggleSessionButtons(true)
+end)
+
+--
+
+local function createSettingsWidgetButtons(settings: Settings.Settings)
+    for _, module in pairs(settings:GetChildren()) do
+        local oldButton = scroll:FindFirstChild(module.Name)
+
         if oldButton then
             oldButton:Destroy()
         end
 
         local openScriptButton = Instance.new("TextButton")
-
+    
         openScriptButton.Text = module.Name
         openScriptButton.Name = module.Name
-        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsButtonHeight))
+        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsWidgetButtonHeight))
         openScriptButton.Font = Enum.Font.Arcade
-        openScriptButton.TextSize = settingsButtonHeight - 15
+        openScriptButton.TextSize = settingsWidgetButtonHeight - 15
         openScriptButton.TextStrokeTransparency = 0
         openScriptButton.TextColor3 = Color3.new(1, 1, 1)
         openScriptButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -3152,154 +3306,130 @@ local function updateSettingsWidget(modules)
     end
 end
 
----------------
-
-pauseButton.Enabled = false
-
-if not pluginSettingsRoot then
-    settingsButton.Enabled = false
-    powerButton.Enabled = false
-else
-    initializeButton.Enabled = false
-end
-
----------------
-
-local currentSession
-local autosave
-
-function onPowerOnClick()
-    Icons.changeIconSafely(powerButton, Icons.Power.Off)
-    pauseButton.Enabled = true
-
-    currentSession = Session.new()
-    autosave = Autosave.new(plugin, Info.ProjectName)
-
-    local currentSessionStatus = currentSession.status
-    local recoveredSessionStatus = autosave:recover()
-    local logger = Logger.new(pluginSettingsRoot, currentSessionStatus)
-
-    if recoveredSessionStatus and recoveredSessionStatus.state == SessionStatus.States.Paused then
-        Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
-    end
-
-    currentSessionStatus.stateChanged:Connect(function()
-        autosave:update(currentSessionStatus)
-    end)
-
-    currentSession:begin(logger, recoveredSessionStatus)
-    autosave:loop(currentSessionStatus)
-end
-
-function onPowerOffClick()
-    Icons.changeIconSafely(powerButton, Icons.Power.On)
-    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
-    pauseButton.Enabled = false
-
-    Info.addToTotalProjectTime(currentSession.status:getTimeElapsed())
-    autosave:erase()
-    currentSession:close()
-    currentSession = nil
-end
-
-powerButton.Click:Connect(function()
-    powerButton.Enabled = false
-
-    if currentSession then
-        onPowerOffClick()
-        powerButton.Enabled = true
-        return
-    end
-
-    onPowerOnClick()
-    powerButton.Enabled = true
-end)
-
-if pluginSettingsRoot and Autosave.new(plugin, Info.ProjectName):recover() then
-    Icons.changeIconSafely(powerButton, Icons.Power.Recover)
-end
-
---
-
-function onPauseClick()
-    currentSession:pause()
-    Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
-end
-
-function onResumeClick()
-    currentSession:resume()
-    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
-end
-
-pauseButton.Click:Connect(function()
-    if not currentSession then
-        return
-    end
-
-    pauseButton.Enabled = false
-
-    if currentSession.status.state == SessionStatus.States.Paused then
-        onResumeClick()
-        pauseButton.Enabled = true
-        return
-    end
-
-    onPauseClick()
-    pauseButton.Enabled = true
-end)
-
---
-
-function setupSettingsButtonEvents(modules)
-    for _, module in pairs(modules) do
+local function setupSettingsWidgetButtonsEvents(settings: Settings.Settings)
+    for _, module in pairs(settings:GetChildren()) do
         local openScriptButton = scroll:FindFirstChild(module.Name)
     
         openScriptButton.Activated:Connect(function()
             plugin:OpenScript(module)
+            settingsWidget.Enabled = false
         end)
     end
 end
 
-function onSettingsClick()
-    local modules = pluginSettingsRoot:GetChildren()
-
-    updateSettingsWidget(modules)
-    setupSettingsButtonEvents(modules)
-
-    settingsWidget.Enabled = not settingsWidget.Enabled
-end
-
-settingsButton.Click:Connect(onSettingsClick)
-
---
-
-function onInitializeclick()
-    settingsButton.Enabled = true
-    initializeButton.Enabled = false
-
-    pluginSettingsRoot = Settings.new()
-    plugin:OpenScript(pluginSettingsRoot.Info)
-end
-
-initializeButton.Click:Connect(function()
-    if pluginSettingsRoot then
+settingsButton.Click:Connect(function()
+    if not settings then
         return
     end
 
-    onInitializeclick()
+    createSettingsWidgetButtons(settings)
+    setupSettingsWidgetButtonsEvents(settings)
+
+    settingsWidget.Enabled = not settingsWidget.Enabled
 end)
-]]></ProtectedString>
+
+--
+
+initializeButton.Click:Connect(function()
+    if settings then
+        return
+    end
+
+    settingsButton.Enabled = true
+    initializeButton.Enabled = false
+    deleteProjectButton.Enabled = true
+
+    settings = Settings.new()
+    plugin:OpenScript(settings.Info)
+end)
+
+--
+
+deleteProjectButton.Click:Connect(function()
+    if not settings then
+        return
+    end
+
+    deleteProjectPromptWidget.Enabled = not deleteProjectPromptWidget.Enabled
+end)
+
+rejectButton.Activated:Connect(function()
+    deleteProjectPromptWidget.Enabled = false
+end)
+
+confirmButton.Activated:Connect(function()
+    if not settings then
+        return
+    end
+
+    if session then
+        return
+    end
+
+    deleteProjectPromptWidget.Enabled = false
+
+    powerButton.Enabled = false
+    pauseButton.Enabled = false
+    initializeButton.Enabled = false
+    settingsButton.Enabled = false
+    deleteProjectButton.Enabled = false
+
+    if totalProjectTime then
+        totalProjectTime:erase()
+    end
+
+    if save then
+        save:erase()
+    end
+    
+    settings:Destroy()
+    plugin:OpenScript(script.ProjectDeletedLandingPage)
+end)
+
+---------------]]></ProtectedString>
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
-			<Item class="ModuleScript" referent="RBXB9E947DF71DD43A09798F484B044D603">
+			<Item class="ModuleScript" referent="RBX7DBD854893704F30860F74FAAEE908DD">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">FailedAssertionLandingPage</string>
+					<string name="ScriptGuid">{AE31CEB1-3120-4C11-8423-D5A8D50B864C}</string>
+					<ProtectedString name="Source"><![CDATA[--[[
+                       ██████   ██████  ██████  ███████          
+                      ██    ██ ██    ██ ██   ██ ██               
+                      ██    ██ ██    ██ ██████  ███████          
+                      ██    ██ ██    ██ ██           ██          
+                       ██████   ██████  ██      ███████ ██ ██ ██ 
+                            
+                       
+    ...........
+
+    WHAT DID YOU DO???
+        If you can see this page then your settings are setup incorrectly.
+
+    Check your output (View > Output) for the error info
+        FYI, your settings folder is located in ServerStorage, under the name "SessionTrack.PluginSettings"
+
+    ...........
+
+    Once the issue is fixed, save and reload studio to apply your new settings!
+]]]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="ModuleScript" referent="RBXCE70BB18EDB7476AA5811339C8C16520">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Icons</string>
-					<string name="ScriptGuid">{2D26F36F-5817-42DF-AF12-74E22BF54FF2}</string>
+					<string name="ScriptGuid">{2F52B152-760A-4C55-A37C-9D2E30D0CFCE}</string>
 					<ProtectedString name="Source"><![CDATA[local Icons = {
     Power = {
         On = "http://www.roblox.com/asset/?id=16008923978",
@@ -3314,18 +3444,19 @@ end)
 
     Settings = "http://www.roblox.com/asset/?id=16008920257",
     Initialize = "http://www.roblox.com/asset/?id=16008985266",
+    Delete = "http://www.roblox.com/asset/?id=14219067357",
     AssertionFailPage = "http://www.roblox.com/asset/?id=14219067357",
 }
 
 ---------------
 
--- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
-function Icons.changeIconSafely(of: PluginToolbarButton, to: string)
-    if of.Icon == to then
+-- here because theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
+function Icons.switch(this: PluginToolbarButton, to: string)
+    if this.Icon == to then
         return
     end
 
-    of.Icon = to
+    this.Icon = to
 end
 
 ---------------
@@ -3335,14 +3466,45 @@ return Icons]]></ProtectedString>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 			</Item>
-			<Item class="ModuleScript" referent="RBXDDD0581F5A384896BA7A808306F7575A">
+			<Item class="ModuleScript" referent="RBX224A5A98E04443DB998C1980676341BE">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">ProjectDeletedLandingPage</string>
+					<string name="ScriptGuid">{3919D6E0-AF5E-4121-AC16-EFA630C257AB}</string>
+					<ProtectedString name="Source"><![CDATA[--[[
+                                                         
+                         8I                                              
+                         8I                                              
+                         8I                                              
+                         8I                                              
+                   ,gggg,8I    ,gggg,gg   ,ggg,,ggg,,ggg,    ,ggg,,ggg,  
+                  dP"  "Y8I   dP"  "Y8I  ,8" "8P" "8P" "8,  ,8" "8P" "8, 
+                 i8'    ,8I  i8'    ,8I  I8   8I   8I   8I  I8   8I   8I 
+                ,d8,   ,d8b,,d8,   ,d8b,,dP   8I   8I   Yb,,dP   8I   Yb,
+                P"Y8888P"`Y8P"Y8888P"`Y88P'   8I   8I   `Y88P'   8I   `Y8
+                            
+                       
+    ...........
+
+    You've deleted all your SessionTrack project data.
+
+    Please restart studio to reset the plugin back to its factory settings.
+]]]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="ModuleScript" referent="RBXEBC688100DEE47E5A51E33116205D33F">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Session</string>
-					<string name="ScriptGuid">{4D1275C3-5DC8-423D-9E9D-CE3309C8CB1A}</string>
+					<string name="ScriptGuid">{A8EA3CC5-A3AA-4039-B41B-A817C28D9A26}</string>
 					<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.SessionStatus)
 local Logger = require(script.Logger)
 
@@ -3353,7 +3515,7 @@ Session.__index = Session
 
 type self = {
     status: SessionStatus.SessionStatus,
-    logger: Logger.Logger,
+    logger: Logger.Logger?,
 }
 
 export type Session = typeof(setmetatable({} :: self, Session))
@@ -3363,7 +3525,6 @@ export type Session = typeof(setmetatable({} :: self, Session))
 function Session.new(): Session
     local self = {
         status = SessionStatus.new(),
-        logger = nil,
     }
 
     setmetatable(self, Session)
@@ -3371,26 +3532,34 @@ function Session.new(): Session
     return self
 end
 
-function Session.begin(self: Session, logger: Logger.Logger, recoveredSessionStatus: SessionStatus.SessionStatus?)
+function Session.start(self: Session, logger: Logger.Logger)
     if self.status.state ~= SessionStatus.States.DidntStart then
         return
     end
 
     self.logger = logger
     self.status:changeState(SessionStatus.States.Ongoing)
+    logger:postSessionStartMessage()
+    logger:loopCheckpointPosting()
+end
 
-    if recoveredSessionStatus then
-        self.status.state = recoveredSessionStatus.state
-        self.status.timePassed = recoveredSessionStatus.timePassed
-        self.status.timeStarted = recoveredSessionStatus.timeStarted
-        logger:onSessionRecovered()
-    else
-        logger:start()
+function Session.startFromRecoveredSession(self: Session, logger: Logger.Logger, recoveredSessionStatus: SessionStatus.SessionStatus, timeSinceLastSave: number)
+    if self.status.state ~= SessionStatus.States.DidntStart then
+        return
     end
 
-    if self.status.state ~= SessionStatus.States.Paused then
+    self.logger = logger
+    self.status:changeState(recoveredSessionStatus.state)
+    self.status.timePassed = recoveredSessionStatus.timePassed
+
+    -- if the recovered session wasnt paused, we need to recalculate the timePassed
+    -- so that we ignore the time inbetween losing the session and recovering it
+    if recoveredSessionStatus.state == SessionStatus.States.Ongoing then
+        self.status.timePassed = recoveredSessionStatus:getTimeElapsed() - timeSinceLastSave
         logger:loopCheckpointPosting()
     end
+
+    logger:postSessionRecoveredMessage()
 end
 
 function Session.pause(self: Session)
@@ -3398,9 +3567,10 @@ function Session.pause(self: Session)
         return
     end
 
+    assert(self.logger)
     self.status:changeState(SessionStatus.States.Paused)
-    self.logger:stopLoop()
-    self.logger:pause()
+    self.logger:stopCheckpointLoop()
+    self.logger:postSessionPauseMessage()
 end
 
 function Session.resume(self: Session)
@@ -3408,15 +3578,26 @@ function Session.resume(self: Session)
         return
     end
 
+    assert(self.logger)
     self.status:changeState(SessionStatus.States.Ongoing)
-    self.logger:resume()
+    self.logger:postSessionResumeMessage()
     self.logger:loopCheckpointPosting()
 end
 
 function Session.close(self: Session)
+    assert(self.logger)
     self.status:changeState(SessionStatus.States.Closed)
-    self.logger:stopLoop()
-    self.logger:close()
+    self.logger:postSessionCloseMessage()
+    self.logger = nil
+end
+
+function Session.destroy(self: Session)
+    self.status:changeState(SessionStatus.States.Closed)
+    self.status:destroy()
+    self.logger = nil
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
 end
 
 ---------------
@@ -3425,127 +3606,31 @@ return Session]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
-				<Item class="ModuleScript" referent="RBX3E72D6E4422D4081B03A2629CF8261C8">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-						<bool name="DefinesCapabilities">false</bool>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">Autosave</string>
-						<string name="ScriptGuid">{65C23A95-73B3-482F-8E87-E7C131BC2790}</string>
-						<ProtectedString name="Source"><![CDATA[local SessionStatus = require(script.Parent.SessionStatus)
-
-local Autosave = {
-    Key = "SessionTrackAutosave%s",
-    IntervalSeconds = 5,
-}
-
-Autosave.__index = Autosave
-
----------------
-
-type self = {
-    plugin: Plugin,
-    projectName: string,
-    loopThread: thread,
-}
-
-export type Autosave = typeof(setmetatable({} :: self, Autosave))
-
--------------
-
-local function getKey(projectName)
-    return string.format(Autosave.Key, projectName)
-end
-
--------------
-
-function Autosave.new(plugin: Plugin, projectName: string): Autosave
-    local self = {
-        plugin = plugin,
-        projectName = projectName,
-        loopThread = nil,
-    }
-
-    setmetatable(self, Autosave)
-
-    return self
-end
-
-function Autosave.update(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
-    -- the .stateChanged signal cant be saved by the plugin. itll throw an error
-    local statusWithoutSignal = SessionStatus.new()
-
-    statusWithoutSignal.state = sessionStatus.state
-    statusWithoutSignal.timeStarted = sessionStatus.timeStarted
-    statusWithoutSignal.timePassed = sessionStatus.timePassed
-    statusWithoutSignal.stateChanged:DisconnectAll()
-    statusWithoutSignal.stateChanged = nil
-
-    self.plugin:SetSetting(getKey(self.projectName), statusWithoutSignal)
-end
-
-function Autosave.erase(self: Autosave)
-    self:stop()
-    self.plugin:SetSetting(getKey(self.projectName), nil)
-end
-
-function Autosave.recover(self: Autosave): SessionStatus.SessionStatus?
-    return self.plugin:GetSetting(getKey(self.projectName))
-end
-
-function Autosave.loop(self: Autosave, sessionStatus: SessionStatus.SessionStatus)
-    if self.loopThread then
-        return
-    end
-
-    self.loopThread = task.spawn(function()
-        self:update(sessionStatus)
-    end)
-end
-
-function Autosave.stop(self: Autosave)
-    if not self.loopThread then
-        return
-    end
-
-    task.cancel(self.loopThread)
-end
-
----------------
-
-return Autosave]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-					</Properties>
-				</Item>
-				<Item class="ModuleScript" referent="RBX852D0F60D23F4077813C13AF6F77FAAB">
+				<Item class="ModuleScript" referent="RBXD3AB1197F9C54DAE9D2D75841FAA89FC">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">Logger</string>
-						<string name="ScriptGuid">{99D5EDB5-3523-49D2-8A5A-102574EC2F53}</string>
-						<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Packages
-local baseModules = script.Parent.Parent.Settings.Modules
+						<string name="ScriptGuid">{03486912-C65D-4674-AACC-5D7553087B13}</string>
+						<ProtectedString name="Source"><![CDATA[local settingsDirectory = script.Parent.Parent.Settings
+local packages = script.Parent.Parent.Parent.Packages
 
-local Messages = require(baseModules.Messages)
-local Checkpoints = require(baseModules.Checkpoints)
-local Info = require(baseModules.Info)
-
-local Voyager = require(packages.Voyager)
-local Settings = require(script.Parent.Parent.Settings)
 local SessionStatus = require(script.Parent.SessionStatus)
+local TotalProjectTime = require(script.Parent.TotalProjectTime)
+local Settings = require(settingsDirectory)
+local Messages = require(settingsDirectory.Modules.Messages)
+local Checkpoints = require(settingsDirectory.Modules.Checkpoints)
+local Info = require(settingsDirectory.Modules.Info)
+local Voyager = require(packages.Voyager)
 
 local Logger = {
     Tags = {
         DayToday = "TODAYSDATE",
+        SessionState = "SESSIONSTATE",
         SessionTime = "SESSIONTIME",
         TotalTime = "TOTALTIME",
-        RawSessionTime = "RAWSESSIONTIME",
-        RawTotalTime = "RAWTOTALTIME",
-        SessionState = "SESSIONSTATE",
     }
 }
 
@@ -3554,13 +3639,14 @@ Logger.__index = Logger
 ---------------
 
 type self = {
-    settingsRoot: Settings.Settings,
+    settings: Settings.Settings,
     messages: Messages.Messages,
     checkpoints: Checkpoints.Checkpoints,
     info: Info.Info,
-    webhook: any,
     sessionStatus: SessionStatus.SessionStatus,
-    loopThread: thread?,
+    totalProjectTime: TotalProjectTime.TotalProjectTime,
+    webhook: typeof(Voyager)?,
+    checkpointLoopThread: thread?,
 }
 
 export type Logger = typeof(setmetatable({} :: self, Logger))
@@ -3586,115 +3672,118 @@ end
 
 -------------
 
-function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatus.SessionStatus): Logger
+function Logger.new(settings: Settings.Settings, sessionStatus: SessionStatus.SessionStatus, totalProjectTime: TotalProjectTime.TotalProjectTime): Logger
     local self = {
-        settingsRoot = settingsRoot,
-        messages = require(settingsRoot.Messages),
-        checkpoints = require(settingsRoot.Checkpoints),
-        info = require(settingsRoot.Info),
+        settings = settings,
+        messages = require(settings.Messages),
+        checkpoints = require(settings.Checkpoints),
+        info = require(settings.Info),
         sessionStatus = sessionStatus,
-        loopThread = nil,
+        totalProjectTime = totalProjectTime,
     }
 
-    self.webhook = Voyager.fromUrl(self.info.WebhookURL)
+    if not self.info.UseOutputInstead then
+        self.webhook = Voyager.fromUrl(self.info.WebhookURL)
+    end
 
     setmetatable(self, Logger)
 
     return self
 end
 
-function Logger.start(self: Logger)
-    local message = self.messages.get(self.messages.Start)
-    local separator = self.messages.get(self.messages.LineSeparators)
-
-    self:post(message)
-    self:post(separator)
-end
-
-function Logger.onSessionRecovered(self: Logger)
-    local message = self.messages.get(self.messages.SessionRecovered)
-    
-    self:post(message)
-end
-
-function Logger.postCheckpoint(self: Logger)
-    local checkpoint = self.checkpoints.get()
-        
-    self:post(checkpoint)
-end
-
-function Logger.loopCheckpointPosting(self: Logger)
-    if self.loopThread then
-        return
-    end
-
-    local function loop()
-        local interval = self.checkpoints.IntervalSeconds
-
-        while task.wait(interval) do
-            self:postCheckpoint()
-        end
-    end
-
-    self.loopThread = task.spawn(loop)
-end
-
-function Logger.stopLoop(self: Logger)
-    if self.loopThread then
-        task.cancel(self.loopThread)
-        self.loopThread = nil 
-    end
-end
-
-function Logger.pause(self: Logger)
-    local message = self.messages.get(self.messages.Pause)
-
-    self:post(message)
-end
-
-function Logger.resume(self: Logger)
-    local message = self.messages.get(self.messages.Resume)
-    
-    self:post(message)
-end
-
-function Logger.close(self: Logger)
-    local separator = self.messages.get(self.messages.LineSeparators)
-    local message = self.messages.get(self.messages.Close)
-
-   self:post(separator)
-   self:post(message)
-end
-
---
-
--- non-message methods
-
-function Logger.post(self: Logger, text: string)
-    if self.isFaulty then
+function Logger.send(self: Logger, text: string?)
+    if not text then
         return
     end
 
     text = self:getTextWithTagsApplied(text)
 
-    self.webhook:execute(text, nil, true, true)
+    if self.webhook then
+        self.webhook:execute(text, nil, false, true)
+    else
+        print(text)
+    end
 end
 
-function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?
-    if not text then
-        return
-    end
-
-    local tagApplications = {
+function Logger.getTextWithTagsApplied(self: Logger, text: string)
+    local applications = {
         [Logger.Tags.DayToday] = os.date(),
         [Logger.Tags.SessionTime] = formatSecondsToHMS(self.sessionStatus:getTimeElapsed()),
-        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.info.getTotalProjectTime()),
-        [Logger.Tags.RawSessionTime] = self.sessionStatus:getTimeElapsed(),
-        [Logger.Tags.RawTotalTime] = self.info.getTotalProjectTime(),
+        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.totalProjectTime:get() + self.sessionStatus:getTimeElapsed()),
         [Logger.Tags.SessionState] = self.sessionStatus.state,
     }
     
-    return string.gsub(text, "%u+", tagApplications)
+    return string.gsub(text, "%u+", applications)
+end
+
+function Logger.destroy(self: Logger)
+    self:stopCheckpointLoop()
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
+end
+
+--
+
+function Logger.postSessionStartMessage(self: Logger)
+    local message = self.messages.get(self.messages.Start)
+    local separator = self.messages.get(self.messages.LineSeparators)
+
+    self:send(message)
+    self:send(separator) 
+end
+
+function Logger.postSessionRecoveredMessage(self: Logger)
+    local message = self.messages.get(self.messages.SessionRecovered)
+    
+    self:send(message)
+end
+
+function Logger.postCheckpoint(self: Logger)
+    local checkpoint = self.checkpoints.get()
+        
+    self:send(checkpoint)
+end
+
+function Logger.loopCheckpointPosting(self: Logger)
+    if self.checkpointLoopThread then
+        return
+    end
+
+    self.checkpointLoopThread = task.spawn(function()
+        local interval = self.checkpoints.IntervalSeconds
+
+        while task.wait(interval) do
+            self:postCheckpoint()
+        end
+    end)
+end
+
+function Logger.stopCheckpointLoop(self: Logger)
+    if self.checkpointLoopThread then
+        task.cancel(self.checkpointLoopThread)
+        self.checkpointLoopThread = nil 
+    end
+end
+
+function Logger.postSessionPauseMessage(self: Logger)
+    local message = self.messages.get(self.messages.Pause)
+
+    self:send(message)
+end
+
+function Logger.postSessionResumeMessage(self: Logger)
+    local message = self.messages.get(self.messages.Resume)
+    
+    self:send(message)
+end
+
+function Logger.postSessionCloseMessage(self: Logger)
+    local separator = self.messages.get(self.messages.LineSeparators)
+    local message = self.messages.get(self.messages.Close)
+
+   self:send(separator)
+   self:send(message)
 end
 
 ---------------
@@ -3704,14 +3793,136 @@ return Logger]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
-				<Item class="ModuleScript" referent="RBX1C0E186D878640DA880DFD49758DB9B6">
+				<Item class="ModuleScript" referent="RBXD9DACC434BC34CC487E8091227C22C34">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">SessionSave</string>
+						<string name="ScriptGuid">{B809DDFE-BE71-4875-96D6-C75AB709D244}</string>
+						<ProtectedString name="Source"><![CDATA[local Session = require(script.Parent)
+local SessionStatus = require(script.Parent.SessionStatus)
+
+local SessionSave = {
+    Key = "SessionTrackAutosave%s",
+}
+
+SessionSave.__index = SessionSave
+
+---------------
+
+type self = {
+    plugin: Plugin,
+    projectName: string,
+    intervalSeconds: number,
+    latestSessionStatus: SessionStatus.SessionStatus?,
+    latestCommitTick: number?,
+    autosaveThread: thread?,
+}
+
+export type SessionSave = typeof(setmetatable({} :: self, SessionSave))
+
+-------------
+
+local function getKey(projectName)
+    return string.format(SessionSave.Key, projectName)
+end
+
+-------------
+
+function SessionSave.new(plugin: Plugin, projectName: string, intervalSeconds: number?): SessionSave
+    local self = {
+        plugin = plugin,
+        projectName = projectName,
+        intervalSeconds = intervalSeconds or 5,
+    }
+
+    setmetatable(self, SessionSave)
+
+    return self
+end
+
+function SessionSave.recover(plugin: Plugin, projectName: string): (SessionStatus.SessionStatus?, number?)
+    local recoveredSave = plugin:GetSetting(getKey(projectName))
+
+    if not recoveredSave then
+        return
+    end
+
+    -- plugin:GetSetting() doesnt save the metatables so we need to put them back
+    setmetatable(recoveredSave, SessionSave)
+    setmetatable(recoveredSave.latestSessionStatus, SessionStatus)
+
+    return recoveredSave.latestSessionStatus, recoveredSave:getTimeSinceLastSave()
+end
+
+function SessionSave.getTimeSinceLastSave(self: SessionSave): number
+    if not self.latestCommitTick then
+        return 0
+    end
+
+    return tick() - self.latestCommitTick
+end
+
+function SessionSave.commit(self: SessionSave, status: SessionStatus.SessionStatus)
+    self.latestSessionStatus = status:clone()
+    self.latestCommitTick = tick()
+    self.plugin:SetSetting(getKey(self.projectName), self)
+end
+
+function SessionSave.erase(self: SessionSave)
+    self.latestSessionStatus = nil
+    self.latestCommitTick = nil
+    self.plugin:SetSetting(getKey(self.projectName), nil)
+end
+
+function SessionSave.startAutosaving(self: SessionSave, session: Session.Session)
+    if self.autosaveThread then
+        return
+    end
+
+    self.autosaveThread = task.spawn(function()
+        self:commit(session.status)
+
+        while task.wait(self.intervalSeconds) do
+            self:commit(session.status)
+        end
+    end)
+end
+
+function SessionSave.stopAutosaving(self: SessionSave)
+    if not self.autosaveThread then
+        return
+    end
+
+    task.cancel(self.autosaveThread)
+    self.autosaveThread = nil
+end
+
+function SessionSave.destroy(self: SessionSave)
+    self:stopAutosaving()
+    self:erase()
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
+end
+
+---------------
+
+return SessionSave]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="ModuleScript" referent="RBXBBF78D54B7FC4AF08775AC47407EE169">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 						<bool name="DefinesCapabilities">false</bool>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">SessionStatus</string>
-						<string name="ScriptGuid">{B9F90FDB-7911-4118-AA04-9031C2A737DB}</string>
+						<string name="ScriptGuid">{108FA5A1-4D66-4326-A4EC-21678E3B7B48}</string>
 						<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Packages
 
 local Signal = require(packages.Signal)
@@ -3763,15 +3974,15 @@ function SessionStatus.changeState(self: SessionStatus, to: State)
         self.timePassed = self:getTimeElapsed()
     end
 
-    if to == SessionStatus.States.Closed then
-        self.stateChanged:Destroy()
-    end
-
     self.state = to
     self.stateChanged:Fire(to)
 end
 
-function SessionStatus.getTimeElapsed(self: SessionStatus)
+function SessionStatus.getTimeElapsed(self: SessionStatus): number
+    if self.state == SessionStatus.States.DidntStart then
+        return 0
+    end
+
     if self.state == SessionStatus.States.Paused or self.state == SessionStatus.States.Closed then
         return self.timePassed
     end
@@ -3781,6 +3992,27 @@ function SessionStatus.getTimeElapsed(self: SessionStatus)
     return self.timePassed + timeElapsedSoFar
 end
 
+-- creates a safe clone for `plugin:SetSetting()`. it cant save Signal objects.
+function SessionStatus.clone(self: SessionStatus): SessionStatus
+    local clone = SessionStatus.new()
+
+    clone.state = self.state
+    clone.timeStarted = self.timeStarted
+    clone.timePassed = self.timePassed
+    clone.stateChanged:DisconnectAll()
+    clone.stateChanged = nil
+
+    return clone
+end
+
+function SessionStatus.destroy(self: SessionStatus)
+    self:changeState(SessionStatus.States.Closed)
+    self.stateChanged:Destroy()
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
+end
+
 ---------------
 
 return SessionStatus]]></ProtectedString>
@@ -3788,26 +4020,100 @@ return SessionStatus]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
+				<Item class="ModuleScript" referent="RBXB0EA1ED257BB4DE4877C28702F3D19BA">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<Content name="LinkedSource"><null></null></Content>
+						<string name="Name">TotalProjectTime</string>
+						<string name="ScriptGuid">{EE8141BC-D34B-482C-979E-D030CF6F2BE1}</string>
+						<ProtectedString name="Source"><![CDATA[local TotalProjectTime = {
+    Key = "SessionTrackTotalTime%s",
+    FailsafeAttribute = "TotalProjectTime",
+}
+
+TotalProjectTime.__index = TotalProjectTime
+
+---------------
+
+type self = {
+    plugin: Plugin,
+    projectName: string,
+    failsafe: Instance,
+}
+
+export type TotalProjectTime = typeof(setmetatable({} :: self, TotalProjectTime))
+
+-------------
+
+local function getKey(projectName)
+    return string.format(TotalProjectTime.Key, projectName)
+end
+
+-------------
+
+function TotalProjectTime.new(plugin: Plugin, projectName: string, failsafe: Instance): TotalProjectTime
+    local self = {
+        plugin = plugin,
+        projectName = projectName,
+        failsafe = failsafe,
+    }
+
+    setmetatable(self, TotalProjectTime)
+
+    return self
+end
+
+function TotalProjectTime.commit(self: TotalProjectTime, newTime: number)
+    self.failsafe:SetAttribute(TotalProjectTime.FailsafeAttribute, newTime)
+    self.plugin:SetSetting(getKey(self.projectName), newTime)
+end
+
+function TotalProjectTime.erase(self: TotalProjectTime)
+    self.failsafe:SetAttribute(TotalProjectTime.FailsafeAttribute, nil)
+    self.plugin:SetSetting(getKey(self.projectName), nil)
+end
+
+function TotalProjectTime.get(self: TotalProjectTime)
+    local total = self.plugin:GetSetting(getKey(self.projectName))
+
+    if not total then
+        local recoveredTotalTime = self.failsafe:GetAttribute(TotalProjectTime.FailsafeAttribute)
+
+        total = recoveredTotalTime or 0
+    end
+
+    return total
+end
+
+---------------
+
+return TotalProjectTime]]></ProtectedString>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
 			</Item>
-			<Item class="ModuleScript" referent="RBX8FF3CB9B83F24EE28E6F47B55E3A28C3">
+			<Item class="ModuleScript" referent="RBX4515098B05534F3DA12DA31286261D68">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 					<bool name="DefinesCapabilities">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">Settings</string>
-					<string name="ScriptGuid">{83B5E5BB-3F2B-4EE8-9BCD-0E1FF9FB4860}</string>
+					<string name="ScriptGuid">{102BC33E-6DFE-4E16-849E-BDAB0219E65D}</string>
 					<ProtectedString name="Source"><![CDATA[local ServerStorage = game:GetService("ServerStorage")
 
-local baseModules = script.Modules
+local bases = script.Modules
 local assertions = script.Assertions
 
-local Messages = require(baseModules.Messages)
-local Checkpoints = require(baseModules.Checkpoints)
-local Info = require(baseModules.Info)
+local Messages = require(bases.Messages)
+local Checkpoints = require(bases.Checkpoints)
+local Info = require(bases.Info)
 
 local Settings = {
-    Version = 1,
+    Version = 3,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",
@@ -3831,8 +4137,8 @@ local ASSERTFAIL_CANT_LOAD_MODULE = "[SessionTrack]: couldnt load settings modul
 
 ---------------
 
-function Settings.new(): Folder
-    local clone = baseModules:Clone()
+function Settings.new(): Settings
+    local clone = bases:Clone()
 
     clone.Name = Settings.InstanceName
     clone:SetAttribute(Settings.VersionAttribute, Settings.Version)
@@ -3900,7 +4206,7 @@ return Settings]]></ProtectedString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
-				<Item class="Folder" referent="RBX1F8A22C55BCF48C992BEF9873FAAAB68">
+				<Item class="Folder" referent="RBXAF95D106202A4C578B895B9F6D2FC3D1">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -3909,14 +4215,14 @@ return Settings]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBX2725B02A45C84F8185B91AD68087C355">
+					<Item class="ModuleScript" referent="RBX2C79805C928D48DCACD979E60B524C2A">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Assets</string>
-							<string name="ScriptGuid">{01C9A669-8C08-46C0-8C23-76FA8D290359}</string>
+							<string name="ScriptGuid">{E84E3235-1663-436D-AC2D-687462DC80A6}</string>
 							<ProtectedString name="Source"><![CDATA[-- nothing to check lol
 
 local AssetsAssertion = {}
@@ -3934,14 +4240,14 @@ return AssetsAssertion]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX6907FD3BA8654261A4BDE9F6E0C17110">
+					<Item class="ModuleScript" referent="RBX4AEF4D0BF1DF44DABBC3ABE38A2B8439">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Checkpoints</string>
-							<string name="ScriptGuid">{CBCF17AE-3FA5-44D2-8D1B-F550E2B1926B}</string>
+							<string name="ScriptGuid">{85C88015-6637-4F6C-BF88-B192A71A89E1}</string>
 							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Modules
 
@@ -4005,14 +4311,14 @@ return CheckpointsAssertion]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX4A369357E0AA424F947EB9002BEDBA2C">
+					<Item class="ModuleScript" referent="RBXB0A04509E95448F8AEEF3944CFE057D9">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Info</string>
-							<string name="ScriptGuid">{06CB0454-1E45-468E-8FB2-EB12652F3572}</string>
+							<string name="ScriptGuid">{91570FFD-C322-4373-8120-21D080CA6ACC}</string>
 							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Modules
 
@@ -4030,7 +4336,6 @@ local moduleInterface = t.interface({
     ProjectName = t.string,
     WebhookURL = t.string,
     UseOutputInstead = t.boolean,
-    TotalProjectTimeAttribute = t.string,
 })
 
 ---------------
@@ -4043,6 +4348,10 @@ function InfoAssertion.run(module: Info.Info): (boolean, string?)
     end
 
     success, errorMessage = pcall(function()
+        if module.UseOutputInstead then
+            return
+        end
+
         local webhook = Voyager.fromUrl(module.WebhookURL)
         local message, requestStatus = webhook:execute("Plugin is starting... (This is a check to see if the webhook actually works). Message will be deleted.", nil, false, true)
 
@@ -4057,39 +4366,6 @@ function InfoAssertion.run(module: Info.Info): (boolean, string?)
         return success, ASSERTFAIL_PREFIX .. errorMessage
     end
 
-    local totalProjectTime
-    success, errorMessage = pcall(function()
-        totalProjectTime = module.getTotalProjectTime()
-    end)
-
-    if not success then
-        return success, ASSERTFAIL_PREFIX .. "getTotalProjectTime is erroring. What?"
-    end
-
-    success, errorMessage = t.number(totalProjectTime)
-
-    if not success then
-        return success, ASSERTFAIL_PREFIX .. "getTotalProjectTime doesnt return a number. | " .. errorMessage
-    end
-
-    success, errorMessage = pcall(function()
-        module.addToTotalProjectTime(1)
-    end)
-
-    if not success then
-        return success, ASSERTFAIL_PREFIX .. errorMessage
-    end
-
-    local newTotalProjectTime = module.getTotalProjectTime()
-
-    success, errorMessage = t.literal(totalProjectTime + 1)(newTotalProjectTime)
-
-    if not success then
-        return success, ASSERTFAIL_PREFIX .. "addToTotalProjectTime is inaccurate. You know what you did. Theres no way a normal person would get this error"
-    end
-
-    module.addToTotalProjectTime(-1)
-
     return true
 end
 
@@ -4100,14 +4376,14 @@ return InfoAssertion]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBXD2392E97CA964AF39234B67DD12D2840">
+					<Item class="ModuleScript" referent="RBX8EED1588318E405EA7A53079BA5ED6DE">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Messages</string>
-							<string name="ScriptGuid">{B9E0D9E1-E1B8-4F2A-99CD-BE9AE6E08056}</string>
+							<string name="ScriptGuid">{8BFB441A-1C40-49D2-BA83-2882E66F2120}</string>
 							<ProtectedString name="Source"><![CDATA[local packages = script.Parent.Parent.Parent.Parent.Packages
 local baseModules = script.Parent.Parent.Modules
 
@@ -4166,39 +4442,7 @@ return MessagesAssertion]]></ProtectedString>
 						</Properties>
 					</Item>
 				</Item>
-				<Item class="ModuleScript" referent="RBX18F9F62976604717ABD55A2A83907693">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-						<bool name="DefinesCapabilities">false</bool>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">FailedAssertionLandingPage</string>
-						<string name="ScriptGuid">{87D0CE68-BB13-43ED-BFA8-BC06280E5AB9}</string>
-						<ProtectedString name="Source"><![CDATA[--[[
-                       ██████   ██████  ██████  ███████          
-                      ██    ██ ██    ██ ██   ██ ██               
-                      ██    ██ ██    ██ ██████  ███████          
-                      ██    ██ ██    ██ ██           ██          
-                       ██████   ██████  ██      ███████ ██ ██ ██ 
-                            
-                       
-    ...........
-
-    WHAT DID YOU DO???
-        If you can see this page then your settings are setup incorrectly.
-
-    Check your output (View > Output) for the error info
-        FYI, your settings folder is located in ServerStorage, under the name "SessionTrack.PluginSettings"
-
-    ...........
-
-    Once the issue is fixed, save and reload studio to apply your new settings!
-]]]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-					</Properties>
-				</Item>
-				<Item class="Folder" referent="RBXA46EA11595B2404A818CF1E4EC5A9E9C">
+				<Item class="Folder" referent="RBX51485AA3B71846478192746200E35DD7">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
@@ -4207,14 +4451,14 @@ return MessagesAssertion]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
-					<Item class="ModuleScript" referent="RBXF5A7FFA7EC6940268407D9FFBFAC78CE">
+					<Item class="ModuleScript" referent="RBXAA3F2F163D70494FA1F608918BA1F12E">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Assets</string>
-							<string name="ScriptGuid">{45FF8C6F-A2AD-41DB-AF75-1C20864355C5}</string>
+							<string name="ScriptGuid">{3FA48D01-858D-4142-9B52-85F441A54162}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     NOTE:
 
@@ -4242,14 +4486,14 @@ return Assets]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX4F764FA539F3416BA553A2D4FFF646D1">
+					<Item class="ModuleScript" referent="RBX59A1DDC8557F45C29BBCE363671BB396">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Checkpoints</string>
-							<string name="ScriptGuid">{0484686B-BD86-4693-B05E-0C7FC15E20D0}</string>
+							<string name="ScriptGuid">{EA5D5B8D-F002-427C-9C55-3AEC296700F1}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     NOTE:
 
@@ -4326,13 +4570,7 @@ end
         total time spent on the project
 
     TODAYSDATE
-        day, hour, minute, second at the moment of starting the session
-
-    RAWSESSIONTIME
-        SESSIONTIME, in pure seconds
-
-    RAWTOTALTIME
-        TOTALTIME, in pure seconds
+        day, hour, minute, second right now
 
     SESSIONSTATE
         state of the session (paused or ongoing)
@@ -4350,14 +4588,14 @@ return Checkpoints]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX8DCB69FD8EFE48B1B9A14A649C734120">
+					<Item class="ModuleScript" referent="RBXB8B61F1B01C94EC49384B20597FEE689">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Info</string>
-							<string name="ScriptGuid">{AE30153E-1DDB-436D-A581-04B075F53493}</string>
+							<string name="ScriptGuid">{73091103-490E-4CBB-969F-2C8AD3422B9E}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★  ★
 
@@ -4385,7 +4623,7 @@ return Checkpoints]]></ProtectedString>
 --[[
     info about your project
 
-    please edit the fields with "REPLACEME" for the plugin to work properly. dont worry about the other fields like `TotalProjectTime` :P
+    please edit the fields with "REPLACEME" for the plugin to work properly.
 
     if you wanna test the plugin without posting to the webhook, change the `UseOutputInstead` option to `true`.
         thatll, like the name says, send all the messages to roblox studios output
@@ -4396,7 +4634,6 @@ local Info = {
     ProjectName = "REPLACEME",
     WebhookURL = "REPLACEME",
     UseOutputInstead = false,
-    TotalProjectTimeAttribute = "TotalProjectTime",
 }
 
 ---------------
@@ -4405,31 +4642,19 @@ export type Info = typeof(Info)
 
 ---------------
 
-function Info.addToTotalProjectTime(time: number)
-    local currentAmount = script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
-
-    script:SetAttribute(Info.TotalProjectTimeAttribute, currentAmount + time)
-end
-
-function Info.getTotalProjectTime()
-    return script:GetAttribute(Info.TotalProjectTimeAttribute) or 0
-end
-
----------------
-
 return Info]]></ProtectedString>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="ModuleScript" referent="RBX8F857EF267D3438CA98A18BFAE0D5DC0">
+					<Item class="ModuleScript" referent="RBXDBF7B885C40E41E98730B8916189832F">
 						<Properties>
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
 							<bool name="DefinesCapabilities">false</bool>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">Messages</string>
-							<string name="ScriptGuid">{84FD6915-B9C0-4EFA-9F5D-D75E16052C71}</string>
+							<string name="ScriptGuid">{56F11A3F-48BF-49DC-A25C-4DE5CA30D6A8}</string>
 							<ProtectedString name="Source"><![CDATA[--[[
     NOTE:
 
@@ -4506,13 +4731,7 @@ end
         total time spent on the project
 
     TODAYSDATE
-        day, hour, minute, second at the moment of starting the session
-
-    RAWSESSIONTIME
-        SESSIONTIME, in pure seconds
-
-    RAWTOTALTIME
-        TOTALTIME, in pure seconds
+        day, hour, minute, second right now
 
     SESSIONSTATE
         state of the session (paused or ongoing)
