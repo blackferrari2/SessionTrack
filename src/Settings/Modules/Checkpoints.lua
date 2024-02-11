@@ -15,7 +15,7 @@ local Assets = require(script.Parent.Assets)
 
 local Checkpoints = {
     -- Minimum value: 60 seconds
-    IntervalSeconds = 600,
+    IntervalSeconds = 60,
 }
 
 ---------------
@@ -82,8 +82,8 @@ end
     ...
 ]]
 
-Checkpoints.add("TestAuthor", "hey" .. Assets.Emojis.Smiley)
-Checkpoints.add("TestAuthor2", "helolo SESSIONTIME")
+Checkpoints.add("TestAuthor", "checkpoint! did you know that the session is SESSIONSTATE?" .. Assets.Emojis.Smiley)
+Checkpoints.add("IM THE AUTHOR", "checkpoint! wow this session is SO OLD that its SESSIONTIME long!" .. Assets.Emojis.Angry)
 
 ---------------
 

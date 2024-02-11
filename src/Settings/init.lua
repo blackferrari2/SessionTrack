@@ -44,7 +44,7 @@ function Settings.new(): Settings
     return clone
 end
 
-function Settings.get(): Folder?
+function Settings.get(): Settings?
     local modules = ServerStorage:FindFirstChild(Settings.InstanceName)
 
     if modules then
@@ -62,8 +62,8 @@ function Settings.get(): Folder?
     return nil
 end
 
-function Settings.assert(root: Settings): (boolean, string?)
-    for _, module in pairs(root:GetChildren()) do
+function Settings.assert(settings: Settings): (boolean, string?)
+    for _, module in pairs(settings:GetChildren()) do
         if module.ClassName ~= "ModuleScript" then
             return false, string.format(ASSERTFAIL_INVALID_INSTANCE, module.ClassName)
         end

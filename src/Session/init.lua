@@ -78,6 +78,10 @@ function Session.resume(self: Session)
 end
 
 function Session.close(self: Session)
+    if self.status.state == SessionStatus.States.Closed then
+        return
+    end
+
     assert(self.logger)
     self.status:changeState(SessionStatus.States.Closed)
     self.logger:postSessionCloseMessage()

@@ -16,6 +16,10 @@ local Assets = {
         Angry = "😡",
         Rat = "🐀",
     },
+
+    Posters = {
+        Yay = "https://i.imgur.com/DZlIkPs.png",
+    },
 }
 
 ---------------

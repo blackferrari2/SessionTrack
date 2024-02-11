@@ -4,8 +4,8 @@
     Version 2.0
     10th February 2024
 
-    SOURCE:
-    https://github.com/blackferrari2/session-tracker
+    REPOSITORY:
+    https://github.com/blackferrari2/SessionTrack
 ]]
 
 assert(plugin, "SessionTrack must run as a plugin")
@@ -107,13 +107,6 @@ local deleteProjectPromptWidget = plugin:CreateDockWidgetPluginGui("SessionTrack
     400
 ))
 
---
-
-local function toggleSessionButtons(offOrOn: boolean)
-    powerButton.Enabled = offOrOn
-    pauseButton.Enabled = offOrOn
-end
-
 ---------------
 
 -- setup the settings widget
@@ -193,7 +186,8 @@ local session
 local logger
 
 powerButton.Click:Connect(function()
-    toggleSessionButtons(false)
+    powerButton.Enabled = false
+    pauseButton.Enabled = false
 
     if session then
         Icons.switch(powerButton, Icons.Power.On)
@@ -208,7 +202,7 @@ powerButton.Click:Connect(function()
 
         session = nil
         logger = nil
-        toggleSessionButtons(true)
+        powerButton.Enabled = true
         deleteProjectButton.Enabled = true
 
         return
@@ -234,7 +228,9 @@ powerButton.Click:Connect(function()
     end
 
     save:startAutosaving(session)
-    toggleSessionButtons(true)
+
+    powerButton.Enabled = true
+    pauseButton.Enabled = true
 end)
 
 --
@@ -244,18 +240,26 @@ pauseButton.Click:Connect(function()
         return
     end
 
-    toggleSessionButtons(false)
+    powerButton.Enabled = false
+    pauseButton.Enabled = false
 
     if session.status.state == SessionStatus.States.Paused then
         Icons.switch(pauseButton, Icons.Pause.Unpaused)
+
         session:resume()
-        toggleSessionButtons(true)
+
+        powerButton.Enabled = true
+        pauseButton.Enabled = true
+        
         return
     end
 
     Icons.switch(pauseButton, Icons.Pause.Paused)
+
     session:pause()
-    toggleSessionButtons(true)
+
+    powerButton.Enabled = true
+    pauseButton.Enabled = true
 end)
 
 --

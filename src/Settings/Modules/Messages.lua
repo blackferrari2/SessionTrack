@@ -82,22 +82,29 @@ end
     ...
 ]]
 
-Messages.add(Messages.Start, "Session Started! TODAYSDATE " .. Assets.Emojis.Rat)
-Messages.add(Messages.Start, Info.ProjectName .. " Session Started... TODAYSDATE yay" .. Assets.Emojis.Angry)
+Messages.add(Messages.Start, "# " .. Info.ProjectName .. " Session Started! \n ## TODAYSDATE " .. "\n " .. Assets.Posters.Yay)
 
-Messages.add(Messages.SessionRecovered, "Session Recovered! state: SESSIONSTATE time rn: SESSIONTIME")
-Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! SESSIONSTATE Session recovered. SESSIONTIME")
+--
 
-Messages.add(Messages.Close, "Session Closed! total time ever: TOTALTIME")
-Messages.add(Messages.Close, "Session Closed unfortunately. total time ever: TOTALTIME")
+Messages.add(Messages.SessionRecovered, "im so glad you remembered to bring me back! \n SESSIONSTATE Session recovered. Elapsed: `SESSIONTIME` " .. Assets.Emojis.Rat)
 
-Messages.add(Messages.Pause, "paused.")
-Messages.add(Messages.Pause, "pausedddddd")
+--
 
-Messages.add(Messages.Resume, "resumed")
-Messages.add(Messages.Resume, "resumeddddddddddd12313213")
+Messages.add(Messages.Close, "## Session Closed! \n - time: SESSIONTIME \n - total time ever: TOTALTIME")
 
-Messages.add(Messages.LineSeparators, "----------------")
+--
+
+Messages.add(Messages.Pause, "SESSION PAUSED! " .. Assets.Emojis.Rat)
+Messages.add(Messages.Pause, "SESSION was paused... " .. Assets.Emojis.Angry)
+
+--
+
+Messages.add(Messages.Resume, "SESSION RESUMED! " .. Assets.Emojis.Rat)
+Messages.add(Messages.Resume, "SESSION was resumed... " .. Assets.Emojis.Smiley)
+
+--
+
+Messages.add(Messages.LineSeparators, "### --------------------")
 
 ---------------
 
