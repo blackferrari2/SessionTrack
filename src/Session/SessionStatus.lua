@@ -49,15 +49,15 @@ function SessionStatus.changeState(self: SessionStatus, to: State)
         self.timePassed = self:getTimeElapsed()
     end
 
-    if to == SessionStatus.States.Closed then
-        self.stateChanged:Destroy()
-    end
-
     self.state = to
     self.stateChanged:Fire(to)
 end
 
-function SessionStatus.getTimeElapsed(self: SessionStatus)
+function SessionStatus.getTimeElapsed(self: SessionStatus): number
+    if self.state == SessionStatus.States.DidntStart then
+        return 0
+    end
+
     if self.state == SessionStatus.States.Paused or self.state == SessionStatus.States.Closed then
         return self.timePassed
     end
@@ -65,6 +65,27 @@ function SessionStatus.getTimeElapsed(self: SessionStatus)
     local timeElapsedSoFar = tick() - self.timeStarted
 
     return self.timePassed + timeElapsedSoFar
+end
+
+-- creates a safe clone for `plugin:SetSetting()`. it cant save Signal objects.
+function SessionStatus.clone(self: SessionStatus): SessionStatus
+    local clone = SessionStatus.new()
+
+    clone.state = self.state
+    clone.timeStarted = self.timeStarted
+    clone.timePassed = self.timePassed
+    clone.stateChanged:DisconnectAll()
+    clone.stateChanged = nil
+
+    return clone
+end
+
+function SessionStatus.destroy(self: SessionStatus)
+    self:changeState(SessionStatus.States.Closed)
+    self.stateChanged:Destroy()
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
 end
 
 ---------------

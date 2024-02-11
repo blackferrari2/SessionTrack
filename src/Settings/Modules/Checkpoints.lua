@@ -74,13 +74,7 @@ end
         total time spent on the project
 
     TODAYSDATE
-        day, hour, minute, second at the moment of starting the session
-
-    RAWSESSIONTIME
-        SESSIONTIME, in pure seconds
-
-    RAWTOTALTIME
-        TOTALTIME, in pure seconds
+        day, hour, minute, second right now
 
     SESSIONSTATE
         state of the session (paused or ongoing)

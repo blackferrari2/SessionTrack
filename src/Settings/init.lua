@@ -1,14 +1,14 @@
 local ServerStorage = game:GetService("ServerStorage")
 
-local baseModules = script.Modules
+local bases = script.Modules
 local assertions = script.Assertions
 
-local Messages = require(baseModules.Messages)
-local Checkpoints = require(baseModules.Checkpoints)
-local Info = require(baseModules.Info)
+local Messages = require(bases.Messages)
+local Checkpoints = require(bases.Checkpoints)
+local Info = require(bases.Info)
 
 local Settings = {
-    Version = 2,
+    Version = 3,
     InstanceName = "SessionTrack.PluginSettings",
     OutdatedInstanceName = "[OUTDATED] SessionTrack.PluginSettings",
     VersionAttribute = "Version",
@@ -32,8 +32,8 @@ local ASSERTFAIL_CANT_LOAD_MODULE = "[SessionTrack]: couldnt load settings modul
 
 ---------------
 
-function Settings.new(): Folder
-    local clone = baseModules:Clone()
+function Settings.new(): Settings
+    local clone = bases:Clone()
 
     clone.Name = Settings.InstanceName
     clone:SetAttribute(Settings.VersionAttribute, Settings.Version)

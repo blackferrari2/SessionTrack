@@ -1,34 +1,36 @@
 --[[
     blackferrari2's Session Tracker
 
-    Version 1.4
-    8th February 2024
+    Version 2.0
+    10th February 2024
 
     SOURCE:
     https://github.com/blackferrari2/session-tracker
 ]]
 
-assert(plugin, "SessionTrack must run as a plugin NOW")
+assert(plugin, "SessionTrack must run as a plugin")
 
 if game:GetService("RunService"):IsRunning() then
     return
 end
 
 local Session = require(script.Session)
-local SessionStatus = require(script.Session.SessionStatus)
-local Logger = require(script.Session.Logger)
-local Autosave = require(script.Session.Autosave)
-local TotalTime = require(script.Session.TotalTime)
 local Settings = require(script.Settings)
 local Icons = require(script.Icons)
+local Logger = require(script.Session.Logger)
+local SessionSave = require(script.Session.SessionSave)
+local TotalProjectTime = require(script.Session.TotalProjectTime)
+local SessionStatus = require(script.Session.SessionStatus)
 
-local pluginSettingsRoot = Settings.get()
-local Info = pluginSettingsRoot and require(pluginSettingsRoot.Info)
+local settings = Settings.get()
+local Info = settings and require(settings.Info)
 
 ---------------
 
-if pluginSettingsRoot then
-    local success, errorMessage = Settings.assert(pluginSettingsRoot)
+-- if the settings are wrong, abort plugin entirely
+
+if settings then
+    local success, errorMessage = Settings.assert(settings)
 
     if not success then
         local toolbar = plugin:CreateToolbar("BrokenSessionTrack")
@@ -39,11 +41,9 @@ if pluginSettingsRoot then
             Icons.AssertionFailPage
         )
 
-        local function onViewPageClick()
-            plugin:OpenScript(script.Settings.FailedAssertionLandingPage)
-        end
-
-        viewAssertionFailPageButton.Click:Connect(onViewPageClick)
+        viewAssertionFailPageButton.Click:Connect(function()
+            plugin:OpenScript(script.FailedAssertionLandingPage)
+        end)
 
         error(errorMessage)
     end
@@ -77,51 +77,204 @@ local initializeButton = toolbar:CreateButton(
     Icons.Initialize
 )
 
+local deleteProjectButton = toolbar:CreateButton(
+    "delete",
+    "delete your project",
+    Icons.Delete
+)
+
 --
 
-local settingsButtonHeight = 40
-local settingsWidget do
-    local widgetInfo = DockWidgetPluginGuiInfo.new(
-        Enum.InitialDockState.Float,
-        false,
-        true,
-        settingsButtonHeight * 5,
-        settingsButtonHeight * 5,
-        settingsButtonHeight * 5,
-        settingsButtonHeight * 5
-    )
+local settingsWidgetButtonHeight = 40
+local settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", DockWidgetPluginGuiInfo.new(
+    Enum.InitialDockState.Float,
+    false,
+    true,
+    settingsWidgetButtonHeight * 5,
+    settingsWidgetButtonHeight * 5,
+    settingsWidgetButtonHeight * 5,
+    settingsWidgetButtonHeight * 5
+))
 
-    settingsWidget = plugin:CreateDockWidgetPluginGui("SessionTrackSettings", widgetInfo)
-    settingsWidget.Title = "select what you wanna edit"
+local deleteProjectPromptWidgetButtonHeight = 70
+local deleteProjectPromptWidget = plugin:CreateDockWidgetPluginGui("SessionTrackDeleteProject", DockWidgetPluginGuiInfo.new(
+    Enum.InitialDockState.Float,
+    false,
+    true,
+    400,
+    400,
+    400,
+    400
+))
+
+--
+
+local function toggleSessionButtons(offOrOn: boolean)
+    powerButton.Enabled = offOrOn
+    pauseButton.Enabled = offOrOn
 end
 
+---------------
+
+-- setup the settings widget
+
+settingsWidget.Title = "select what you wanna edit"
+
 local scroll = Instance.new("ScrollingFrame")
+Instance.new("UIListLayout", scroll)
 
 scroll.Size = UDim2.fromScale(1, 1)
 scroll.Position = UDim2.fromScale(0, 0)
 scroll.BackgroundColor3 = Color3.new(0, 0, 0)
 scroll.Parent = settingsWidget
 
-local UIListLayout = Instance.new("UIListLayout")
+-- setup project delete widget
 
-UIListLayout.Parent = scroll
+deleteProjectPromptWidget.Title = "SessionTrack DELETE"
 
-local function updateSettingsWidget(modules)
-    for _, module in pairs(modules) do
-        -- replace old button
-        local oldButton = scroll:FindFirstChild(module.Name)
+local warningLabel = Instance.new("TextLabel")
+
+warningLabel.Text = "Are you sure you want to erase all your project data?"
+warningLabel.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight))
+warningLabel.Position = UDim2.fromScale(0, 0)
+warningLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+warningLabel.TextColor3 = Color3.new(1, 1, 1)
+warningLabel.Parent = deleteProjectPromptWidget
+
+local confirmButton = Instance.new("TextButton")
+
+confirmButton.Text = "YES"
+confirmButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight))
+confirmButton.Position = UDim2.new(UDim.new(0, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight * 2))
+confirmButton.BackgroundColor3 = Color3.new(0, 0, 0)
+confirmButton.TextColor3 = Color3.new(1.000000, 0.462745, 0.462745)
+confirmButton.TextSize = deleteProjectPromptWidgetButtonHeight - 15
+confirmButton.Font = Enum.Font.Arcade
+confirmButton.Parent = deleteProjectPromptWidget
+
+local rejectButton = Instance.new("TextButton")
+
+rejectButton.Text = "NO"
+rejectButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight))
+rejectButton.Position = UDim2.new(UDim.new(0, 0), UDim.new(0, deleteProjectPromptWidgetButtonHeight * 3))
+rejectButton.BackgroundColor3 = Color3.new(0, 0, 0)
+rejectButton.TextColor3 = Color3.new(0.462745, 1.000000, 0.552941)
+rejectButton.TextSize = deleteProjectPromptWidgetButtonHeight - 15
+rejectButton.Font = Enum.Font.Arcade
+rejectButton.Parent = deleteProjectPromptWidget
+
+-- configure initial button states
+
+if settings then
+    initializeButton.Enabled = false
+    deleteProjectButton.Enabled = true
+else
+    settingsButton.Enabled = false
+    powerButton.Enabled = false
+    deleteProjectButton.Enabled = false
+end
+
+pauseButton.Enabled = false
+
+-- if theres a recovered session detected, switch out the power button icon
+
+if settings and SessionSave.recover(plugin, Info.ProjectName) then
+    Icons.switch(powerButton, Icons.Power.Recover)
+end
+
+---------------
+
+-- button handling
+
+local totalProjectTime = settings and TotalProjectTime.new(plugin, Info.ProjectName, settings)
+local save = settings and SessionSave.new(plugin, Info.ProjectName, 1)
+
+local session
+local logger
+
+powerButton.Click:Connect(function()
+    toggleSessionButtons(false)
+
+    if session then
+        Icons.switch(powerButton, Icons.Power.On)
+        Icons.switch(pauseButton, Icons.Pause.Unpaused)
         
+        session:close()        
+        totalProjectTime:commit(totalProjectTime:get() + session.status:getTimeElapsed())
+        session:destroy()
+        logger:destroy()
+        save:stopAutosaving()
+        save:erase()
+
+        session = nil
+        logger = nil
+        toggleSessionButtons(true)
+        deleteProjectButton.Enabled = true
+
+        return
+    end
+
+    Icons.switch(powerButton, Icons.Power.Off)
+    deleteProjectButton.Enabled = false
+
+    session = Session.new()
+    logger = Logger.new(settings, session.status, totalProjectTime)
+
+    local recoveredSessionStatus, timeSinceLastSave = SessionSave.recover(plugin, Info.ProjectName)
+
+    if recoveredSessionStatus then
+        session:startFromRecoveredSession(logger, recoveredSessionStatus, timeSinceLastSave)
+
+        -- session recovered to paused state, change icons to reflect that
+        if recoveredSessionStatus.state == SessionStatus.States.Paused then
+            Icons.switch(pauseButton, Icons.Pause.Paused)
+        end
+    else
+        session:start(logger)
+    end
+
+    save:startAutosaving(session)
+    toggleSessionButtons(true)
+end)
+
+--
+
+pauseButton.Click:Connect(function()
+    if not session then
+        return
+    end
+
+    toggleSessionButtons(false)
+
+    if session.status.state == SessionStatus.States.Paused then
+        Icons.switch(pauseButton, Icons.Pause.Unpaused)
+        session:resume()
+        toggleSessionButtons(true)
+        return
+    end
+
+    Icons.switch(pauseButton, Icons.Pause.Paused)
+    session:pause()
+    toggleSessionButtons(true)
+end)
+
+--
+
+local function createSettingsWidgetButtons(settings: Settings.Settings)
+    for _, module in pairs(settings:GetChildren()) do
+        local oldButton = scroll:FindFirstChild(module.Name)
+
         if oldButton then
             oldButton:Destroy()
         end
 
         local openScriptButton = Instance.new("TextButton")
-
+    
         openScriptButton.Text = module.Name
         openScriptButton.Name = module.Name
-        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsButtonHeight))
+        openScriptButton.Size = UDim2.new(UDim.new(1, 0), UDim.new(0, settingsWidgetButtonHeight))
         openScriptButton.Font = Enum.Font.Arcade
-        openScriptButton.TextSize = settingsButtonHeight - 15
+        openScriptButton.TextSize = settingsWidgetButtonHeight - 15
         openScriptButton.TextStrokeTransparency = 0
         openScriptButton.TextColor3 = Color3.new(1, 1, 1)
         openScriptButton.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -129,141 +282,84 @@ local function updateSettingsWidget(modules)
     end
 end
 
----------------
-
-pauseButton.Enabled = false
-
-if not pluginSettingsRoot then
-    settingsButton.Enabled = false
-    powerButton.Enabled = false
-else
-    initializeButton.Enabled = false
-end
-
----------------
-
-local currentSession
-local autosave
-local totalTime
-
-function onPowerOnClick()
-    Icons.changeIconSafely(powerButton, Icons.Power.Off)
-    pauseButton.Enabled = true
-
-    currentSession = Session.new()
-    autosave = Autosave.new(plugin, Info.ProjectName)
-    totalTime = TotalTime.new(plugin, Info.ProjectName, pluginSettingsRoot.Info)
-
-    local recoveredSessionStatus = autosave:recover()
-    local currentSessionStatus = currentSession.status
-    local logger = Logger.new(pluginSettingsRoot, currentSessionStatus, totalTime)
-
-    if recoveredSessionStatus and recoveredSessionStatus.state == SessionStatus.States.Paused then
-        Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
-    end
-
-    currentSessionStatus.stateChanged:Connect(function()
-        autosave:update(currentSessionStatus)
-    end)
-
-    currentSession:begin(logger, recoveredSessionStatus)
-    autosave:loop(currentSessionStatus)
-end
-
-function onPowerOffClick()
-    Icons.changeIconSafely(powerButton, Icons.Power.On)
-    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
-    pauseButton.Enabled = false
-
-    totalTime:update(currentSession.status:getTimeElapsed())
-    autosave:erase()
-    currentSession:close()
-    currentSession = nil
-end
-
-powerButton.Click:Connect(function()
-    powerButton.Enabled = false
-
-    if currentSession then
-        onPowerOffClick()
-        powerButton.Enabled = true
-        return
-    end
-
-    onPowerOnClick()
-    powerButton.Enabled = true
-end)
-
-if pluginSettingsRoot and Autosave.new(plugin, Info.ProjectName):recover() then
-    Icons.changeIconSafely(powerButton, Icons.Power.Recover)
-end
-
---
-
-function onPauseClick()
-    currentSession:pause()
-    Icons.changeIconSafely(pauseButton, Icons.Pause.Paused)
-end
-
-function onResumeClick()
-    currentSession:resume()
-    Icons.changeIconSafely(pauseButton, Icons.Pause.Unpaused)
-end
-
-pauseButton.Click:Connect(function()
-    if not currentSession then
-        return
-    end
-
-    pauseButton.Enabled = false
-
-    if currentSession.status.state == SessionStatus.States.Paused then
-        onResumeClick()
-        pauseButton.Enabled = true
-        return
-    end
-
-    onPauseClick()
-    pauseButton.Enabled = true
-end)
-
---
-
-function setupSettingsButtonEvents(modules)
-    for _, module in pairs(modules) do
+local function setupSettingsWidgetButtonsEvents(settings: Settings.Settings)
+    for _, module in pairs(settings:GetChildren()) do
         local openScriptButton = scroll:FindFirstChild(module.Name)
     
         openScriptButton.Activated:Connect(function()
             plugin:OpenScript(module)
+            settingsWidget.Enabled = false
         end)
     end
 end
 
-function onSettingsClick()
-    local modules = pluginSettingsRoot:GetChildren()
-
-    updateSettingsWidget(modules)
-    setupSettingsButtonEvents(modules)
-
-    settingsWidget.Enabled = not settingsWidget.Enabled
-end
-
-settingsButton.Click:Connect(onSettingsClick)
-
---
-
-function onInitializeclick()
-    settingsButton.Enabled = true
-    initializeButton.Enabled = false
-
-    pluginSettingsRoot = Settings.new()
-    plugin:OpenScript(pluginSettingsRoot.Info)
-end
-
-initializeButton.Click:Connect(function()
-    if pluginSettingsRoot then
+settingsButton.Click:Connect(function()
+    if not settings then
         return
     end
 
-    onInitializeclick()
+    createSettingsWidgetButtons(settings)
+    setupSettingsWidgetButtonsEvents(settings)
+
+    settingsWidget.Enabled = not settingsWidget.Enabled
 end)
+
+--
+
+initializeButton.Click:Connect(function()
+    if settings then
+        return
+    end
+
+    settingsButton.Enabled = true
+    initializeButton.Enabled = false
+    deleteProjectButton.Enabled = true
+
+    settings = Settings.new()
+    plugin:OpenScript(settings.Info)
+end)
+
+--
+
+deleteProjectButton.Click:Connect(function()
+    if not settings then
+        return
+    end
+
+    deleteProjectPromptWidget.Enabled = not deleteProjectPromptWidget.Enabled
+end)
+
+rejectButton.Activated:Connect(function()
+    deleteProjectPromptWidget.Enabled = false
+end)
+
+confirmButton.Activated:Connect(function()
+    if not settings then
+        return
+    end
+
+    if session then
+        return
+    end
+
+    deleteProjectPromptWidget.Enabled = false
+
+    powerButton.Enabled = false
+    pauseButton.Enabled = false
+    initializeButton.Enabled = false
+    settingsButton.Enabled = false
+    deleteProjectButton.Enabled = false
+
+    if totalProjectTime then
+        totalProjectTime:erase()
+    end
+
+    if save then
+        save:erase()
+    end
+    
+    settings:Destroy()
+    plugin:OpenScript(script.ProjectDeletedLandingPage)
+end)
+
+---------------

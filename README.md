@@ -7,7 +7,6 @@
 ---
 
 ## see it in action
-Video tutorial/showcase: (TBA)
 
 heres how its used on my own project called knob
 

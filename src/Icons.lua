@@ -12,18 +12,19 @@ local Icons = {
 
     Settings = "http://www.roblox.com/asset/?id=16008920257",
     Initialize = "http://www.roblox.com/asset/?id=16008985266",
+    Delete = "http://www.roblox.com/asset/?id=14219067357",
     AssertionFailPage = "http://www.roblox.com/asset/?id=14219067357",
 }
 
 ---------------
 
--- theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
-function Icons.changeIconSafely(of: PluginToolbarButton, to: string)
-    if of.Icon == to then
+-- here because theres this weird bug where if you change the .Icon id to the same one its already using, the icon turns invisible
+function Icons.switch(this: PluginToolbarButton, to: string)
+    if this.Icon == to then
         return
     end
 
-    of.Icon = to
+    this.Icon = to
 end
 
 ---------------

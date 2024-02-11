@@ -1,18 +1,18 @@
+local settingsDirectory = script.Parent.Parent.Settings
 local packages = script.Parent.Parent.Parent.Packages
-local baseModules = script.Parent.Parent.Settings.Modules
 
-local Messages = require(baseModules.Messages)
-local Checkpoints = require(baseModules.Checkpoints)
-local Info = require(baseModules.Info)
-
-local Voyager = require(packages.Voyager)
-local Settings = require(script.Parent.Parent.Settings)
-local TotalTime = require(script.Parent.TotalTime)
 local SessionStatus = require(script.Parent.SessionStatus)
+local TotalProjectTime = require(script.Parent.TotalProjectTime)
+local Settings = require(settingsDirectory)
+local Messages = require(settingsDirectory.Modules.Messages)
+local Checkpoints = require(settingsDirectory.Modules.Checkpoints)
+local Info = require(settingsDirectory.Modules.Info)
+local Voyager = require(packages.Voyager)
 
 local Logger = {
     Tags = {
         DayToday = "TODAYSDATE",
+        SessionState = "SESSIONSTATE",
         SessionTime = "SESSIONTIME",
         TotalTime = "TOTALTIME",
     }
@@ -23,14 +23,14 @@ Logger.__index = Logger
 ---------------
 
 type self = {
-    settingsRoot: Settings.Settings,
+    settings: Settings.Settings,
     messages: Messages.Messages,
     checkpoints: Checkpoints.Checkpoints,
     info: Info.Info,
-    webhook: any,
     sessionStatus: SessionStatus.SessionStatus,
-    totalTime: TotalTime.TotalTime,
-    loopThread: thread?,
+    totalProjectTime: TotalProjectTime.TotalProjectTime,
+    webhook: typeof(Voyager)?,
+    checkpointLoopThread: thread?,
 }
 
 export type Logger = typeof(setmetatable({} :: self, Logger))
@@ -56,114 +56,118 @@ end
 
 -------------
 
-function Logger.new(settingsRoot: Settings.Settings, sessionStatus: SessionStatus.SessionStatus, totalTime: TotalTime.TotalTime): Logger
+function Logger.new(settings: Settings.Settings, sessionStatus: SessionStatus.SessionStatus, totalProjectTime: TotalProjectTime.TotalProjectTime): Logger
     local self = {
-        settingsRoot = settingsRoot,
-        messages = require(settingsRoot.Messages),
-        checkpoints = require(settingsRoot.Checkpoints),
-        info = require(settingsRoot.Info),
+        settings = settings,
+        messages = require(settings.Messages),
+        checkpoints = require(settings.Checkpoints),
+        info = require(settings.Info),
         sessionStatus = sessionStatus,
-        totalTime = totalTime,
-        loopThread = nil,
+        totalProjectTime = totalProjectTime,
     }
 
-    self.webhook = self.info.UseOutputInstead or Voyager.fromUrl(self.info.WebhookURL)
+    if not self.info.UseOutputInstead then
+        self.webhook = Voyager.fromUrl(self.info.WebhookURL)
+    end
 
     setmetatable(self, Logger)
 
     return self
 end
 
-function Logger.start(self: Logger)
+function Logger.send(self: Logger, text: string?)
+    if not text then
+        return
+    end
+
+    text = self:getTextWithTagsApplied(text)
+
+    if self.webhook then
+        self.webhook:execute(text, nil, false, true)
+    else
+        print(text)
+    end
+end
+
+function Logger.getTextWithTagsApplied(self: Logger, text: string)
+    local applications = {
+        [Logger.Tags.DayToday] = os.date(),
+        [Logger.Tags.SessionTime] = formatSecondsToHMS(self.sessionStatus:getTimeElapsed()),
+        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.totalProjectTime:get() + self.sessionStatus:getTimeElapsed()),
+        [Logger.Tags.SessionState] = self.sessionStatus.state,
+    }
+    
+    return string.gsub(text, "%u+", applications)
+end
+
+function Logger.destroy(self: Logger)
+    self:stopCheckpointLoop()
+
+    local setmetatable: any = setmetatable
+    setmetatable(self, nil)
+end
+
+--
+
+function Logger.postSessionStartMessage(self: Logger)
     local message = self.messages.get(self.messages.Start)
     local separator = self.messages.get(self.messages.LineSeparators)
 
-    self:post(message)
-    self:post(separator)
+    self:send(message)
+    self:send(separator) 
 end
 
-function Logger.onSessionRecovered(self: Logger)
+function Logger.postSessionRecoveredMessage(self: Logger)
     local message = self.messages.get(self.messages.SessionRecovered)
     
-    self:post(message)
+    self:send(message)
 end
 
 function Logger.postCheckpoint(self: Logger)
     local checkpoint = self.checkpoints.get()
         
-    self:post(checkpoint)
+    self:send(checkpoint)
 end
 
 function Logger.loopCheckpointPosting(self: Logger)
-    if self.loopThread then
+    if self.checkpointLoopThread then
         return
     end
 
-    local function loop()
+    self.checkpointLoopThread = task.spawn(function()
         local interval = self.checkpoints.IntervalSeconds
 
         while task.wait(interval) do
             self:postCheckpoint()
         end
-    end
-
-    self.loopThread = task.spawn(loop)
+    end)
 end
 
-function Logger.stopLoop(self: Logger)
-    if self.loopThread then
-        task.cancel(self.loopThread)
-        self.loopThread = nil 
+function Logger.stopCheckpointLoop(self: Logger)
+    if self.checkpointLoopThread then
+        task.cancel(self.checkpointLoopThread)
+        self.checkpointLoopThread = nil 
     end
 end
 
-function Logger.pause(self: Logger)
+function Logger.postSessionPauseMessage(self: Logger)
     local message = self.messages.get(self.messages.Pause)
 
-    self:post(message)
+    self:send(message)
 end
 
-function Logger.resume(self: Logger)
+function Logger.postSessionResumeMessage(self: Logger)
     local message = self.messages.get(self.messages.Resume)
     
-    self:post(message)
+    self:send(message)
 end
 
-function Logger.close(self: Logger)
+function Logger.postSessionCloseMessage(self: Logger)
     local separator = self.messages.get(self.messages.LineSeparators)
     local message = self.messages.get(self.messages.Close)
 
-   self:post(separator)
-   self:post(message)
-end
-
---
-
--- non-message methods
-
-function Logger.post(self: Logger, text: string)
-    text = self:getTextWithTagsApplied(text)
-
-    if self.webhook == true then
-        print(text)
-        return
-    end
-
-    self.webhook:execute(text, nil, true, true)
-end
-
-function Logger.getTextWithTagsApplied(self: Logger, text: string?): string?
-    if not text then
-        return
-    end
-
-    local tagApplications = {
-        [Logger.Tags.DayToday] = os.date(),
-        [Logger.Tags.SessionTime] = formatSecondsToHMS(self.sessionStatus:getTimeElapsed()),
-        [Logger.Tags.TotalTime] = formatSecondsToDHMS(self.totalTime:get()),
-    }
-    
-    return string.gsub(text, "%u+", tagApplications)
+   self:send(separator)
+   self:send(message)
 end
 
 ---------------
